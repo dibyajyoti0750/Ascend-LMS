@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 import { assets } from "../../assets/assets";
+import SearchBar from "./SearchBar";
 
 export default function Hero(): ReactElement {
   return (
@@ -10,7 +11,7 @@ export default function Hero(): ReactElement {
         <img
           src={assets.stroke}
           alt="sketch"
-          className="hidden md:block w-40 absolute -bottom-24 right-36 rotate-6"
+          className="hidden md:block w-40 absolute -bottom-22 right-32 rotate-6"
         />
       </h1>
 
@@ -25,7 +26,7 @@ export default function Hero(): ReactElement {
         confidence beyond the learning phase.
       </p>
 
-      {/* Search bar */}
+      <SearchBar />
     </div>
   );
 }

@@ -50,13 +50,13 @@ export default function Navbar(): ReactElement {
         <div className="flex items-center">
           {user && (
             <>
-              <button className="rounded p-2 hover:bg-purple-100 cursor-pointer">
+              <button className="rounded p-2 active:bg-purple-100">
                 Become Educator
               </button>
 
               <Link
                 to="/my-enrollments"
-                className="rounded p-2 hover:bg-purple-100"
+                className="rounded p-2 active:bg-purple-100"
               >
                 My Enrollments
               </Link>
