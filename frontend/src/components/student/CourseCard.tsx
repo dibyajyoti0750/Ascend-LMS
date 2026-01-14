@@ -13,30 +13,59 @@ export default function CourseCard({ course }: CourseCardProps) {
     <Link
       to={`/course/${course._id}`}
       onClick={() => scrollTo(0, 0)}
-      className="border border-gray-500/30 pb-6 overflow-hidden rounded-lg"
+      className="overflow-hidden rounded-xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-lg"
     >
-      <img src={course.courseThumbnail} alt="thumbnail" className="w-full" />
-      <div className="p-3 text-left">
-        <h3 className="text-base font-semibold">{course.courseTitle}</h3>
-        <p className="text-gray-500">John Doe</p>
-        <div className="flex items-center space-x-2">
-          <p>4.5</p>
+      {/* Thumbnail */}
+      <div className="overflow-hidden">
+        <img
+          src={course.courseThumbnail}
+          alt="thumbnail"
+          className="w-full object-cover"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="space-y-2 p-4 text-left">
+        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
+          {course.courseTitle}
+        </h3>
+
+        <p className="text-xs text-gray-500">John Doe</p>
+
+        {/* Rating */}
+        <div className="flex items-center gap-1 text-xs">
+          <span className="font-medium text-gray-800">4.5</span>
           <div className="flex items-center gap-0.5">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                size={15}
-                className="text-yellow-400 fill-yellow-400"
+                size={14}
+                className="fill-yellow-400 text-yellow-400"
               />
             ))}
           </div>
-          <p className="text-gray-500">(22)</p>
+          <span className="text-gray-500">(22)</span>
         </div>
-        <p className="text-balance font-semibold text-gray-800">
-          {currency}
-          {/* 1 represents the full price, and subtracting removes the discounted part */}
-          {(course.coursePrice * (1 - course.discount / 100)).toFixed(2)}
-        </p>
+
+        <div className="flex items-end justify-between pt-2">
+          {/* Price */}
+          <div>
+            <p className="text-lg font-bold text-gray-900">
+              {currency}
+              {(course.coursePrice * (1 - course.discount / 100)).toFixed(2)}
+            </p>
+
+            <p className="text-xs text-gray-500 line-through">
+              {currency}
+              {course.coursePrice.toFixed(2)}
+            </p>
+          </div>
+
+          {/* Discount badge */}
+          <span className="rounded-md bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
+            {course.discount}% OFF
+          </span>
+        </div>
       </div>
     </Link>
   );
