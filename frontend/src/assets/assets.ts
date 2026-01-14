@@ -6,6 +6,9 @@ import youtube from "./youtube.png";
 import openai from "./openai.png";
 import samsung from "./samsung.png";
 import sony from "./sony.png";
+import pfp1 from "./pfp1.jpg";
+import pfp2 from "./pfp2.jpg";
+import pfp3 from "./pfp3.jpg";
 
 export const assets = {
   logo,
@@ -312,5 +315,32 @@ export const dummyCourses = [
     updatedAt: "2024-12-31T05:31:27.290Z",
     __v: 2,
     courseThumbnail: "https://img.youtube.com/vi/lpx2zFkapIk/maxresdefault.jpg",
+  },
+];
+
+export const dummyTestimonial = [
+  {
+    name: "Henry Cavil",
+    role: "SWE 1 @ Microsoft",
+    image: pfp1,
+    rating: 5,
+    feedback:
+      "I appreciated how the course focused on clarity instead of overwhelming details. The concepts were explained in a way that made sense, and the practical examples helped me apply what I learned with confidence.",
+  },
+  {
+    name: "Braden Smith",
+    role: "SWE 2 @ Samsung",
+    image: pfp2,
+    rating: 4,
+    feedback:
+      "This course helped me slow down and understand things properly. The explanations were simple, focused, and easy to follow, which made the learning process feel steady and achievable.",
+  },
+  {
+    name: "Rivi Kishan Mishra",
+    role: "Manager @ Taj",
+    image: pfp3,
+    rating: 3,
+    feedback:
+      "What stood out was the balance between theory and practice. Nothing felt rushed or unnecessary. It felt like learning with a clear direction rather than just consuming content.",
   },
 ];

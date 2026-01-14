@@ -45,7 +45,7 @@ export default function CourseCard({ course }: CourseCardProps) {
                 size={15}
                 className={
                   i < Math.floor(calculateRating(course))
-                    ? "fill-yellow-400 text-yellow-400"
+                    ? "fill-yellow-500 text-yellow-500"
                     : "text-gray-400"
                 }
               />
