@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import type { Course } from "../../features/course.types";
 import { Star } from "lucide-react";
+import type { Course } from "../../features/courses/course.types";
+import { calculateRating } from "../../features/courses/courseSlice";
 
 interface CourseCardProps {
   course: Course;
@@ -33,18 +34,24 @@ export default function CourseCard({ course }: CourseCardProps) {
         <p className="text-xs text-gray-500">John Doe</p>
 
         {/* Rating */}
-        <div className="flex items-center gap-1 text-xs">
-          <span className="font-medium text-gray-800">4.5</span>
+        <div className="flex items-center gap-1.5 text-xs">
+          <span className="font-medium text-gray-800">
+            {calculateRating(course)}
+          </span>
           <div className="flex items-center gap-0.5">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                size={14}
-                className="fill-yellow-400 text-yellow-400"
+                size={15}
+                className={
+                  i < Math.floor(calculateRating(course))
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-400"
+                }
               />
             ))}
           </div>
-          <span className="text-gray-500">(22)</span>
+          <span className="text-gray-500">({course.courseRatings.length})</span>
         </div>
 
         <div className="flex items-end justify-between pt-2">

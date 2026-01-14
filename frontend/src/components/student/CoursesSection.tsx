@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../app/store";
-import { fetchAllCourses } from "../../features/courseSlice";
+import { fetchAllCourses } from "../../features/courses/courseSlice";
 import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
 

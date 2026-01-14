@@ -1,10 +1,15 @@
 import { assets } from "../../assets/assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 
 export default function Navbar() {
   const { openSignIn } = useClerk();
   const { user } = useUser();
+
+  const navigate = useNavigate();
+  const { isEducator } = useSelector((state: RootState) => state.educator);
 
   return (
     <div className="flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 py-4 bg-purple-50 shadow">
@@ -17,8 +22,11 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           {user && (
             <>
-              <button className="rounded p-2 hover:bg-purple-100 cursor-pointer">
-                Become Educator
+              <button
+                onClick={() => navigate("/educator")}
+                className="rounded p-2 hover:bg-purple-100 cursor-pointer"
+              >
+                {isEducator ? "Educator Dashboard" : "Become Educator"}
               </button>
 
               <Link
@@ -48,8 +56,11 @@ export default function Navbar() {
         <div className="flex items-center">
           {user && (
             <>
-              <button className="rounded p-2 active:bg-purple-100">
-                Become Educator
+              <button
+                onClick={() => navigate("/educator")}
+                className="rounded p-2 active:bg-purple-100"
+              >
+                {isEducator ? "Educator Dashboard" : "Become Educator"}
               </button>
 
               <Link

@@ -84,7 +84,12 @@ export const dummyCourses = [
     courseRatings: [
       {
         userId: "user_2qjlgkAqIMpiR2flWIRzvWKtE0w",
-        rating: 5,
+        rating: 4,
+        _id: "6773e37360cb0ab974342314",
+      },
+      {
+        userId: "user_2qjlgkAqIMpiR2flWIRzvWKtE0w",
+        rating: 3,
         _id: "6773e37360cb0ab974342314",
       },
     ],
@@ -156,6 +161,11 @@ export const dummyCourses = [
       "user_2qjlgkAqIMpiR2flWIRzvWKtE0w",
     ],
     courseRatings: [
+      {
+        userId: "user_2qjlgkAqIMpiR2flWIRzvWKtE0w",
+        rating: 4,
+        _id: "6776369244daad0f313d81a9",
+      },
       {
         userId: "user_2qjlgkAqIMpiR2flWIRzvWKtE0w",
         rating: 5,
