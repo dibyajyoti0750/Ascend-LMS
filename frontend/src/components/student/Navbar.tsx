@@ -1,21 +1,19 @@
-import type { ReactElement } from "react";
 import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 
-export default function Navbar(): ReactElement {
+export default function Navbar() {
   const { openSignIn } = useClerk();
   const { user } = useUser();
 
   return (
     <div className="flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 py-4 bg-purple-50 shadow">
-      <img
-        src={assets.logo}
-        alt="Logo"
-        className="w-8 md:w-10 cursor-pointer"
-      />
+      <Link to="/" className="flex items-center gap-2">
+        <img src={assets.logo} alt="Logo" className="w-8 md:w-10" />
+        <p className="text-sky-500 text-lg md:text-xl font-bold">Ascend</p>
+      </Link>
 
-      <div className="hidden md:flex items-center gap-5 text-gray-500 text-sm">
+      <div className="hidden md:flex items-center gap-5 text-gray-500">
         <div className="flex items-center gap-2">
           {user && (
             <>
@@ -46,7 +44,7 @@ export default function Navbar(): ReactElement {
       </div>
 
       {/* Mobile Screens */}
-      <div className="md:hidden flex items-center gap-3 sm:gap-5 text-gray-500 text-xs sm:text-sm">
+      <div className="md:hidden flex items-center gap-3 sm:gap-5 text-gray-500 text-sm">
         <div className="flex items-center">
           {user && (
             <>

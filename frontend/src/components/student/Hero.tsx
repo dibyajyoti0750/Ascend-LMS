@@ -1,8 +1,7 @@
-import type { ReactElement } from "react";
 import { assets } from "../../assets/assets";
 import SearchBar from "./SearchBar";
 
-export default function Hero(): ReactElement {
+export default function Hero() {
   return (
     <div className="flex flex-col items-center justify-center w-full md:pt-36 pt-20 px-7 md:px-0 space-y-8 text-center bg-linear-to-b from-purple-100/80">
       <h1 className="text-3xl md:text-5xl relative font-black text-gray-800 max-w-4xl mx-auto">

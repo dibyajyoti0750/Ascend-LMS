@@ -1,5 +1,3 @@
-import type { ReactElement } from "react";
-
-export default function Player(): ReactElement {
+export default function Player() {
   return <div></div>;
 }

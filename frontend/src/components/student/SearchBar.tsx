@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactElement } from "react";
+import { useState, type FormEvent } from "react";
 import { Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +6,7 @@ interface InputData {
   data?: string;
 }
 
-export default function SearchBar({ data }: InputData): ReactElement {
+export default function SearchBar({ data }: InputData) {
   const navigate = useNavigate();
   const [input, setInput] = useState<string>(data ?? "");
 

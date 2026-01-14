@@ -1,5 +1,3 @@
-import type { ReactElement } from "react";
-
-export default function MyEnrollments(): ReactElement {
+export default function MyEnrollments() {
   return <div></div>;
 }

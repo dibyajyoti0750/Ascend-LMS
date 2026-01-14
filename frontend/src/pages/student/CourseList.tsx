@@ -1,5 +1,3 @@
-import type { ReactElement } from "react";
-
-export default function CourseList(): ReactElement {
+export default function CourseList() {
   return <div></div>;
 }

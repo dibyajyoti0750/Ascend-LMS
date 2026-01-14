@@ -1,4 +1,3 @@
-import type { ReactElement } from "react";
 import { Route, Routes, useMatch } from "react-router-dom";
 import Home from "./pages/student/Home";
 import CourseList from "./pages/student/CourseList";
@@ -13,7 +12,7 @@ import MyCourses from "./pages/educator/MyCourses";
 import StudentsEnrolled from "./pages/educator/StudentsEnrolled";
 import Navbar from "./components/student/Navbar";
 
-export default function App(): ReactElement {
+export default function App() {
   const isEducatorRoute = useMatch("/educator/*");
 
   return (

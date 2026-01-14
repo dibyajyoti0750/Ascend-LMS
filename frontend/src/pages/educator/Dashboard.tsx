@@ -1,5 +1,3 @@
-import type { ReactElement } from "react";
-
-export default function Dashboard(): ReactElement {
+export default function Dashboard() {
   return <div></div>;
 }

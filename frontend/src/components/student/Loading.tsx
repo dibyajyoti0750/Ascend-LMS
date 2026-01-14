@@ -1,5 +1,3 @@
-import type { ReactElement } from "react";
-
-export default function Loading(): ReactElement {
+export default function Loading() {
   return <div></div>;
 }
