@@ -1,17 +1,10 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../app/store";
-import { fetchAllCourses } from "../../features/courses/courseSlice";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
 
 export default function CoursesSection() {
-  const dispatch = useDispatch<AppDispatch>();
   const { allCourses } = useSelector((state: RootState) => state.courses);
-
-  useEffect(() => {
-    dispatch(fetchAllCourses());
-  }, [dispatch]);
 
   return (
     <div className="py-16 px-8 md:px-40">

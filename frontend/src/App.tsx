@@ -11,9 +11,18 @@ import AddCourse from "./pages/educator/AddCourse";
 import MyCourses from "./pages/educator/MyCourses";
 import StudentsEnrolled from "./pages/educator/StudentsEnrolled";
 import Navbar from "./components/student/Navbar";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchAllCourses } from "./features/courses/courseSlice";
+import type { AppDispatch } from "./app/store";
 
 export default function App() {
   const isEducatorRoute = useMatch("/educator/*");
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchAllCourses());
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-white">
