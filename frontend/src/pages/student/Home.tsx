@@ -2,6 +2,7 @@ import Hero from "../../components/student/Hero";
 import Companies from "../../components/student/Companies";
 import CoursesSection from "../../components/student/CoursesSection";
 import TestimonialsSection from "../../components/student/TestimonialsSection";
+import CallToAction from "../../components/student/CallToAction";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Companies />
       <CoursesSection />
       <TestimonialsSection />
+      <CallToAction />
     </div>
   );
 }
