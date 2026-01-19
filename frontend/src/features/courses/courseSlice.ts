@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { dummyCourses } from "../../assets/assets";
-import type { Course, CourseState } from "./course.types";
+import type { CourseState } from "./course.types";
 
 const initialState: CourseState = {
   allCourses: [],
@@ -13,12 +13,6 @@ export const fetchAllCourses = createAsyncThunk(
     return dummyCourses;
   }
 );
-
-export const calculateRating = (course: Course): number => {
-  if (!course.courseRatings.length) return 0;
-  const total = course.courseRatings.reduce((sum, r) => sum + r.rating, 0);
-  return total / course.courseRatings.length;
-};
 
 const courseSlice = createSlice({
   name: "courses",

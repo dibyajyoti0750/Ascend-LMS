@@ -7,7 +7,7 @@ interface Lecture {
   lectureOrder: number;
 }
 
-interface Chapter {
+export interface Chapter {
   chapterId: string;
   chapterOrder: number;
   chapterTitle: string;

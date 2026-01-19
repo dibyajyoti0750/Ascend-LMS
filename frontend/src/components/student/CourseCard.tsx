@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
 import type { Course } from "../../features/courses/course.types";
-import { calculateRating } from "../../features/courses/courseSlice";
+import { calculateRating } from "../../utils/calculate";
 
 interface CourseCardProps {
   course: Course;
