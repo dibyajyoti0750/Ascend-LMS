@@ -4,12 +4,17 @@ import type { RootState } from "../../app/store";
 import { useMemo, useState } from "react";
 import Loading from "../../components/student/Loading";
 import {
+  BadgeCheck,
   BookOpenText,
+  CalendarDays,
   ChevronDown,
   CirclePlay,
   Clock,
+  Globe,
   Star,
   Timer,
+  TvMinimalPlay,
+  Users,
 } from "lucide-react";
 import humanizeDuration from "humanize-duration";
 import {
@@ -21,7 +26,9 @@ import {
 import Footer from "../../components/student/Footer";
 
 export default function CourseDetails() {
-  const [openSections, setOpenSections] = useState<Record<number, boolean>>({});
+  const [openSections, setOpenSections] = useState<Record<number, boolean>>({
+    0: true,
+  });
   const [isAlreadyEnrolled] = useState(false);
 
   const { id } = useParams();
@@ -40,75 +47,113 @@ export default function CourseDetails() {
   return courseData ? (
     <>
       <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left">
-        <div className="absolute top-0 left-0 w-full h-section-height bg-linear-to-b from-cyan-100/70"></div>
+        <div className="absolute top-0 left-0 w-full h-section-height bg-black"></div>
 
         {/* left column */}
-        <div className="max-w-xl z-10 text-gray-500">
-          <h1 className="text-[26px] leading-9 md:text-[36px] md:leading-11 font-semibold text-gray-800">
+        <div className="max-w-xl md:max-w-2xl z-10 text-black md:text-gray-100 space-y-5">
+          <h1 className="text-2xl leading-9 md:text-5xl md:leading-11 font-semibold">
             {courseData.courseTitle}
           </h1>
+
           <p
+            className="py-2 text-sm md:text-base"
             dangerouslySetInnerHTML={{
-              __html: courseData?.courseDescription.slice(0, 200),
+              __html: courseData?.courseDescription.slice(0, 321),
             }}
           ></p>
 
-          {/* reviews and ratings */}
-          <div className="flex items-center space-x-2 pt-3 pb-1 text-sm">
-            <p>{calculateRating(courseData)}</p>
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={15}
-                  className={`${
-                    i < Math.floor(calculateRating(courseData))
-                      ? "fill-yellow-500 text-yellow-500"
-                      : "text-gray-400"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <p>
-              ({courseData.courseRatings.length}{" "}
-              {courseData.courseRatings.length > 1 ? "ratings" : "rating"})
-            </p>
-
-            <p>
-              ({courseData.enrolledStudents.length}{" "}
-              {courseData.enrolledStudents.length > 1 ? "students" : "student"})
-            </p>
-          </div>
-
-          <p className="text-sm">
-            Course by <span className="text-blue-600 underline">John Doe</span>
+          <p className="px-1.5 py-0.5 bg-gray-200 text-gray-700 text-sm font-semibold w-fit rounded">
+            Bestseller
           </p>
 
-          <div className="pt-8 text-gray-800">
-            <h2 className="text-xl font-semibold">Course Structure</h2>
+          <div className="flex items-center text-sm font-light gap-2">
+            <CalendarDays size={18} />
+            <p>
+              Last updated at{" "}
+              {new Date(courseData.updatedAt).toLocaleDateString("en-IN")}
+            </p>
+            <Globe size={18} />
+            <p>English</p>
+          </div>
 
-            <div className="pt-5">
+          {/* reviews and ratings */}
+          <div className="flex flex-wrap md:flex-nowrap items-center bg-white text-black rounded-lg p-0.5 md:max-w-xl shadow-sm">
+            <div className="flex flex-col items-center justify-center gap-2 bg-purple-800 text-white self-stretch px-8 py-2 rounded-s-md">
+              <BadgeCheck />
+              <p className="text-sm font-semibold">Premium</p>
+            </div>
+
+            <div className="flex flex-1 justify-around items-center py-2">
+              <div className="flex flex-col items-center justify-center gap-1">
+                <span>Course by</span>
+                <span className="text-blue-500 underline">John Doe</span>
+              </div>
+
+              <div className="border-r border-gray-300 h-16"></div>
+
+              <div className="flex flex-col justify-center items-center">
+                <p className="text-xl font-semibold">
+                  {calculateRating(courseData)}
+                </p>
+
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={12}
+                      className={`${
+                        i < Math.floor(calculateRating(courseData))
+                          ? "fill-yellow-500 text-yellow-500"
+                          : "text-gray-400"
+                      }`}
+                    />
+                  ))}
+                </div>
+
+                <p className="text-sm font-light pt-2">
+                  {courseData.courseRatings.length}{" "}
+                  {courseData.courseRatings.length > 1 ? "ratings" : "rating"}
+                </p>
+              </div>
+
+              <div className="border-r border-gray-300 h-16"></div>
+
+              <div className="flex flex-col justify-center items-center">
+                <Users size={20} />
+                <p className="text-sm font-semibold">
+                  {courseData.enrolledStudents.length}
+                </p>
+                <p className="text-sm font-light pt-2">
+                  {courseData.enrolledStudents.length > 1
+                    ? "students"
+                    : "student"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="py-5 text-gray-800">
+            <h2 className="text-2xl font-semibold">Course content</h2>
+
+            <div className="pt-4">
               {courseData.courseContent.map((chapter, index) => (
                 <div
                   key={index}
-                  className="border border-gray-300 bg-white mb-2 rounded"
+                  className="border border-gray-200 bg-white mb-2"
                 >
                   <div
                     onClick={() => toggleSection(index)}
-                    className="flex items-center justify-between px-4 py-3 cursor-pointer select-none"
+                    className="flex items-center justify-between px-4 py-3 bg-gray-50 cursor-pointer select-none"
                   >
                     <div className="flex items-center gap-2">
                       <ChevronDown
                         className={`transform transition-transform ${openSections[index] ? "rotate-180" : ""}`}
                       />
-                      <p className="font-medium md:text-balance text-sm">
-                        {chapter.chapterTitle}
-                      </p>
+                      <p className="font-bold">{chapter.chapterTitle}</p>
                     </div>
 
-                    <p className="text-sm md:text-base">
-                      {chapter.chapterContent.length} lectures -{" "}
+                    <p className="text-sm">
+                      {chapter.chapterContent.length} lectures •{" "}
                       {calculateChapterTime(chapter)}
                     </p>
                   </div>
@@ -118,21 +163,26 @@ export default function CourseDetails() {
                   >
                     <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 text-gray-600 border-t border-gray-300">
                       {chapter.chapterContent.map((lecture, i) => (
-                        <li key={i} className="flex items-start gap-2 py-1">
-                          <CirclePlay />
-                          <div className="flex items-center justify-between w-full text-gray-800 text-xs md:text-base">
+                        <li key={i} className="flex items-center gap-2 py-1">
+                          <TvMinimalPlay size={20} />
+
+                          <div className="flex items-center justify-between w-full text-gray-700 text-xs md:text-sm">
                             <p>{lecture.lectureTitle}</p>
+
                             <div className="flex gap-2">
                               {lecture.isPreviewFree && (
-                                <p className="text-blue-500 cursor-pointer">
-                                  Preview
+                                <p className="flex items-center gap-1 cursor-pointer">
+                                  <CirclePlay />
+                                  <span className="text-blue-500 underline">
+                                    Preview
+                                  </span>
                                 </p>
                               )}
 
                               <p>
                                 {humanizeDuration(
                                   lecture.lectureDuration * 60 * 1000,
-                                  { units: ["h", "m"] }
+                                  { units: ["h", "m"] },
                                 )}
                               </p>
                             </div>
@@ -146,8 +196,8 @@ export default function CourseDetails() {
             </div>
           </div>
 
-          <div className="py-20 text-sm md:text-base">
-            <h3 className="text-xl font-semibold text-gray-800">
+          <div className="text-sm md:text-base">
+            <h3 className="text-2xl font-semibold text-gray-800">
               Course Description
             </h3>
             <p
