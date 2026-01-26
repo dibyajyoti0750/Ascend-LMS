@@ -16,11 +16,16 @@ export const calculateChapterTime = (chapter: Chapter) => {
 
 // calculate course duration
 export const calculateCourseDuration = (course: Course) => {
-  let time = 0;
-  course.courseContent.map((chapter) =>
-    chapter.chapterContent.map((lecture) => (time += lecture.lectureDuration))
+  let minutes = 0;
+
+  course.courseContent.forEach((chapter) =>
+    chapter.chapterContent.forEach((lecture) => {
+      minutes += lecture.lectureDuration;
+    }),
   );
-  return humanizeDuration(time * 60 * 1000, { units: ["h", "m"] });
+
+  const hours = minutes / 60;
+  return `${hours.toFixed(1)} hours`;
 };
 
 // calculate total number of lectures in the course
