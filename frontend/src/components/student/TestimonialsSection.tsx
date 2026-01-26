@@ -54,7 +54,7 @@ export default function TestimonialsSection() {
                 ))}
               </div>
 
-              <p className="mt-4 text-sm text-gray-600 leading-relaxed">
+              <div className="mt-4 text-sm text-gray-600 leading-relaxed">
                 {expandedIndex === index
                   ? testimonial.feedback
                   : testimonial.feedback.slice(0, 145)}
@@ -78,7 +78,7 @@ export default function TestimonialsSection() {
                     </span>
                   )}
                 </div>
-              </p>
+              </div>
             </div>
           </div>
         ))}

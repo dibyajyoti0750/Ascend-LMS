@@ -13,7 +13,10 @@ import StudentsEnrolled from "./pages/educator/StudentsEnrolled";
 import Navbar from "./components/student/Navbar";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchAllCourses } from "./features/courses/courseSlice";
+import {
+  fetchAllCourses,
+  fetchUserEnrolledCourses,
+} from "./features/courses/courseSlice";
 import type { AppDispatch } from "./app/store";
 
 export default function App() {
@@ -22,6 +25,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(fetchAllCourses());
+    dispatch(fetchUserEnrolledCourses());
   }, [dispatch]);
 
   return (

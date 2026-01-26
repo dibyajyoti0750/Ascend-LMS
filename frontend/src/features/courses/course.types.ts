@@ -39,5 +39,6 @@ export interface Course {
 
 export interface CourseState {
   allCourses: Course[];
+  enrolledCourses: Course[];
   loading: boolean;
 }

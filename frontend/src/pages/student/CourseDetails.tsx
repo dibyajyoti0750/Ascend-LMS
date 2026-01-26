@@ -1,3 +1,4 @@
+import YouTube from "react-youtube";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { RootState } from "../../app/store";
@@ -25,11 +26,16 @@ import {
 } from "../../utils/calculate";
 import Footer from "../../components/student/Footer";
 
+type PlayerData = {
+  videoId?: string;
+};
+
 export default function CourseDetails() {
   const [openSections, setOpenSections] = useState<Record<number, boolean>>({
     0: true,
   });
   const [isAlreadyEnrolled] = useState(false);
+  const [playerData, setPlayerData] = useState<PlayerData | null>(null);
 
   const { id } = useParams();
   const { allCourses } = useSelector((state: RootState) => state.courses);
@@ -46,11 +52,11 @@ export default function CourseDetails() {
 
   return courseData ? (
     <>
-      <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between md:px-36 px-8 md:pt-20 pt-10 text-left">
+      <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between px-4 py-4 md:px-36 md:py-20 text-left">
         <div className="absolute top-0 left-0 w-full h-section-height bg-black"></div>
 
         {/* left column */}
-        <div className="max-w-xl md:max-w-2xl z-10 text-black md:text-gray-100 space-y-3 md:space-y-5">
+        <div className="flex-1 max-w-xl md:max-w-2xl z-10 text-black md:text-gray-100 space-y-3 md:space-y-5">
           <h1 className="text-2xl leading-9 md:text-5xl md:leading-11 font-semibold">
             {courseData.courseTitle}
           </h1>
@@ -170,7 +176,16 @@ export default function CourseDetails() {
 
                             <div className="flex gap-2">
                               {lecture.isPreviewFree && (
-                                <p className="flex items-center gap-1 cursor-pointer">
+                                <p
+                                  onClick={() =>
+                                    setPlayerData({
+                                      videoId: lecture.lectureUrl
+                                        .split("/")
+                                        .pop(),
+                                    })
+                                  }
+                                  className="flex items-center gap-1 cursor-pointer"
+                                >
                                   <CirclePlay />
                                   <span className="text-blue-500 underline">
                                     Preview
@@ -210,11 +225,19 @@ export default function CourseDetails() {
 
         {/* right column */}
         <div className="max-w-course-card z-10 shadow-2xl overflow-hidden p-0.5 bg-white">
-          <img
-            src={courseData.courseThumbnail}
-            alt="thumbnail"
-            className="w-full object-cover"
-          />
+          {playerData ? (
+            <YouTube
+              videoId={playerData.videoId}
+              opts={{ playerVars: { autoplay: 1 } }}
+              iframeClassName="w-full aspect-video"
+            />
+          ) : (
+            <img
+              src={courseData.courseThumbnail}
+              alt="thumbnail"
+              className="w-full object-cover"
+            />
+          )}
 
           <div className="p-5">
             <div className="flex items-center gap-2">
