@@ -198,10 +198,10 @@ export default function CourseDetails() {
 
           <div className="text-sm md:text-base">
             <h3 className="text-2xl font-semibold text-gray-800">
-              Course Description
+              Description
             </h3>
             <p
-              className="pt-3 rich-text"
+              className="rich-text"
               dangerouslySetInnerHTML={{
                 __html: courseData.courseDescription,
               }}
@@ -210,18 +210,23 @@ export default function CourseDetails() {
         </div>
 
         {/* right column */}
-        <div className="max-w-course-card z-10 shadow-custom-card rounded-t md:rounded-none overflow-hidden bg-white min-w-75 sm:min-w-105">
-          <img src={courseData.courseThumbnail} alt="thumbnail" />
+        <div className="max-w-course-card z-10 shadow-2xl overflow-hidden p-0.5 bg-white">
+          <img
+            src={courseData.courseThumbnail}
+            alt="thumbnail"
+            className="w-full object-cover"
+          />
+
           <div className="p-5">
             <div className="flex items-center gap-2">
-              <Timer />
+              <Timer className="text-red-500" />
               <p className="text-red-500">
-                <span className="font-medium">5 days</span> left at this price
+                <span className="font-semibold">5 days</span> left at this price
               </p>
             </div>
 
-            <div className="flex gap-3 items-center pt-2">
-              <p className="text-gray-800 md:text-4xl text-2xl font-semibold">
+            <div className="flex gap-3 items-center py-3">
+              <p className="text-gray-800 md:text-4xl text-2xl font-bold">
                 {currency}
                 {(
                   courseData.coursePrice -
@@ -229,43 +234,43 @@ export default function CourseDetails() {
                 ).toFixed(2)}
               </p>
 
-              <p className="md:text-lg text-gray-500 line-through">
+              <p className="md:text-lg font-medium text-gray-500 line-through">
                 {currency}
                 {courseData.coursePrice}
               </p>
-              <p className="md:text-lg text-gray-500">
+              <p className="md:text-lg font-medium text-gray-500">
                 {courseData.discount}% off
               </p>
             </div>
 
-            <div className="flex items-center text-sm md:text-base gap-4 pt-2 md:pt-4 text-gray-500">
-              <div className="flex items-center gap-1">
-                <Star />
+            <div className="flex items-center text-sm md:text-base gap-4 py-2 text-gray-500">
+              <div className="flex items-center gap-2">
+                <Star className="fill-yellow-500 text-yellow-500" />
                 <p>{calculateRating(courseData)}</p>
               </div>
 
-              <div className="h-4 w-px bg-gray-500/40" />
+              <div className="h-5 w-px bg-gray-500/40" />
 
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2">
                 <Clock />
                 <p>{calculateCourseDuration(courseData)}</p>
               </div>
 
-              <div className="h-4 w-px bg-gray-500/40" />
+              <div className="h-5 w-px bg-gray-500/40" />
 
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-2">
                 <BookOpenText />
                 <p>{calculateNoOfLectures(courseData)} lessons</p>
               </div>
             </div>
 
-            <button className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium">
-              {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
+            <button className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 text-white font-semibold cursor-pointer active:bg-purple-800">
+              {isAlreadyEnrolled ? "Already Enrolled" : "Buy Now"}
             </button>
 
-            <div className="pt-6">
+            <div className="py-5">
               <p className="md:text-xl text-lg font-medium text-gray-800">
-                What's in the course?
+                What will you get?
               </p>
 
               <ul className="ml-4 pt-2 text-sm md:text-base list-disc text-gray-500">
