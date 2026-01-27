@@ -9,6 +9,10 @@ import sony from "./sony.png";
 import pfp1 from "./pfp1.jpg";
 import pfp2 from "./pfp2.jpg";
 import pfp3 from "./pfp3.jpg";
+import home from "./home.png";
+import addIcon from "./addIcon.png";
+import bookmark from "./bookmark.png";
+import student from "./student.png";
 
 export const assets = {
   logo,
@@ -19,6 +23,10 @@ export const assets = {
   openai,
   samsung,
   sony,
+  home,
+  addIcon,
+  bookmark,
+  student,
 };
 
 export const dummyCourses = [
@@ -344,3 +352,14 @@ export const dummyTestimonial = [
       "What stood out was the balance between theory and practice. Nothing felt rushed or unnecessary. It felt like learning with a clear direction rather than just consuming content.",
   },
 ];
+
+export const dummyEducatorData = {
+  _id: "675ac1512100b91a6d9b8b24",
+  name: "GreatStack",
+  email: "user.greatstack@gmail.com",
+  imageUrl:
+    "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18yclFkaDBOMmFqWnBoTTRBOXZUanZxVlo0aXYifQ",
+  createdAt: "2024-12-12T10:56:17.930Z",
+  updatedAt: "2024-12-12T10:56:17.930Z",
+  __v: 0,
+};
