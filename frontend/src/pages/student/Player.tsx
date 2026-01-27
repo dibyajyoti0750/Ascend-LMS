@@ -2,13 +2,14 @@ import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { RootState } from "../../app/store";
-import { Check, ChevronDown, Play } from "lucide-react";
+import { ChevronDown, CircleCheck, CirclePlay } from "lucide-react";
 import { calculateChapterTime } from "../../utils/calculate";
 import humanizeDuration from "humanize-duration";
 import Rating from "../../components/student/Rating";
 import YouTube from "react-youtube";
 import Footer from "../../components/student/Footer";
 import type { Lecture } from "../../features/courses/course.types";
+import Loading from "../../components/student/Loading";
 
 interface PlayerData extends Lecture {
   chapter: number;
@@ -32,12 +33,12 @@ export default function Player() {
     setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-  return (
+  return courseData ? (
     <>
-      <div className="p-4 sm:p-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-10 md:px-36">
+      <div className="p-4 sm:p-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-5 md:gap-10 md:px-36">
         {/* Left column */}
         <div className="text-gray-800">
-          <h2 className="text-xl font-semibold">Course Structure</h2>
+          <h2 className="text-2xl font-semibold">{courseData.courseTitle}</h2>
 
           <div className="pt-5">
             {courseData &&
@@ -48,18 +49,19 @@ export default function Player() {
                 >
                   <div
                     onClick={() => toggleSection(index)}
-                    className="flex items-center justify-between px-4 py-3 cursor-pointer select-none"
+                    className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded cursor-pointer select-none"
                   >
                     <div className="flex items-center gap-2">
                       <ChevronDown
                         className={`transform transition-transform ${openSections[index] ? "rotate-180" : ""}`}
                       />
-                      <p className="font-medium md:text-base text-sm">
+                      <p className="font-semibold md:text-base text-sm">
                         {chapter.chapterTitle}
                       </p>
                     </div>
+
                     <p className="text-sm md:text-base">
-                      {chapter.chapterContent.length} lectures -{" "}
+                      {chapter.chapterContent.length} lectures •{" "}
                       {calculateChapterTime(chapter)}
                     </p>
                   </div>
@@ -69,12 +71,27 @@ export default function Player() {
                       openSections[index] ? "max-h-96" : "max-h-0"
                     }`}
                   >
-                    <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 text-gray-600 border-t border-gray-300">
+                    <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 border-t border-gray-300">
                       {chapter.chapterContent.map((lecture, i) => (
-                        <li key={i} className="flex items-start gap-2 py-1">
-                          {false ? <Check /> : <Play />}
-                          <div className="flex items-center justify-between w-full text-gray-800 text-xs md:text-base">
+                        <li key={i} className="flex items-center gap-2 py-1.5">
+                          {false ? (
+                            <CircleCheck className="text-blue-600" />
+                          ) : (
+                            <CirclePlay
+                              onClick={() =>
+                                setPlayerData({
+                                  ...lecture,
+                                  chapter: index + 1,
+                                  lecture: i + 1,
+                                })
+                              }
+                              className="text-gray-600 cursor-pointer"
+                            />
+                          )}
+
+                          <div className="flex items-center justify-between w-full text-sm md:text-base">
                             <p>{lecture.lectureTitle}</p>
+
                             <div className="flex gap-2">
                               {lecture.lectureUrl && (
                                 <p
@@ -85,7 +102,7 @@ export default function Player() {
                                       lecture: i + 1,
                                     })
                                   }
-                                  className="text-blue-500 cursor-pointer"
+                                  className="text-blue-500 underline cursor-pointer"
                                 >
                                   Watch
                                 </p>
@@ -112,21 +129,53 @@ export default function Player() {
           </div>
         </div>
 
-        <div className="md:mt-10">
+        {/* Right column */}
+        <div className="md:mt-13">
           {playerData ? (
             <div>
               <YouTube
+                opts={{ playerVars: { autoplay: 1 } }}
                 videoId={playerData.lectureUrl.split("/").pop()}
                 iframeClassName="w-full aspect-video"
               />
-              <div className="flex justify-between items-center mt-1">
-                <p>
-                  {playerData.chapter}.{playerData.lecture}{" "}
-                  {playerData.lectureTitle}
-                </p>
-                <button className="text-blue-600">
-                  {false ? "Completed" : "Mark Complete"}
-                </button>
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex flex-col">
+                  <p className="text-sm text-gray-500">
+                    Chapter {playerData.chapter} · Lecture {playerData.lecture}
+                  </p>
+                  <p className="text-base font-semibold text-gray-900">
+                    {playerData.lectureTitle}
+                  </p>
+                </div>
+
+                <>
+                  {false ? (
+                    <label
+                      htmlFor="completed"
+                      className="flex items-center gap-2 text-sm font-medium text-blue-600 cursor-pointer select-none"
+                    >
+                      <input
+                        id="completed"
+                        type="checkbox"
+                        checked
+                        className="h-4 w-4 accent-blue-600"
+                      />
+                      Completed
+                    </label>
+                  ) : (
+                    <label
+                      htmlFor="markComplete"
+                      className="flex items-center gap-2 text-sm font-medium text-blue-600 cursor-pointer select-none"
+                    >
+                      <input
+                        id="markComplete"
+                        type="checkbox"
+                        className="h-4 w-4 accent-blue-600"
+                      />
+                      Mark as complete
+                    </label>
+                  )}
+                </>
               </div>
             </div>
           ) : (
@@ -140,5 +189,7 @@ export default function Player() {
 
       <Footer />
     </>
+  ) : (
+    <Loading />
   );
 }

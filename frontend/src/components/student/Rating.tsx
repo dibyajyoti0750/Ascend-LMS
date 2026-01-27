@@ -15,6 +15,7 @@ export default function Rating({ initialRating }: RatingProps) {
         return (
           <span
             key={index}
+            title={`${starValue.toString()} star`}
             onClick={() => setRating(starValue)}
             className={`text-xl sm:text-2xl cursor-pointer transition-colors ${starValue <= rating ? "text-yellow-500" : "text-gray-400"}`}
           >
