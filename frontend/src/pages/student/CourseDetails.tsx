@@ -26,9 +26,9 @@ import {
 } from "../../utils/calculate";
 import Footer from "../../components/student/Footer";
 
-type PlayerData = {
+interface PlayerData {
   videoId?: string;
-};
+}
 
 export default function CourseDetails() {
   const [openSections, setOpenSections] = useState<Record<number, boolean>>({

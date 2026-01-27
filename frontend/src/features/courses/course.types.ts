@@ -1,4 +1,4 @@
-interface Lecture {
+export interface Lecture {
   lectureId: string;
   lectureTitle: string;
   lectureDuration: number;
