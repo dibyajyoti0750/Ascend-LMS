@@ -8,7 +8,7 @@ export default function Sidebar() {
 
   const menuItems = [
     { name: "Dashboard", path: "/educator", icon: assets.home },
-    { name: "Add Course", path: "/add-course", icon: assets.addIcon },
+    { name: "Add Course", path: "/educator/add-course", icon: assets.addIcon },
     { name: "My Courses", path: "/educator/my-courses", icon: assets.bookmark },
     {
       name: "Student Enrolled",
