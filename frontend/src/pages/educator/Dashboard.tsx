@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { assets, dummyDashboardData } from "../../assets/assets";
-import type { DashboardData } from "../../features/courses/course.types";
 import Loading from "../../components/student/Loading";
+import type { DashboardData } from "../../features/educator/data.types";
 
 export default function Dashboard() {
   const currency = import.meta.env.VITE_CURRENCY;
