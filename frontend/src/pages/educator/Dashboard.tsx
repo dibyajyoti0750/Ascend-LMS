@@ -16,16 +16,12 @@ export default function Dashboard() {
     totalTitle: "text-base text-gray-500",
   };
 
-  const fetchDashboardData = async () => {
-    setDashboardData(dummyDashboardData);
-  };
-
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchDashboardData();
+    const fetchDashboardData = async () => {
+      setDashboardData(dummyDashboardData);
     };
 
-    fetchData();
+    fetchDashboardData();
   }, []);
 
   return dashboardData ? (
