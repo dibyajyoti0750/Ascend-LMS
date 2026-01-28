@@ -2,9 +2,9 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 import { assets } from "../../assets/assets";
 
 const socials = [
-  { link: "#", Icon: Facebook },
-  { link: "#", Icon: Instagram },
-  { link: "#", Icon: Twitter },
+  { link: "#1", Icon: Facebook },
+  { link: "#2", Icon: Instagram },
+  { link: "#3", Icon: Twitter },
 ];
 
 export default function Footer() {
@@ -22,7 +22,7 @@ export default function Footer() {
 
       <div className="flex items-center gap-3 max-md:mt-4">
         {socials.map(({ link, Icon }) => (
-          <a href={link}>
+          <a key={link} href={link}>
             <Icon className="text-gray-500 hover:text-purple-600" />
           </a>
         ))}

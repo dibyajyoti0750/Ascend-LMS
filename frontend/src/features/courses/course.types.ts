@@ -42,3 +42,18 @@ export interface CourseState {
   enrolledCourses: Course[];
   loading: boolean;
 }
+
+interface Student {
+  _id: string;
+  name: string;
+  imageUrl: string;
+}
+
+export interface DashboardData {
+  totalEarnings: number;
+  enrolledStudentsData: {
+    courseTitle: string;
+    student: Student;
+  }[];
+  totalCourses: number;
+}

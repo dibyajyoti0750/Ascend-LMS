@@ -13,6 +13,9 @@ import home from "./home.png";
 import addIcon from "./addIcon.png";
 import bookmark from "./bookmark.png";
 import student from "./student.png";
+import man from "./man.png";
+import books from "./stack-of-books.png";
+import money from "./money.png";
 
 export const assets = {
   logo,
@@ -27,6 +30,9 @@ export const assets = {
   addIcon,
   bookmark,
   student,
+  man,
+  books,
+  money,
 };
 
 export const dummyCourses = [
@@ -362,4 +368,56 @@ export const dummyEducatorData = {
   createdAt: "2024-12-12T10:56:17.930Z",
   updatedAt: "2024-12-12T10:56:17.930Z",
   __v: 0,
+};
+
+export const dummyDashboardData = {
+  totalEarnings: 707.38,
+  enrolledStudentsData: [
+    {
+      courseTitle: "Introduction to JavaScript",
+      student: {
+        _id: "user_2qQlvXyr02B4Bq6hT0Gvaa5fT9V",
+        name: "Great Stack",
+        imageUrl:
+          "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ycVFsdmFMSkw3ckIxNHZMU2o4ZURWNEtmR2IifQ",
+      },
+    },
+    {
+      courseTitle: "Advanced Python Programming",
+      student: {
+        _id: "user_2qQlvXyr02B4Bq6hT0Gvaa5fT9V",
+        name: "Great Stack",
+        imageUrl:
+          "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ycVFsdmFMSkw3ckIxNHZMU2o4ZURWNEtmR2IifQ",
+      },
+    },
+    {
+      courseTitle: "Web Development Bootcamp",
+      student: {
+        _id: "user_2qQlvXyr02B4Bq6hT0Gvaa5fT9V",
+        name: "Great Stack",
+        imageUrl:
+          "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ycVFsdmFMSkw3ckIxNHZMU2o4ZURWNEtmR2IifQ",
+      },
+    },
+    {
+      courseTitle: "Data Science with Python",
+      student: {
+        _id: "user_2qQlvXyr02B4Bq6hT0Gvaa5fT9V",
+        name: "Great Stack",
+        imageUrl:
+          "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ycVFsdmFMSkw3ckIxNHZMU2o4ZURWNEtmR2IifQ",
+      },
+    },
+    {
+      courseTitle: "Cybersecurity Basics",
+      student: {
+        _id: "user_2qQlvXyr02B4Bq6hT0Gvaa5fT9V",
+        name: "Great Stack",
+        imageUrl:
+          "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ycVFsdmFMSkw3ckIxNHZMU2o4ZURWNEtmR2IifQ",
+      },
+    },
+  ],
+  totalCourses: 8,
 };
