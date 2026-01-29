@@ -18,6 +18,7 @@ import {
   fetchUserEnrolledCourses,
 } from "./features/courses/courseSlice";
 import type { AppDispatch } from "./app/store";
+import "quill/dist/quill.snow.css";
 
 export default function App() {
   const isEducatorRoute = useMatch("/educator/*");
