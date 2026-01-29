@@ -33,8 +33,10 @@ export default function AddCourse() {
   const [discount, setDiscount] = useState<number | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showChapterPopup, setShowChapterPopup] = useState(false);
+  const [showLecturePopup, setShowLecturePopup] = useState(false);
   const [currentChapterId, setCurrentChapterId] = useState<string | null>(null);
+  const [chapterTitle, setChapterTitle] = useState("");
 
   const [lectureDetails, setLectureDetails] = useState<LectureDetails>({
     lectureTitle: "",
@@ -43,27 +45,25 @@ export default function AddCourse() {
     isPreviewFree: false,
   });
 
-  const handleChapter = (
-    action: "add" | "remove" | "toggle",
-    chapterId?: string,
-  ) => {
-    if (action === "add") {
-      const title = prompt("Enter Chapter Name:");
+  const addChapter = (title: string) => {
+    const newChapter = {
+      chapterId: uuidv4(),
+      chapterTitle: title,
+      chapterContent: [],
+      collapsed: false,
+      chapterOrder:
+        chapters.length > 0
+          ? chapters[chapters.length - 1].chapterOrder + 1
+          : 1,
+    };
 
-      if (title) {
-        const newChapter = {
-          chapterId: uuidv4(),
-          chapterTitle: title,
-          chapterContent: [],
-          collapsed: false,
-          chapterOrder:
-            // chapters.slice(-1) returns a new array containing only the last element of chapters
-            // sets the next chapter index, last chapterOrder + 1
-            chapters.length > 0 ? chapters.slice(-1)[0].chapterOrder + 1 : 1,
-        };
-        setChapters([...chapters, newChapter]);
-      }
-    } else if (action === "remove") {
+    setChapters([...chapters, newChapter]);
+    setChapterTitle("");
+    setShowChapterPopup(false);
+  };
+
+  const handleChapter = (action: "remove" | "toggle", chapterId?: string) => {
+    if (action === "remove") {
       setChapters(chapters.filter((ch) => ch.chapterId !== chapterId));
     } else if (action === "toggle") {
       setChapters(
@@ -81,7 +81,7 @@ export default function AddCourse() {
   ) => {
     if (action === "add") {
       setCurrentChapterId(chapterId);
-      setShowPopup(true);
+      setShowLecturePopup(true);
       return;
     }
 
@@ -121,7 +121,7 @@ export default function AddCourse() {
       }),
     );
 
-    setShowPopup(false);
+    setShowLecturePopup(false);
     setLectureDetails({
       lectureTitle: "",
       lectureDuration: "",
@@ -296,96 +296,11 @@ export default function AddCourse() {
           ))}
 
           <div
-            onClick={() => handleChapter("add")}
+            onClick={() => setShowChapterPopup(true)}
             className="flex justify-center items-center font-medium bg-blue-100 p-2 rounded-lg cursor-pointer"
           >
             + Add Chapter
           </div>
-
-          {showPopup && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black/70">
-              <div className="bg-white text-gray-700 p-4 rounded-md relative w-full max-w-96">
-                <div className="flex justify-between">
-                  <h2 className="text-lg font-semibold mb-4">Add Lecture</h2>
-                  <X
-                    onClick={() => setShowPopup(false)}
-                    className="w-5 cursor-pointer"
-                  />
-                </div>
-
-                <div className="mb-2">
-                  <p>Lecture Title</p>
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    className="mt-1 block w-full border border-gray-500 rounded py-1 px-2"
-                    value={lectureDetails.lectureTitle}
-                    onChange={(e) =>
-                      setLectureDetails({
-                        ...lectureDetails,
-                        lectureTitle: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="mb-2">
-                  <p>Duration (minutes)</p>
-                  <input
-                    type="number"
-                    placeholder="0"
-                    className="mt-1 block w-full border rounded py-1 px-2"
-                    value={lectureDetails.lectureDuration}
-                    onChange={(e) =>
-                      setLectureDetails({
-                        ...lectureDetails,
-                        lectureDuration: Number(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="mb-2">
-                  <p>Lecture URL</p>
-                  <input
-                    type="text"
-                    placeholder="https://youtube.com/"
-                    className="mt-1 block w-full border rounded py-1 px-2"
-                    value={lectureDetails.lectureUrl}
-                    onChange={(e) =>
-                      setLectureDetails({
-                        ...lectureDetails,
-                        lectureUrl: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-
-                <div className="flex items-center gap-2 my-4">
-                  <p>Is Preview Free?</p>
-                  <input
-                    type="checkbox"
-                    className="mt-1 scale-125"
-                    checked={lectureDetails.isPreviewFree}
-                    onChange={(e) =>
-                      setLectureDetails({
-                        ...lectureDetails,
-                        isPreviewFree: e.target.checked,
-                      })
-                    }
-                  />
-                </div>
-
-                <button
-                  onClick={addLecture}
-                  type="button"
-                  className="w-full bg-purple-400 text-white py-2 rounded-md cursor-pointer"
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         <button
@@ -396,6 +311,126 @@ export default function AddCourse() {
           ADD
         </button>
       </form>
+
+      {/* Lecture popup */}
+      {showLecturePopup && (
+        <div className="fixed inset-0 z-20 h-screen flex items-center justify-center bg-black/70 backdrop-blur-xs">
+          <div className="bg-white text-gray-700 p-4 rounded-md relative w-full max-w-96">
+            <div className="flex justify-between">
+              <h2 className="text-lg font-semibold mb-4">Add Lecture</h2>
+              <X
+                onClick={() => setShowLecturePopup(false)}
+                className="w-5 cursor-pointer"
+              />
+            </div>
+
+            <div className="mb-2">
+              <p>Lecture Title</p>
+              <input
+                type="text"
+                placeholder="Title"
+                className="mt-1 block w-full border border-gray-500 rounded py-1 px-2"
+                value={lectureDetails.lectureTitle}
+                onChange={(e) =>
+                  setLectureDetails({
+                    ...lectureDetails,
+                    lectureTitle: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="mb-2">
+              <p>Duration (minutes)</p>
+              <input
+                type="number"
+                placeholder="0"
+                className="mt-1 block w-full border rounded py-1 px-2"
+                value={lectureDetails.lectureDuration}
+                onChange={(e) =>
+                  setLectureDetails({
+                    ...lectureDetails,
+                    lectureDuration: Number(e.target.value),
+                  })
+                }
+              />
+            </div>
+
+            <div className="mb-2">
+              <p>Lecture URL</p>
+              <input
+                type="text"
+                placeholder="https://youtube.com/"
+                className="mt-1 block w-full border rounded py-1 px-2"
+                value={lectureDetails.lectureUrl}
+                onChange={(e) =>
+                  setLectureDetails({
+                    ...lectureDetails,
+                    lectureUrl: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="flex items-center gap-2 my-4">
+              <p>Is Preview Free?</p>
+              <input
+                type="checkbox"
+                className="mt-1 scale-125"
+                checked={lectureDetails.isPreviewFree}
+                onChange={(e) =>
+                  setLectureDetails({
+                    ...lectureDetails,
+                    isPreviewFree: e.target.checked,
+                  })
+                }
+              />
+            </div>
+
+            <button
+              onClick={addLecture}
+              type="button"
+              className="w-full bg-sky-500 text-white py-2 rounded-md cursor-pointer"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Chapter popup */}
+      {showChapterPopup && (
+        <div className="fixed inset-0 z-20 h-screen flex items-center justify-center bg-black/70 backdrop-blur-xs">
+          <div className="bg-white text-gray-700 p-4 rounded-md relative w-full max-w-96">
+            <div className="flex justify-between">
+              <h2 className="text-lg font-semibold mb-4">Enter Chapter Name</h2>
+              <X
+                onClick={() => setShowChapterPopup(false)}
+                className="w-5 cursor-pointer"
+              />
+            </div>
+
+            <input
+              type="text"
+              placeholder="Type here"
+              onChange={(e) => setChapterTitle(e.target.value)}
+              value={chapterTitle}
+              className="block w-full border border-gray-500 rounded p-2 mb-4"
+            />
+
+            <button
+              type="button"
+              onClick={() => {
+                if (!chapterTitle) return;
+                addChapter(chapterTitle);
+              }}
+              className="w-full bg-sky-500 text-white py-2 rounded-md cursor-pointer"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
