@@ -4,16 +4,25 @@ import "dotenv/config";
 import connectDB from "./configs/mongoDB.js";
 import { clerkWebhooks } from "./controllers/webhooks.js";
 import wrapAsync from "./middlewares/wrapAsync.js";
+import { clerkMiddleware } from "@clerk/express";
+import educatorRouter from "./routes/educatorRoutes.js";
+import connectCloudinary from "./configs/cloudinary.js";
 
 const app = express();
-// connect to DB
-await connectDB();
 
+// cloud connections
+await connectDB();
+await connectCloudinary();
+
+// Middlewares
 app.use(express.json());
 app.use(cors());
+app.use(clerkMiddleware());
 
+// Routes
 app.get("/", (req, res) => res.json("API Working"));
 app.post("/clerk", wrapAsync(clerkWebhooks));
+app.use("/api/educator", educatorRouter);
 
 const PORT = process.env.PORT || 8080;
 
