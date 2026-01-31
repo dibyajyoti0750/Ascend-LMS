@@ -21,7 +21,7 @@ app.use(clerkMiddleware());
 
 // Routes
 app.get("/", (req, res) => res.json("API Working"));
-app.post("/clerk", wrapAsync(clerkWebhooks));
+app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 app.use("/api/educator", educatorRouter);
 
 const PORT = process.env.PORT || 8080;
