@@ -14,8 +14,6 @@ const app = express();
 await connectDB();
 await connectCloudinary();
 
-app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
-
 // Middlewares
 app.use(express.json());
 app.use(cors());
@@ -23,6 +21,7 @@ app.use(clerkMiddleware());
 
 // Routes
 app.get("/", (req, res) => res.json("API Working"));
+app.post("/clerk", clerkWebhooks);
 app.use("/api/educator", educatorRouter);
 
 const PORT = process.env.PORT || 8080;
