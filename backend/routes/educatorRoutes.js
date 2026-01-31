@@ -2,6 +2,7 @@ import express from "express";
 import wrapAsync from "../middlewares/wrapAsync.js";
 import {
   addCourse,
+  getEducatorCourses,
   updateRoleToEducator,
 } from "../controllers/educatorController.js";
 import { protect, protectEducator } from "../middlewares/auth.js";
@@ -16,5 +17,6 @@ educatorRouter.post(
   protectEducator,
   addCourse,
 );
+educatorRouter.get("/courses", protectEducator, getEducatorCourses);
 
 export default educatorRouter;
