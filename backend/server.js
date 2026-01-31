@@ -14,7 +14,7 @@ const app = express();
 await connectDB();
 await connectCloudinary();
 
-app.post("/clerk", clerkWebhooks);
+app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 
 // Middlewares
 app.use(express.json());
