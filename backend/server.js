@@ -7,6 +7,7 @@ import wrapAsync from "./middlewares/wrapAsync.js";
 import { clerkMiddleware } from "@clerk/express";
 import educatorRouter from "./routes/educatorRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
+import courseRouter from "./routes/courseRoutes.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(clerkMiddleware());
 app.get("/", (req, res) => res.json("API Working"));
 app.post("/clerk", clerkWebhooks);
 app.use("/api/educator", educatorRouter);
+app.use("/api/course", courseRouter);
 
 const PORT = process.env.PORT || 8080;
 
