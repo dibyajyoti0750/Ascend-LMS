@@ -19,27 +19,29 @@ import {
 } from "./features/courses/courseSlice";
 import type { AppDispatch } from "./app/store";
 import "quill/dist/quill.snow.css";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   const isEducatorRoute = useMatch("/educator/*");
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useUser();
   const { getToken } = useAuth();
 
   useEffect(() => {
-    dispatch(fetchAllCourses());
-    dispatch(fetchUserEnrolledCourses());
-  }, [dispatch]);
+    const loadCourses = async () => {
+      const token = await getToken();
+      if (!token) return;
+      dispatch(fetchAllCourses(token));
+    };
 
-  useEffect(() => {
-    if (user) {
-      getToken().then((token) => console.log(token));
-    }
-  }, [getToken, user]);
+    dispatch(fetchUserEnrolledCourses());
+
+    loadCourses();
+  }, [dispatch, getToken]);
 
   return (
     <div className="min-h-screen bg-white">
+      <Toaster />
       {!isEducatorRoute && <Navbar />}
 
       <Routes>

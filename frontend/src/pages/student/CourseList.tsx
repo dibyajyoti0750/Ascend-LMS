@@ -18,7 +18,7 @@ export default function CourseList() {
     if (!input) return allCourses;
 
     const tempCourses = allCourses.filter((course) =>
-      course.courseTitle.toLowerCase().includes(input.toLowerCase())
+      course.courseTitle.toLowerCase().includes(input.toLowerCase()),
     );
 
     return tempCourses;

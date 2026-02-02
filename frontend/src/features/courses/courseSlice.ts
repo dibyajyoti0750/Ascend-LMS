@@ -5,7 +5,11 @@ import {
   isRejected,
 } from "@reduxjs/toolkit";
 import { dummyCourses } from "../../assets/assets";
-import type { CourseState } from "./course.types";
+import type { Course, CourseState } from "./course.types";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const initialState: CourseState = {
   allCourses: [],
@@ -14,10 +18,24 @@ const initialState: CourseState = {
 };
 
 // Fetch all courses
-export const fetchAllCourses = createAsyncThunk(
+export const fetchAllCourses = createAsyncThunk<Course[], string>(
   "courses/fetchAllCourses",
-  async () => {
-    return dummyCourses;
+  async (token, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/course/all", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!data.success) {
+        return rejectWithValue(data.message);
+      }
+
+      return data.courses;
+    } catch (error) {
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+      return rejectWithValue(msg);
+    }
   },
 );
 
@@ -53,8 +71,10 @@ const courseSlice = createSlice({
       )
       .addMatcher(
         isRejected(fetchAllCourses, fetchUserEnrolledCourses),
-        (state) => {
+        (state, action) => {
           state.loading = false;
+          state.allCourses = [];
+          toast.error(String(action.payload));
         },
       );
   },
