@@ -13,14 +13,15 @@ import StudentsEnrolled from "./pages/educator/StudentsEnrolled";
 import Navbar from "./components/student/Navbar";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  fetchAllCourses,
-  fetchUserEnrolledCourses,
-} from "./features/courses/courseSlice";
+import { fetchAllCourses } from "./features/courses/courseSlice";
 import type { AppDispatch } from "./app/store";
 import "quill/dist/quill.snow.css";
 import { useAuth } from "@clerk/clerk-react";
 import { Toaster } from "react-hot-toast";
+import {
+  fetchUserData,
+  fetchUserEnrolledCourses,
+} from "./features/user/userSlice";
 
 export default function App() {
   const isEducatorRoute = useMatch("/educator/*");
@@ -28,15 +29,15 @@ export default function App() {
   const { getToken } = useAuth();
 
   useEffect(() => {
-    const loadCourses = async () => {
+    const loadInitialData = async () => {
       const token = await getToken();
       if (!token) return;
       dispatch(fetchAllCourses(token));
+      dispatch(fetchUserData(token));
+      dispatch(fetchUserEnrolledCourses(token));
     };
 
-    dispatch(fetchUserEnrolledCourses());
-
-    loadCourses();
+    loadInitialData();
   }, [dispatch, getToken]);
 
   return (

@@ -4,7 +4,7 @@ import humanizeDuration from "humanize-duration";
 export const calculateRating = (course: Course): number => {
   if (!course.courseRatings.length) return 0;
   const total = course.courseRatings.reduce((sum, r) => sum + r.rating, 0);
-  return total / course.courseRatings.length;
+  return Math.floor(total / course.courseRatings.length);
 };
 
 // calculate chapter time
