@@ -39,6 +39,5 @@ export interface Course {
 
 export interface CourseState {
   allCourses: Course[];
-  enrolledCourses: Course[];
-  loading: boolean;
+  allCoursesStatus: "idle" | "loading" | "succeeded" | "failed";
 }

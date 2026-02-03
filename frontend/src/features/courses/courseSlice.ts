@@ -1,10 +1,4 @@
-import {
-  createAsyncThunk,
-  createSlice,
-  isPending,
-  isRejected,
-} from "@reduxjs/toolkit";
-import { dummyCourses } from "../../assets/assets";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Course, CourseState } from "./course.types";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -13,8 +7,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const initialState: CourseState = {
   allCourses: [],
-  enrolledCourses: [],
-  loading: false,
+  allCoursesStatus: "idle",
 };
 
 // Fetch all courses
@@ -27,6 +20,7 @@ export const fetchAllCourses = createAsyncThunk<Course[], string>(
       });
 
       if (!data.success) {
+        toast.error(data.message);
         return rejectWithValue(data.message);
       }
 
@@ -34,16 +28,9 @@ export const fetchAllCourses = createAsyncThunk<Course[], string>(
     } catch (error) {
       const msg =
         error instanceof Error ? error.message : "Something went wrong";
+      toast.error(msg);
       return rejectWithValue(msg);
     }
-  },
-);
-
-// Fetch user enrolled courses
-export const fetchUserEnrolledCourses = createAsyncThunk(
-  "courses/fetchUserEnrolledCourses",
-  async () => {
-    return dummyCourses;
   },
 );
 
@@ -53,30 +40,17 @@ const courseSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchAllCourses.pending, (state) => {
+        state.allCoursesStatus = "loading";
+      })
       .addCase(fetchAllCourses.fulfilled, (state, action) => {
-        state.loading = false;
+        state.allCoursesStatus = "succeeded";
         state.allCourses = action.payload;
       })
-      .addCase(fetchUserEnrolledCourses.fulfilled, (state, action) => {
-        state.loading = false;
-        state.enrolledCourses = action.payload;
-      })
-
-      // common
-      .addMatcher(
-        isPending(fetchAllCourses, fetchUserEnrolledCourses),
-        (state) => {
-          state.loading = true;
-        },
-      )
-      .addMatcher(
-        isRejected(fetchAllCourses, fetchUserEnrolledCourses),
-        (state, action) => {
-          state.loading = false;
-          state.allCourses = [];
-          toast.error(String(action.payload));
-        },
-      );
+      .addCase(fetchAllCourses.rejected, (state) => {
+        state.allCoursesStatus = "failed";
+        state.allCourses = [];
+      });
   },
 });
 

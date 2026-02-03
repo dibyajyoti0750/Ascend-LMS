@@ -18,3 +18,10 @@ export interface StudentEnrolled {
   courseTitle: string;
   purchaseDate: string;
 }
+
+export interface User extends Student {
+  email: string;
+  enrolledCourses: string[];
+  createdAt: string;
+  updatedAt: string;
+}
