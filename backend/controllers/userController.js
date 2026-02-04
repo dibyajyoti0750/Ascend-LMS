@@ -106,9 +106,25 @@ export const updateUserCourseProgress = async (req, res) => {
 // Get user course progress
 export const getUserCourseProgress = async (req, res) => {
   const { userId } = await req.auth();
-  const { courseId } = req.body;
-  const progressData = await CourseProgress.findOne({ userId, courseId });
-  res.json({ success: true, progressData });
+
+  const progressDocs = await CourseProgress.find({ userId }).select(
+    "courseId lectureCompleted completed",
+  );
+
+  if (!progressDocs) {
+    throw new ExpressError(500, "Failed to fetch course progress");
+  }
+
+  const progressMap = {};
+
+  progressDocs.forEach((doc) => {
+    progressMap[doc.courseId] = {
+      lectureCompleted: doc.lectureCompleted,
+      completed: doc.completed,
+    };
+  });
+
+  res.json({ success: true, progressMap });
 };
 
 // Add user ratings to course

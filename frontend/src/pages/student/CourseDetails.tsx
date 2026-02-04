@@ -58,7 +58,7 @@ export default function CourseDetails() {
       const token = await getToken();
 
       try {
-        const { data } = await axios.get(backendUrl + `/api/course/${id}`, {
+        const { data } = await axios.get(`${backendUrl}/api/course/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

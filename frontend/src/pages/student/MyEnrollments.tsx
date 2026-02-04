@@ -1,21 +1,66 @@
 import { Line } from "rc-progress";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
-import { useState } from "react";
-import { calculateCourseDuration } from "../../utils/calculate";
+import { useEffect, useState } from "react";
+import {
+  calculateCourseDuration,
+  calculateNoOfLectures,
+} from "../../utils/calculate";
 import Footer from "../../components/student/Footer";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import toast from "react-hot-toast";
+
+interface CourseProgress {
+  totalLectures: number;
+  lectureCompleted: number;
+}
 
 export default function MyEnrollments() {
-  const { enrolledCourses } = useSelector((state: RootState) => state.courses);
+  const { enrolledCourses } = useSelector((state: RootState) => state.user);
+  const [progressArray, setProgressArray] = useState<CourseProgress[]>([]);
   const navigate = useNavigate();
+  const { getToken } = useAuth();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  const [progressArray] = useState([
-    { lectureCompleted: 2, totalLectures: 4 },
-    { lectureCompleted: 1, totalLectures: 5 },
-    { lectureCompleted: 2, totalLectures: 6 },
-    { lectureCompleted: 4, totalLectures: 4 },
-  ]);
+  useEffect(() => {
+    if (!enrolledCourses.length) return;
+
+    const getCourseProgress = async () => {
+      try {
+        const token = await getToken();
+
+        const { data } = await axios.get(
+          `${backendUrl}/api/user/course-progress`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+
+        const progressMap = data.progressMap;
+
+        const progressArray = enrolledCourses.map((course) => {
+          const progress = progressMap[course._id]; // If course exists → you get the object, If not → undefined
+
+          return {
+            totalLectures: calculateNoOfLectures(course),
+            lectureCompleted: progress ? progress.lectureCompleted.length : 0,
+          };
+        });
+
+        setProgressArray(progressArray);
+      } catch (error) {
+        const msg =
+          error instanceof Error ? error.message : "Something went wrong";
+        toast.error(msg);
+      }
+    };
+
+    getCourseProgress();
+  }, [enrolledCourses, backendUrl, getToken]);
 
   return (
     <>
