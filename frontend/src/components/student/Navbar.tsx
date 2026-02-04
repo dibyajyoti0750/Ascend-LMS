@@ -31,12 +31,12 @@ export default function Navbar() {
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      if (data.success) {
-        dispatch(setIsEducator(true));
-        toast.success(data.message);
-      } else {
+      if (!data.success) {
         toast.error(data.message);
       }
+
+      dispatch(setIsEducator(true));
+      toast.success(data.message);
     } catch (error) {
       const msg =
         error instanceof Error ? error.message : "Something went wrong";

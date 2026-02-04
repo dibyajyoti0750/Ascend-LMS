@@ -1,8 +1,6 @@
 import YouTube from "react-youtube";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import type { RootState } from "../../app/store";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../../components/student/Loading";
 import {
   BadgeCheck,
@@ -25,30 +23,98 @@ import {
   calculateRating,
 } from "../../utils/calculate";
 import Footer from "../../components/student/Footer";
+import type { Course } from "../../features/courses/course.types";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 
 interface PlayerData {
   videoId?: string;
 }
 
 export default function CourseDetails() {
+  const { userData } = useSelector((state: RootState) => state.user);
   const [openSections, setOpenSections] = useState<Record<number, boolean>>({
     0: true,
   });
-  const [isAlreadyEnrolled] = useState(false);
+  const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
+  const [courseData, setCourseData] = useState<Course | null>(null);
+  const [loading, setLoading] = useState(false);
   const [playerData, setPlayerData] = useState<PlayerData | null>(null);
 
   const { id } = useParams();
-  const { allCourses } = useSelector((state: RootState) => state.courses);
+  const { getToken } = useAuth();
   const currency = import.meta.env.VITE_CURRENCY;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  const courseData = useMemo(() => {
-    if (!id) return null;
-    return allCourses.find((course) => course._id === id) ?? null;
-  }, [allCourses, id]);
+  // React allows state updates during render as long as they are conditional.
+  // No useEffect, No dependency arrays, No cascading renders
+  if (!courseData && !loading && id) {
+    setLoading(true);
+
+    (async () => {
+      const token = await getToken();
+
+      try {
+        const { data } = await axios.get(backendUrl + `/api/course/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!data.success) {
+          toast.error(data.message);
+        }
+
+        setCourseData(data.courseData);
+      } catch (error) {
+        const msg =
+          error instanceof Error ? error.message : "Something went wrong";
+        toast.error(msg);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }
+
+  const enrollCourse = async () => {
+    try {
+      if (!userData) {
+        return toast.error("Login to enroll");
+      }
+      if (isAlreadyEnrolled) {
+        return toast.error("Already enrolled");
+      }
+
+      const token = await getToken();
+      const { data } = await axios.post(
+        backendUrl + "/api/user/purchase",
+        { courseId: courseData?._id },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (!data.success) {
+        toast.error(data.message);
+      }
+
+      const { session_url } = data;
+      window.location.replace(session_url);
+    } catch (error) {
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(msg);
+    }
+  };
 
   const toggleSection = (index: number) => {
     setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }));
   };
+
+  useEffect(() => {
+    if (userData && courseData) {
+      setIsAlreadyEnrolled(userData.enrolledCourses.includes(courseData._id));
+    }
+  }, [courseData, userData]);
 
   return courseData ? (
     <>
@@ -286,7 +352,10 @@ export default function CourseDetails() {
               </div>
             </div>
 
-            <button className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 text-white font-semibold cursor-pointer active:bg-purple-800">
+            <button
+              onClick={enrollCourse}
+              className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 text-white font-semibold cursor-pointer active:bg-purple-800"
+            >
               {isAlreadyEnrolled ? "Already Enrolled" : "Buy Now"}
             </button>
 

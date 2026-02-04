@@ -7,14 +7,14 @@ import type { Course } from "../courses/course.types";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 interface UserData {
-  user: User | null;
+  userData: User | null;
   enrolledCourses: Course[];
   userStatus: "idle" | "loading" | "succeeded" | "failed";
   coursesStatus: "idle" | "loading" | "succeeded" | "failed";
 }
 
 const initialState: UserData = {
-  user: null,
+  userData: null,
   enrolledCourses: [],
   userStatus: "idle",
   coursesStatus: "idle",
@@ -81,11 +81,11 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.userStatus = "succeeded";
-        state.user = action.payload;
+        state.userData = action.payload;
       })
       .addCase(fetchUserData.rejected, (state) => {
         state.userStatus = "failed";
-        state.user = null;
+        state.userData = null;
       })
 
       // ENROLLED COURSES
