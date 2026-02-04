@@ -16,17 +16,19 @@ import { useDispatch } from "react-redux";
 import { fetchAllCourses } from "./features/courses/courseSlice";
 import type { AppDispatch } from "./app/store";
 import "quill/dist/quill.snow.css";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { Toaster } from "react-hot-toast";
 import {
   fetchUserData,
   fetchUserEnrolledCourses,
 } from "./features/user/userSlice";
+import { setIsEducator } from "./features/educator/educatorSlice";
 
 export default function App() {
   const isEducatorRoute = useMatch("/educator/*");
   const dispatch = useDispatch<AppDispatch>();
   const { getToken } = useAuth();
+  const { user } = useUser();
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -39,6 +41,10 @@ export default function App() {
 
     loadInitialData();
   }, [dispatch, getToken]);
+
+  useEffect(() => {
+    dispatch(setIsEducator(user?.publicMetadata.role === "educator"));
+  }, [dispatch, user]);
 
   return (
     <div className="min-h-screen bg-white">

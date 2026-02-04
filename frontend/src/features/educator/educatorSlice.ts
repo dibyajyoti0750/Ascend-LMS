@@ -5,7 +5,7 @@ interface EducatorState {
 }
 
 const initialState: EducatorState = {
-  isEducator: true,
+  isEducator: false,
 };
 
 const educatorSlice = createSlice({

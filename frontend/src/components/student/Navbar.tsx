@@ -1,15 +1,48 @@
 import { assets } from "../../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
-import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
-import { useSelector } from "react-redux";
+import { useAuth, useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
+import axios from "axios";
+import { setIsEducator } from "../../features/educator/educatorSlice";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
+  const { isEducator } = useSelector((state: RootState) => state.educator);
+  console.log(isEducator);
+
   const { openSignIn } = useClerk();
   const { user } = useUser();
-
   const navigate = useNavigate();
-  const { isEducator } = useSelector((state: RootState) => state.educator);
+  const { getToken } = useAuth();
+  const dispatch = useDispatch();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  const becomeEducator = async () => {
+    try {
+      if (isEducator) {
+        navigate("/educator");
+        return;
+      }
+
+      const token = await getToken();
+      const { data } = await axios.get(
+        backendUrl + "/api/educator/update-role",
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (data.success) {
+        dispatch(setIsEducator(true));
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(msg);
+    }
+  };
 
   return (
     <div className="flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 py-4 bg-purple-50 shadow">
@@ -23,7 +56,7 @@ export default function Navbar() {
           {user && (
             <>
               <button
-                onClick={() => navigate("/educator")}
+                onClick={becomeEducator}
                 className="rounded p-2 hover:bg-purple-100 cursor-pointer"
               >
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
@@ -57,7 +90,7 @@ export default function Navbar() {
           {user && (
             <>
               <button
-                onClick={() => navigate("/educator")}
+                onClick={becomeEducator}
                 className="rounded p-2 active:bg-purple-100"
               >
                 {isEducator ? "Educator Dashboard" : "Become Educator"}
