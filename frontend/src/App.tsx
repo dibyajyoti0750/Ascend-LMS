@@ -34,6 +34,7 @@ export default function App() {
     const loadInitialData = async () => {
       const token = await getToken();
       if (!token) return;
+
       dispatch(fetchAllCourses(token));
       dispatch(fetchUserData(token));
       dispatch(fetchUserEnrolledCourses(token));

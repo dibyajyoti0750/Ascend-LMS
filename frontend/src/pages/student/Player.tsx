@@ -64,6 +64,8 @@ export default function Player() {
   const getCourseProgress = async () => {
     try {
       const token = await getToken();
+      if (!token) return;
+
       const { data } = await axios.get(
         `${backendUrl}/api/course-progress/${courseId}`,
         { headers: { Authorization: `Bearer ${token}` } },
@@ -84,6 +86,8 @@ export default function Player() {
   const markLectureAsComplete = async (lectureId: string) => {
     try {
       const token = await getToken();
+      if (!token) return;
+
       const { data } = await axios.post(
         `${backendUrl}/api/user/update-course-progress`,
         { courseId, lectureId },
@@ -106,6 +110,7 @@ export default function Player() {
   const handleRate = async (rating: number) => {
     try {
       const token = await getToken();
+      if (!token) return;
 
       const { data } = await axios.post(
         `${backendUrl}/api/user/add-rating`,

@@ -158,6 +158,8 @@ export default function AddCourse() {
       formData.append("image", thumbnail);
 
       const token = await getToken();
+      if (!token) return;
+
       const { data } = await axios.post(
         `${backendUrl}/api/educator/add-course`,
         formData,

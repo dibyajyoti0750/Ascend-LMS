@@ -56,6 +56,7 @@ export default function CourseDetails() {
 
     (async () => {
       const token = await getToken();
+      if (!token) return;
 
       try {
         const { data } = await axios.get(`${backendUrl}/api/course/${id}`, {
@@ -87,6 +88,8 @@ export default function CourseDetails() {
       }
 
       const token = await getToken();
+      if (!token) return;
+
       const { data } = await axios.post(
         backendUrl + "/api/user/purchase",
         { courseId: courseData?._id },

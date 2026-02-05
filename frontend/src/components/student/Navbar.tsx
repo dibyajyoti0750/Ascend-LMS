@@ -26,6 +26,8 @@ export default function Navbar() {
       }
 
       const token = await getToken();
+      if (!token) return;
+
       const { data } = await axios.get(
         backendUrl + "/api/educator/update-role",
         { headers: { Authorization: `Bearer ${token}` } },

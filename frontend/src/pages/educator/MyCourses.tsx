@@ -1,21 +1,44 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../app/store";
 import { useEffect, useState } from "react";
 import type { Course } from "../../features/courses/course.types";
 import Loading from "../../components/student/Loading";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function MyCourses() {
+  const { isEducator } = useSelector((state: RootState) => state.educator);
   const currency = import.meta.env.VITE_CURRENCY;
-  const { allCourses } = useSelector((state: RootState) => state.courses);
   const [courses, setCourses] = useState<Course[] | null>(null);
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { getToken } = useAuth();
 
   useEffect(() => {
     const fetchEducatorCourses = async () => {
-      setCourses(allCourses);
+      try {
+        const token = await getToken();
+        if (!token) return;
+
+        const { data } = await axios.get(`${backendUrl}/api/educator/courses`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (data.success) {
+          setCourses(data.courses);
+        }
+      } catch (error) {
+        const msg =
+          error instanceof Error ? error.message : "Something went wrong";
+        toast.error(msg);
+      }
     };
 
-    fetchEducatorCourses();
-  }, [allCourses]);
+    if (isEducator) {
+      fetchEducatorCourses();
+    }
+  }, [isEducator, backendUrl, getToken]);
 
   return courses ? (
     <div className="h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
