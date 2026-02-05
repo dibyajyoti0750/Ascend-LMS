@@ -3,6 +3,9 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { assets } from "../../assets/assets";
 import { ChevronDown, X } from "lucide-react";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 interface LectureDetails {
   lectureTitle: string;
@@ -44,6 +47,9 @@ export default function AddCourse() {
     lectureUrl: "",
     isPreviewFree: false,
   });
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { getToken } = useAuth();
 
   const addChapter = (title: string) => {
     const newChapter = {
@@ -131,7 +137,51 @@ export default function AddCourse() {
   };
 
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
+
+      if (!thumbnail) {
+        toast.error("Thumbnail not selected");
+        return;
+      }
+
+      const courseData = {
+        courseTitle,
+        courseDescription: quillRef.current?.root.innerHTML,
+        coursePrice,
+        discount,
+        courseContent: chapters,
+      };
+
+      const formData = new FormData();
+      formData.append("courseData", JSON.stringify(courseData));
+      formData.append("image", thumbnail);
+
+      const token = await getToken();
+      const { data } = await axios.post(
+        `${backendUrl}/api/educator/add-course`,
+        formData,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        setCourseTitle("");
+        setCoursePrice(null);
+        setDiscount(null);
+        setThumbnail(null);
+        setChapters([]);
+        if (quillRef.current) {
+          quillRef.current.root.innerHTML = "";
+        }
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(msg);
+    }
   };
 
   useEffect(() => {
