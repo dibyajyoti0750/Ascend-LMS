@@ -103,12 +103,12 @@ export const updateUserCourseProgress = async (req, res) => {
   res.json({ success: true, message: "Progress updated" });
 };
 
-// Get user course progress
+// Get user course progress for MyEnrollments
 export const getUserCourseProgress = async (req, res) => {
   const { userId } = await req.auth();
 
   const progressDocs = await CourseProgress.find({ userId }).select(
-    "courseId lectureCompleted completed",
+    "courseId completed lectureCompleted",
   );
 
   if (!progressDocs) {
@@ -125,6 +125,27 @@ export const getUserCourseProgress = async (req, res) => {
   });
 
   res.json({ success: true, progressMap });
+};
+
+// Get user course progress for a single course
+export const getSingleCourseProgress = async (req, res) => {
+  const { userId } = await req.auth();
+  const { courseId } = req.params;
+
+  if (!courseId) {
+    throw new ExpressError(400, "Course ID is required");
+  }
+
+  const progressData = await CourseProgress.findOne({
+    userId,
+    courseId,
+  }).select("courseId completed lectureCompleted");
+
+  if (!progressData) {
+    throw new ExpressError(404, "Course progress not found");
+  }
+
+  res.json({ success: true, progressData });
 };
 
 // Add user ratings to course

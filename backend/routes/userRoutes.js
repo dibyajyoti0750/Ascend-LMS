@@ -3,6 +3,7 @@ import { protect } from "../middlewares/auth.js";
 import wrapAsync from "../middlewares/wrapAsync.js";
 import {
   addUserRating,
+  getSingleCourseProgress,
   getUserCourseProgress,
   getUserData,
   purchaseCourse,
@@ -17,6 +18,7 @@ userRouter.get("/enrolled-courses", protect, wrapAsync(userEnrolledCourses));
 userRouter.post("/purchase", protect, wrapAsync(purchaseCourse));
 
 userRouter.get("/course-progress", protect, getUserCourseProgress);
+userRouter.get("/course-progress/:courseId", protect, getSingleCourseProgress);
 userRouter.post("/update-course-progress", protect, updateUserCourseProgress);
 userRouter.post("/add-rating", protect, addUserRating);
 
