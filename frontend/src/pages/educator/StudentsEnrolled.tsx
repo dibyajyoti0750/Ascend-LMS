@@ -1,20 +1,46 @@
 import { useEffect, useState } from "react";
-import { dummyStudentEnrolled } from "../../assets/assets";
 import Loading from "../../components/student/Loading";
 import type { StudentEnrolled } from "../../features/educator/data.types";
+import axios from "axios";
+import toast from "react-hot-toast";
+import type { RootState } from "../../app/store";
+import { useAuth } from "@clerk/clerk-react";
+import { useSelector } from "react-redux";
 
 export default function StudentsEnrolled() {
+  const { isEducator } = useSelector((state: RootState) => state.educator);
   const [enrolledStudents, setEnrolledStudents] = useState<
     StudentEnrolled[] | null
   >(null);
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { getToken } = useAuth();
+
   useEffect(() => {
     const fetchEnrolledStudents = async () => {
-      setEnrolledStudents(dummyStudentEnrolled);
+      try {
+        const token = await getToken();
+        const { data } = await axios.get(
+          `${backendUrl}/api/educator/enrolled-students`,
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+
+        if (!data.success) {
+          toast.error(data.message);
+        }
+
+        setEnrolledStudents(data.enrolledStudents.reverse());
+      } catch (error) {
+        const msg =
+          error instanceof Error ? error.message : "Something went wrong";
+        toast.error(msg);
+      }
     };
 
-    fetchEnrolledStudents();
-  }, []);
+    if (isEducator) {
+      fetchEnrolledStudents();
+    }
+  }, [backendUrl, getToken, isEducator]);
 
   return enrolledStudents ? (
     <div className="min-h-screen flex flex-col items-start justify-between p-4 pt-8 md:p-8">

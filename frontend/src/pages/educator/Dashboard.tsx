@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
-import { assets, dummyDashboardData } from "../../assets/assets";
+import { assets } from "../../assets/assets";
 import Loading from "../../components/student/Loading";
 import type { DashboardData } from "../../features/educator/data.types";
+import { useAuth } from "@clerk/clerk-react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 
 export default function Dashboard() {
-  const currency = import.meta.env.VITE_CURRENCY;
+  const { isEducator } = useSelector((state: RootState) => state.educator);
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(
     null,
   );
+
+  const currency = import.meta.env.VITE_CURRENCY;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { getToken } = useAuth();
 
   const columnStyles = {
     parentDiv:
@@ -18,11 +27,29 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchDashboardData = async () => {
-      setDashboardData(dummyDashboardData);
+      try {
+        const token = await getToken();
+        const { data } = await axios.get(
+          `${backendUrl}/api/educator/dashboard`,
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+
+        if (!data.success) {
+          toast.error(data.message);
+        }
+
+        setDashboardData(data.dashboardData);
+      } catch (error) {
+        const msg =
+          error instanceof Error ? error.message : "Something went wrong";
+        toast.error(msg);
+      }
     };
 
-    fetchDashboardData();
-  }, []);
+    if (isEducator) {
+      fetchDashboardData();
+    }
+  }, [backendUrl, getToken, isEducator]);
 
   return dashboardData ? (
     <div className="min-h-screen flex flex-col items-start justify-between gap-8 p-4 pt-8 md:p-8">
