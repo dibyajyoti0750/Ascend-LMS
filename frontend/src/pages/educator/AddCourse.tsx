@@ -223,7 +223,10 @@ export default function AddCourse() {
               <p>Course Price</p>
               <input
                 type="number"
-                onChange={(e) => setCoursePrice(Number(e.target.value))}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCoursePrice(value === "" ? null : Number(value));
+                }}
                 value={coursePrice ?? ""}
                 placeholder="0"
                 className="outline-none py-2 px-3 w-full rounded border border-gray-500"
@@ -236,7 +239,10 @@ export default function AddCourse() {
               <p>Discount %</p>
               <input
                 type="number"
-                onChange={(e) => setDiscount(Number(e.target.value))}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setDiscount(value === "" ? null : Number(value));
+                }}
                 value={discount ?? ""}
                 placeholder="0"
                 min={0}
