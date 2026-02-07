@@ -20,6 +20,17 @@ interface CourseRating {
   _id: string;
 }
 
+export interface Educator {
+  _id: string;
+  name: string;
+  email: string;
+  imageUrl: string;
+  enrolledCourses: string[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 export interface Course {
   _id: string;
   courseTitle: string;
@@ -28,7 +39,7 @@ export interface Course {
   isPublished: boolean;
   discount: number;
   courseContent: Chapter[];
-  educator: string;
+  educator: Educator;
   enrolledStudents: string[];
   courseRatings: CourseRating[];
   createdAt: string;

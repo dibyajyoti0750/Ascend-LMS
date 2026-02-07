@@ -9,6 +9,7 @@ interface CourseCardProps {
 
 export default function CourseCard({ course }: CourseCardProps) {
   const currency = import.meta.env.VITE_CURRENCY;
+  console.log(course);
 
   return (
     <Link
@@ -31,7 +32,7 @@ export default function CourseCard({ course }: CourseCardProps) {
           {course.courseTitle}
         </h3>
 
-        <p className="text-xs text-gray-500">John Doe</p>
+        <p className="text-xs text-gray-500">{course.educator.name}</p>
 
         {/* Rating */}
         <div className="flex items-center gap-1.5 text-xs">

@@ -161,7 +161,9 @@ export default function CourseDetails() {
             <div className="flex flex-1 justify-around items-center py-2">
               <div className="flex flex-col items-center justify-center gap-1">
                 <span>Course by</span>
-                <span className="text-blue-500 underline">John Doe</span>
+                <span className="text-blue-500 underline">
+                  {courseData.educator.name}
+                </span>
               </div>
 
               <div className="border-r border-gray-300 h-10"></div>

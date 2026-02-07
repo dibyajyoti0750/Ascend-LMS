@@ -2,14 +2,14 @@ import Quill from "quill";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { assets } from "../../assets/assets";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, LoaderCircle, X } from "lucide-react";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 
 interface LectureDetails {
   lectureTitle: string;
-  lectureDuration: number | "";
+  lectureDuration: number | null;
   lectureUrl: string;
   isPreviewFree: boolean;
 }
@@ -31,6 +31,7 @@ export default function AddCourse() {
   const quillRef = useRef<Quill | null>(null);
   const editorRef = useRef<HTMLDivElement | null>(null);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [courseTitle, setCourseTitle] = useState("");
   const [coursePrice, setCoursePrice] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number | null>(null);
@@ -43,7 +44,7 @@ export default function AddCourse() {
 
   const [lectureDetails, setLectureDetails] = useState<LectureDetails>({
     lectureTitle: "",
-    lectureDuration: "",
+    lectureDuration: null,
     lectureUrl: "",
     isPreviewFree: false,
   });
@@ -130,7 +131,7 @@ export default function AddCourse() {
     setShowLecturePopup(false);
     setLectureDetails({
       lectureTitle: "",
-      lectureDuration: "",
+      lectureDuration: null,
       lectureUrl: "",
       isPreviewFree: false,
     });
@@ -139,9 +140,11 @@ export default function AddCourse() {
   const handleSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault();
+      setIsSubmitting(true);
 
       if (!thumbnail) {
         toast.error("Thumbnail not selected");
+        setIsSubmitting(false);
         return;
       }
 
@@ -183,6 +186,8 @@ export default function AddCourse() {
       const msg =
         error instanceof Error ? error.message : "Something went wrong";
       toast.error(msg);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -364,9 +369,10 @@ export default function AddCourse() {
         <button
           title="Add course"
           type="submit"
-          className="bg-black text-white w-max py-2.5 px-8 rounded-md my-4 font-medium cursor-pointer"
+          disabled={isSubmitting}
+          className={`bg-black text-white w-max py-2.5 px-8 rounded-md my-4 font-medium ${isSubmitting ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
         >
-          ADD
+          {isSubmitting ? <LoaderCircle className="animate-spin" /> : "ADD"}
         </button>
       </form>
 
@@ -404,13 +410,16 @@ export default function AddCourse() {
                 type="number"
                 placeholder="0"
                 className="mt-1 block w-full border rounded py-1 px-2"
-                value={lectureDetails.lectureDuration}
-                onChange={(e) =>
+                value={lectureDetails.lectureDuration ?? ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+
                   setLectureDetails({
                     ...lectureDetails,
-                    lectureDuration: Number(e.target.value),
-                  })
-                }
+                    lectureDuration:
+                      value === "" ? null : Number(e.target.value),
+                  });
+                }}
               />
             </div>
 

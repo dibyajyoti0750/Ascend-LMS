@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 
 export default function Navbar() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
-  console.log(isEducator);
 
   const { openSignIn } = useClerk();
   const { user } = useUser();

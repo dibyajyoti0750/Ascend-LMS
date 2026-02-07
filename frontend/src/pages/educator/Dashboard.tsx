@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
@@ -57,20 +58,20 @@ export default function Dashboard() {
         <div className="flex flex-wrap gap-5 items-center">
           <div className={columnStyles.parentDiv}>
             <img src={assets.man} alt="student" className="w-10" />
-            <div>
+            <Link to="/educator/student-enrolled">
               <p className={columnStyles.total}>
                 {dashboardData.enrolledStudentsData.length}
               </p>
               <p className={columnStyles.totalTitle}>Total Enrolments</p>
-            </div>
+            </Link>
           </div>
 
           <div className={columnStyles.parentDiv}>
             <img src={assets.books} alt="books" className="w-10" />
-            <div>
+            <Link to="/educator/my-courses">
               <p className={columnStyles.total}>{dashboardData.totalCourses}</p>
               <p className={columnStyles.totalTitle}>Total Courses</p>
-            </div>
+            </Link>
           </div>
 
           <div className={columnStyles.parentDiv}>
