@@ -4,6 +4,7 @@ import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
 import ExpressError from "../utils/expressError.js";
+import CourseProgress from "../models/CourseProgress.js";
 
 // Update role to educator
 export const updateRoleToEducator = async (req, res) => {
@@ -73,6 +74,7 @@ export const deleteCourse = async (req, res) => {
   }
 
   await Course.findByIdAndDelete(courseId);
+  await CourseProgress.deleteMany({ courseId });
 
   res.json({
     success: true,
