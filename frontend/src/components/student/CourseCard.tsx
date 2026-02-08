@@ -22,6 +22,7 @@ export default function CourseCard({ course }: CourseCardProps) {
         <img
           src={course.courseThumbnail}
           alt="thumbnail"
+          loading="lazy"
           className="w-full object-cover"
         />
       </div>
