@@ -56,7 +56,10 @@ export default function CourseDetails() {
 
     (async () => {
       const token = await getToken();
-      if (!token) return;
+      if (!token) {
+        toast.error("Unauthorized");
+        return;
+      }
 
       try {
         const { data } = await axios.get(`${backendUrl}/api/course/${id}`, {
@@ -88,7 +91,10 @@ export default function CourseDetails() {
       }
 
       const token = await getToken();
-      if (!token) return;
+      if (!token) {
+        toast.error("Unauthorized");
+        return;
+      }
 
       const { data } = await axios.post(
         backendUrl + "/api/user/purchase",

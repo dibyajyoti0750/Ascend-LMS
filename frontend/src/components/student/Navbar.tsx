@@ -25,7 +25,10 @@ export default function Navbar() {
       }
 
       const token = await getToken();
-      if (!token) return;
+      if (!token) {
+        toast.error("Unauthorized");
+        return;
+      }
 
       const { data } = await axios.get(
         backendUrl + "/api/educator/update-role",

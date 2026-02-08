@@ -30,7 +30,10 @@ export default function MyEnrollments() {
     const getCourseProgress = async () => {
       try {
         const token = await getToken();
-        if (!token) return;
+        if (!token) {
+          toast.error("Unauthorized");
+          return;
+        }
 
         const { data } = await axios.get(
           `${backendUrl}/api/user/course-progress`,

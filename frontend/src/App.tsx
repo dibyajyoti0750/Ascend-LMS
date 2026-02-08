@@ -17,7 +17,7 @@ import { fetchAllCourses } from "./features/courses/courseSlice";
 import type { AppDispatch } from "./app/store";
 import "quill/dist/quill.snow.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import {
   fetchUserData,
   fetchUserEnrolledCourses,
@@ -33,7 +33,10 @@ export default function App() {
   useEffect(() => {
     const loadInitialData = async () => {
       const token = await getToken();
-      if (!token) return;
+      if (!token) {
+        toast.error("Unauthorized");
+        return;
+      }
 
       dispatch(fetchAllCourses(token));
       dispatch(fetchUserData(token));

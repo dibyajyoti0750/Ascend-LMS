@@ -29,7 +29,7 @@ export default function CourseList() {
       <div className="relative md:px-36 px-8 pt-20 text-left">
         <div className="flex md:flex-row flex-col gap-6 items-start justify-between w-full">
           <div>
-            <h1 className="text-4xl font-semibold text-purple-900">
+            <h1 className="text-4xl font-semibold text-purple-900 mb-2">
               Course List
             </h1>
             <p className="text-gray-500">
@@ -47,19 +47,25 @@ export default function CourseList() {
         </div>
 
         {input && (
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100/70 mt-8 text-gray-500 rounded-lg">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 mt-8 text-gray-600 rounded-md">
             <p>{input}</p>
             <X
               onClick={() => navigate("/course-list")}
-              className="cursor-pointer text-gray-500 w-5 h-5"
+              className="text-gray-600 w-5"
             />
           </div>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 my-14 gap-3 px-2 md:p-0">
-          {filteredCourses.map((course, i) => (
-            <CourseCard key={i} course={course} />
-          ))}
+          {!filteredCourses.length ? (
+            <p className="col-span-full text-center text-gray-500">
+              No courses found for "{input}"
+            </p>
+          ) : (
+            filteredCourses.map((course, i) => (
+              <CourseCard key={i} course={course} />
+            ))
+          )}
         </div>
       </div>
 

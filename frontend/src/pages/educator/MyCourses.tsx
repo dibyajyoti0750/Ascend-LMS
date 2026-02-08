@@ -21,7 +21,10 @@ export default function MyCourses() {
     const fetchEducatorCourses = async () => {
       try {
         const token = await getToken();
-        if (!token) return;
+        if (!token) {
+          toast.error("Unauthorized");
+          return;
+        }
 
         const { data } = await axios.get(`${backendUrl}/api/educator/courses`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -54,7 +57,10 @@ export default function MyCourses() {
 
     try {
       const token = await getToken();
-      if (!token) toast.error("Unauthorized");
+      if (!token) {
+        toast.error("Unauthorized");
+        return;
+      }
 
       const { data } = await axios.delete(
         `${backendUrl}/api/educator/course/${courseId}`,
