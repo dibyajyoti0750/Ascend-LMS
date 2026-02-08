@@ -8,8 +8,8 @@ export default function Loading() {
   useEffect(() => {
     if (path) {
       const timer = setTimeout(() => {
-        navigate(path);
-      }, 5000);
+        navigate(`/${path}`);
+      }, 2000);
 
       return () => clearTimeout(timer);
     }

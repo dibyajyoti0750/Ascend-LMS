@@ -9,7 +9,6 @@ interface CourseCardProps {
 
 export default function CourseCard({ course }: CourseCardProps) {
   const currency = import.meta.env.VITE_CURRENCY;
-  console.log(course);
 
   return (
     <Link
