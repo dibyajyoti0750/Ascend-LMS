@@ -49,6 +49,7 @@ export default function AddCourse() {
     isPreviewFree: false,
   });
 
+  const currency = import.meta.env.VITE_CURRENCY;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
@@ -225,7 +226,7 @@ export default function AddCourse() {
           <div className="flex flex-col gap-4">
             {/* Course Price */}
             <div className="flex flex-col gap-1">
-              <p>Course Price</p>
+              <p>Course Price {currency}</p>
               <input
                 type="number"
                 onChange={(e) => {
