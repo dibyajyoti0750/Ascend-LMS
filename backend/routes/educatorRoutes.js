@@ -2,6 +2,7 @@ import express from "express";
 import wrapAsync from "../middlewares/wrapAsync.js";
 import {
   addCourse,
+  deleteCourse,
   educatorDashboardData,
   getEducatorCourses,
   getEnrolledStudentsData,
@@ -33,6 +34,12 @@ educatorRouter.get(
   "/enrolled-students",
   protectEducator,
   wrapAsync(getEnrolledStudentsData),
+);
+
+educatorRouter.delete(
+  "/course/:courseId",
+  protectEducator,
+  wrapAsync(deleteCourse),
 );
 
 export default educatorRouter;

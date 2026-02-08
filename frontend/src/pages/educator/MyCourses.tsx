@@ -6,12 +6,14 @@ import type { RootState } from "../../app/store";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Trash2 } from "lucide-react";
 
 export default function MyCourses() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
-  const currency = import.meta.env.VITE_CURRENCY;
   const [courses, setCourses] = useState<Course[] | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  const currency = import.meta.env.VITE_CURRENCY;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
@@ -40,6 +42,35 @@ export default function MyCourses() {
     }
   }, [isEducator, backendUrl, getToken]);
 
+  const handleDelete = async (courseId: string) => {
+    setShowDeleteModal(false);
+
+    const previousCourses = courses;
+
+    setCourses((prev) => {
+      if (!prev) return prev;
+      return prev.filter((course) => course._id !== courseId);
+    });
+
+    try {
+      const token = await getToken();
+      if (!token) toast.error("Unauthorized");
+
+      const { data } = await axios.delete(
+        `${backendUrl}/api/educator/course/${courseId}`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      toast.success(data.message);
+    } catch (error) {
+      setCourses(previousCourses); // rollback
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(msg);
+      toast.error(msg);
+    }
+  };
+
   return courses ? (
     <div className="h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
       <div className="w-full">
@@ -57,6 +88,7 @@ export default function MyCourses() {
                 <th className="px-4 py-3 font-semibold truncate">
                   Published On
                 </th>
+                <th className="px-4 py-3 font-semibold truncate">Actions</th>
               </tr>
             </thead>
 
@@ -89,6 +121,57 @@ export default function MyCourses() {
 
                   <td className="px-4 py-3">
                     {new Date(course.createdAt).toLocaleDateString("en-IN")}
+                  </td>
+
+                  <td className="px-4 py-3">
+                    <Trash2
+                      onClick={() => setShowDeleteModal(true)}
+                      size={20}
+                      className="text-gray-400 hover:text-red-500 cursor-pointer transition"
+                    />
+
+                    {showDeleteModal && (
+                      <div className="fixed inset-0 z-20 h-screen flex items-center justify-center bg-black/70 backdrop-blur-xs">
+                        <div className="w-full max-w-md rounded-xl bg-white shadow-xl">
+                          {/* Header */}
+                          <div className="px-6 pt-6">
+                            <h2 className="text-lg font-semibold text-gray-900">
+                              Delete "{course.courseTitle}" ?
+                            </h2>
+                            <p className="mt-1 text-sm text-gray-500">
+                              Are you sure you want to delete this course?
+                            </p>
+                          </div>
+
+                          {/* Warning */}
+                          <div className="px-6 mt-4">
+                            <div className="flex items-start gap-1 rounded-lg bg-red-50 p-3">
+                              <span className="text-red-500 text-sm">⚠️</span>
+                              <p className="text-sm text-red-600">
+                                This action is permanent and cannot be undone!
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex justify-end gap-3 px-6 py-5">
+                            <button
+                              onClick={() => setShowDeleteModal(false)}
+                              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+                            >
+                              Cancel
+                            </button>
+
+                            <button
+                              onClick={() => handleDelete(course._id)}
+                              className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 transition cursor-pointer"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}

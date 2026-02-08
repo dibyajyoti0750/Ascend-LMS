@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
+import ExpressError from "../utils/expressError.js";
 
 // Update role to educator
 export const updateRoleToEducator = async (req, res) => {
@@ -47,6 +48,36 @@ export const getEducatorCourses = async (req, res) => {
   const educator = await req.auth().userId;
   const courses = await Course.find({ educator });
   res.json({ success: true, courses });
+};
+
+// Delete a course
+export const deleteCourse = async (req, res) => {
+  const educatorId = await req.auth().userId;
+  const { courseId } = req.params;
+
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    throw new ExpressError(404, "Course not found");
+  }
+
+  if (course.educator.toString() !== educatorId) {
+    throw new ExpressError(403, "You are not allowed to delete this course");
+  }
+
+  if (course.enrolledStudents.length > 0) {
+    throw new ExpressError(
+      400,
+      "Cannot delete a course with enrolled students",
+    );
+  }
+
+  await Course.findByIdAndDelete(courseId);
+
+  res.json({
+    success: true,
+    message: `${course.courseTitle} was deleted`,
+  });
 };
 
 // Get dashboard data
