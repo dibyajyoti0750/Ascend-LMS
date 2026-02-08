@@ -47,9 +47,11 @@ export default function Dashboard() {
       }
     };
 
-    if (isEducator) {
-      fetchDashboardData();
+    if (!isEducator) {
+      toast.error("Access denied. This dashboard is for educators only.");
     }
+
+    fetchDashboardData();
   }, [backendUrl, getToken, isEducator]);
 
   return dashboardData ? (

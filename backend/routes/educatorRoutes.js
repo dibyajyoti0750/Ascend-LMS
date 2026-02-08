@@ -13,7 +13,7 @@ import upload from "../configs/multer.js";
 
 const educatorRouter = express.Router();
 
-educatorRouter.get("/update-role", protect, wrapAsync(updateRoleToEducator));
+// educatorRouter.get("/update-role", protect, wrapAsync(updateRoleToEducator));
 
 educatorRouter.post(
   "/add-course",
