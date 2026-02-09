@@ -268,7 +268,7 @@ export default function AddCourse() {
 
             <label
               htmlFor="thumbnailImage"
-              className="flex justify-center items-center w-full max-w-xs h-40 border border-gray-300 rounded cursor-pointer overflow-hidden"
+              className="flex justify-center items-center w-full max-w-xs h-55 border border-gray-300 rounded cursor-pointer overflow-hidden"
             >
               {!thumbnail ? (
                 <div className="flex flex-col items-center gap-1">
@@ -301,14 +301,18 @@ export default function AddCourse() {
               key={chIndex}
               className="bg-white border border-gray-400 rounded-lg mb-4"
             >
-              <div className="flex justify-between items-center p-4 border-b border-gray-400">
-                <div className="flex items-center">
-                  <ChevronDown
+              <div className="flex justify-between items-center p-3 border-b border-gray-400">
+                <div className="flex items-center gap-1.5">
+                  <button
                     onClick={() => handleChapter("toggle", ch.chapterId)}
-                    className={`mr-2 cursor-pointer transition-all ${
-                      ch.collapsed && "-rotate-90"
-                    }`}
-                  />
+                    className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
+                  >
+                    <ChevronDown
+                      className={`transition-all ${
+                        ch.collapsed && "-rotate-90"
+                      }`}
+                    />
+                  </button>
                   <span className="font-semibold">{ch.chapterTitle}</span>
                 </div>
 
@@ -316,14 +320,19 @@ export default function AddCourse() {
                   {ch.chapterContent.length} Lectures
                 </span>
 
-                <X
-                  onClick={() => handleChapter("remove", ch.chapterId)}
-                  className="cursor-pointer"
-                />
+                <button
+                  title="Delete chapter"
+                  className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
+                >
+                  <X
+                    size={22}
+                    onClick={() => handleChapter("remove", ch.chapterId)}
+                  />
+                </button>
               </div>
 
               {!ch.collapsed && (
-                <div className="p-4">
+                <div className="py-4 px-3">
                   {ch.chapterContent.map((lecture, lectureIndex) => (
                     <div
                       key={lectureIndex}
@@ -342,18 +351,24 @@ export default function AddCourse() {
                         - {lecture.isPreviewFree ? "Free Preview" : "Paid"}
                       </span>
 
-                      <X
-                        onClick={() =>
-                          handleLecture("remove", ch.chapterId, lectureIndex)
-                        }
-                        className="cursor-pointer"
-                      />
+                      <button
+                        title="Delete lecture"
+                        className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
+                      >
+                        <X
+                          size={22}
+                          onClick={() =>
+                            handleLecture("remove", ch.chapterId, lectureIndex)
+                          }
+                        />
+                      </button>
                     </div>
                   ))}
 
                   <div
                     onClick={() => handleLecture("add", ch.chapterId)}
-                    className="w-fit bg-purple-100 p-2 text-sm rounded cursor-pointer mt-1"
+                    className="w-fit bg-purple-100 text-purple-800 p-2 text-sm rounded cursor-pointer mt-1
+                    hover:bg-purple-200 transition-all duration-150 select-none"
                   >
                     + Add Lecture
                   </div>
@@ -364,7 +379,7 @@ export default function AddCourse() {
 
           <div
             onClick={() => setShowChapterPopup(true)}
-            className="flex justify-center items-center font-medium bg-blue-100 p-2 rounded-lg cursor-pointer"
+            className="flex justify-center items-center font-medium bg-blue-100 text-purple-800 py-2.5 rounded-lg hover:bg-blue-200/80 transition-all duration-150 select-none cursor-pointer"
           >
             + Add Chapter
           </div>
@@ -376,7 +391,7 @@ export default function AddCourse() {
           disabled={isSubmitting}
           className={`bg-black text-white w-max py-2.5 px-8 rounded-md my-4 font-medium ${isSubmitting ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
         >
-          {isSubmitting ? <LoaderCircle className="animate-spin" /> : "ADD"}
+          {isSubmitting ? <LoaderCircle className="animate-spin" /> : "Publish"}
         </button>
       </form>
 
@@ -384,12 +399,14 @@ export default function AddCourse() {
       {showLecturePopup && (
         <div className="fixed inset-0 z-20 h-screen flex items-center justify-center bg-black/70 backdrop-blur-xs">
           <div className="bg-white text-gray-700 p-4 rounded-md relative w-full max-w-96">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold mb-4">Add Lecture</h2>
-              <X
-                onClick={() => setShowLecturePopup(false)}
-                className="w-5 cursor-pointer"
-              />
+              <button
+                title="Close"
+                className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
+              >
+                <X size={22} onClick={() => setShowLecturePopup(false)} />
+              </button>
             </div>
 
             <div className="mb-2">
@@ -461,7 +478,8 @@ export default function AddCourse() {
             <button
               onClick={addLecture}
               type="button"
-              className="w-full bg-sky-500 text-white py-2 rounded-md cursor-pointer"
+              className="w-full bg-sky-500 text-white py-2 rounded-md cursor-pointer
+              hover:bg-sky-600 active:scale-95 transition-all duration-150"
             >
               Add
             </button>
@@ -473,12 +491,14 @@ export default function AddCourse() {
       {showChapterPopup && (
         <div className="fixed inset-0 z-20 h-screen flex items-center justify-center bg-black/70 backdrop-blur-xs">
           <div className="bg-white text-gray-700 p-4 rounded-md relative w-full max-w-96">
-            <div className="flex justify-between">
-              <h2 className="text-lg font-semibold mb-4">Enter Chapter Name</h2>
-              <X
-                onClick={() => setShowChapterPopup(false)}
-                className="w-5 cursor-pointer"
-              />
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Enter Chapter Name</h2>
+              <button
+                title="Close"
+                className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
+              >
+                <X size={22} onClick={() => setShowChapterPopup(false)} />
+              </button>
             </div>
 
             <input
@@ -495,7 +515,8 @@ export default function AddCourse() {
                 if (!chapterTitle) return;
                 addChapter(chapterTitle);
               }}
-              className="w-full bg-sky-500 text-white py-2 rounded-md cursor-pointer"
+              className="w-full bg-sky-500 text-white py-2 rounded-md cursor-pointer
+              hover:bg-sky-600 active:scale-95 transition-all duration-150"
             >
               Add
             </button>

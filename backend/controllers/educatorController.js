@@ -41,7 +41,7 @@ export const addCourse = async (req, res) => {
 
   const newCourse = await Course.create(parsedCourseData);
 
-  res.json({ success: true, message: "Course added" });
+  res.json({ success: true, message: "Course published" });
 };
 
 // Get educator courses
