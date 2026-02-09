@@ -131,7 +131,7 @@ export default function CourseDetails() {
         <div className="absolute top-0 left-0 w-full h-section-height bg-black"></div>
 
         {/* left column */}
-        <div className="flex-1 max-w-xl md:max-w-2xl z-10 text-black md:text-gray-100 space-y-3 md:space-y-5">
+        <div className="flex-1 max-w-xl md:max-w-2xl z-10 md:text-gray-100 space-y-3 md:space-y-5">
           <h1 className="text-2xl leading-9 md:text-5xl md:leading-11 font-semibold">
             {courseData.courseTitle}
           </h1>
@@ -139,7 +139,7 @@ export default function CourseDetails() {
           <p
             className="pb-2 md:pb-0 text-sm md:text-base"
             dangerouslySetInnerHTML={{
-              __html: courseData?.courseDescription.slice(0, 321),
+              __html: `${courseData?.courseDescription.slice(0, 350)}...`,
             }}
           ></p>
 
@@ -158,13 +158,13 @@ export default function CourseDetails() {
           </div>
 
           {/* reviews and ratings */}
-          <div className="flex flex-wrap md:flex-nowrap items-center bg-white text-black text-sm md:text-base rounded-lg p-0.5 md:max-w-xl shadow-custom-card">
-            <div className="flex flex-col items-center justify-center gap-2 bg-purple-800 text-white self-stretch px-3 py-1 md:px-8 md:py-2 rounded-s-md">
+          <div className="flex flex-wrap md:flex-nowrap items-center bg-white text-sm md:text-base rounded-lg p-0.5 md:max-w-xl shadow-custom-card">
+            <div className="flex flex-col items-center justify-center gap-2 bg-purple-800 self-stretch px-3 py-1 md:px-8 md:py-2 rounded-s-md">
               <BadgeCheck className="size-5 md:size-7" />
               <p className="text-sm font-semibold">Premium</p>
             </div>
 
-            <div className="flex flex-1 justify-around items-center py-2">
+            <div className="flex flex-1 justify-around items-center py-2 text-gray-800">
               <div className="flex flex-col items-center justify-center gap-1">
                 <span>Course by</span>
                 <span className="text-blue-500 underline">
