@@ -103,22 +103,40 @@ export default function Dashboard() {
               </thead>
 
               <tbody className="text-sm text-gray-500">
-                {dashboardData.enrolledStudentsData.map((item, index) => (
-                  <tr key={index} className="border-b border-gray-200">
-                    <td className="px-4 py-3 text-center hidden sm:table-cell">
-                      {index + 1}
+                {!dashboardData.enrolledStudentsData.length ? (
+                  <tr>
+                    <td colSpan={4} className="py-5 text-center">
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <img
+                          src={assets.education}
+                          alt="education"
+                          className="w-40 opacity-20"
+                        />
+
+                        <p className="text-gray-600 text-sm mb-6">
+                          No students have enrolled in your courses yet.
+                        </p>
+                      </div>
                     </td>
-                    <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
-                      <img
-                        src={item.student.imageUrl}
-                        alt="Profile"
-                        className="w-9 rounded-full"
-                      />
-                      <span className="truncate">{item.student.name}</span>
-                    </td>
-                    <td className="px-4 py-3 truncate">{item.courseTitle}</td>
                   </tr>
-                ))}
+                ) : (
+                  dashboardData.enrolledStudentsData.map((item, index) => (
+                    <tr key={index} className="border-b border-gray-200">
+                      <td className="px-4 py-3 text-center hidden sm:table-cell">
+                        {index + 1}
+                      </td>
+                      <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
+                        <img
+                          src={item.student.imageUrl}
+                          alt="Profile"
+                          className="w-9 rounded-full"
+                        />
+                        <span className="truncate">{item.student.name}</span>
+                      </td>
+                      <td className="px-4 py-3 truncate">{item.courseTitle}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>

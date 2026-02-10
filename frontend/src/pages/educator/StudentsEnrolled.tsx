@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import type { RootState } from "../../app/store";
 import { useAuth } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
+import { assets } from "../../assets/assets";
 
 export default function StudentsEnrolled() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
@@ -60,28 +61,46 @@ export default function StudentsEnrolled() {
           </thead>
 
           <tbody className="text-sm text-gray-600">
-            {enrolledStudents.map((item, index) => (
-              <tr key={index} className="border-b border-gray-200">
-                <td className="px-4 py-3 text-center hidden sm:table-cell">
-                  {index + 1}
-                </td>
+            {!enrolledStudents.length ? (
+              <tr>
+                <td colSpan={4} className="py-5 text-center">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <img
+                      src={assets.education}
+                      alt="education"
+                      className="w-40 opacity-20"
+                    />
 
-                <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
-                  <img
-                    src={item.student.imageUrl}
-                    alt="profile"
-                    className="w-10 rounded-full"
-                  />
-                  <span className="truncate">{item.student.name}</span>
-                </td>
-
-                <td className="px-4 py-3 truncate">{item.courseTitle}</td>
-
-                <td className="px-4 py-3 hidden sm:table-cell">
-                  {new Date(item.purchaseDate).toLocaleDateString("en-IN")}
+                    <p className="text-gray-600 text-sm mb-6">
+                      No students have enrolled in your courses yet.
+                    </p>
+                  </div>
                 </td>
               </tr>
-            ))}
+            ) : (
+              enrolledStudents.map((item, index) => (
+                <tr key={index} className="border-b border-gray-200">
+                  <td className="px-4 py-3 text-center hidden sm:table-cell">
+                    {index + 1}
+                  </td>
+
+                  <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
+                    <img
+                      src={item.student.imageUrl}
+                      alt="profile"
+                      className="w-10 rounded-full"
+                    />
+                    <span className="truncate">{item.student.name}</span>
+                  </td>
+
+                  <td className="px-4 py-3 truncate">{item.courseTitle}</td>
+
+                  <td className="px-4 py-3 hidden sm:table-cell">
+                    {new Date(item.purchaseDate).toLocaleDateString("en-IN")}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
