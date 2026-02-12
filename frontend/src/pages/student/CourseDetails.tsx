@@ -87,40 +87,6 @@ export default function CourseDetails() {
     })();
   }
 
-  /* const enrollCourse = async () => {
-    try {
-      if (!userData) {
-        return toast.error("Login to enroll");
-      }
-      if (isAlreadyEnrolled) {
-        return toast.error("Already enrolled");
-      }
-
-      const token = await getToken();
-      if (!token) {
-        toast.error("Unauthorized");
-        return;
-      }
-
-      const { data } = await axios.post(
-        backendUrl + "/api/user/purchase",
-        { courseId: courseData?._id },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-
-      if (!data.success) {
-        toast.error(data.message);
-      }
-
-      const { session_url } = data;
-      window.location.replace(session_url);
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
-      toast.error(msg);
-    }
-  }; */
-
   const enrollCourse = async () => {
     try {
       if (!userData) return toast.error("Login to enroll");
