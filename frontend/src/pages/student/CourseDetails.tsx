@@ -34,12 +34,6 @@ interface PlayerData {
   videoId?: string;
 }
 
-interface RazorpaySuccessResponse {
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  razorpay_signature: string;
-}
-
 export default function CourseDetails() {
   const { userData } = useSelector((state: RootState) => state.user);
   const [openSections, setOpenSections] = useState<Record<number, boolean>>({
@@ -110,7 +104,7 @@ export default function CourseDetails() {
         order_id: data.orderId,
 
         // This runs after a successful payment
-        handler: async (response: RazorpaySuccessResponse) => {
+        handler: async (response: RazorpayResponse) => {
           await axios.post(
             backendUrl + "/api/user/verify-rzp",
             {

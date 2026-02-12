@@ -4,33 +4,33 @@ declare global {
   interface Window {
     Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
   }
-}
 
-interface RazorpayOptions {
-  key: string;
-  amount: number;
-  currency: string;
-  name?: string;
-  description?: string;
-  order_id?: string;
-  handler?: (response: RazorpayResponse) => void;
-  prefill?: {
+  interface RazorpayOptions {
+    key: string;
+    amount: number;
+    currency: string;
     name?: string;
-    email?: string;
-    contact?: string;
-  };
-  theme?: {
-    color?: string;
-  };
-}
+    description?: string;
+    order_id?: string;
+    handler?: (response: RazorpayResponse) => void;
+    prefill?: {
+      name?: string;
+      email?: string;
+      contact?: string;
+    };
+    theme?: {
+      color?: string;
+    };
+  }
 
-interface RazorpayInstance {
-  open(): void;
-  on(event: string, callback: () => void): void;
-}
+  interface RazorpayInstance {
+    open(): void;
+    on(event: string, callback: () => void): void;
+  }
 
-interface RazorpayResponse {
-  razorpay_payment_id: string;
-  razorpay_order_id: string;
-  razorpay_signature: string;
+  interface RazorpayResponse {
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+  }
 }
