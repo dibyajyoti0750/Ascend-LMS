@@ -26,61 +26,7 @@ export const userEnrolledCourses = async (req, res) => {
   res.json({ success: true, enrolledCourses: userData.enrolledCourses });
 };
 
-// Purchase course stripe
-/* export const purchaseCourse = async (req, res) => {
-  const { courseId } = req.body;
-  const { origin } = req.headers;
-  const { userId } = await req.auth();
-  const userData = await User.findById(userId);
-  const courseData = await Course.findById(courseId);
-
-  if (!userData || !courseData) {
-    throw new ExpressError(404, "Data not found");
-  }
-
-  const purchaseData = {
-    courseId: courseData._id,
-    userId,
-    amount: (
-      courseData.coursePrice -
-      (courseData.discount * courseData.coursePrice) / 100
-    ).toFixed(2),
-  };
-
-  const newPurchase = await Purchase.create(purchaseData);
-
-  // initialize stripe gateway
-  const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
-  const currency = "usd";
-
-  // line items for stripe
-  const line_items = [
-    {
-      price_data: {
-        currency,
-        product_data: {
-          name: courseData.courseTitle,
-        },
-        unit_amount: Math.floor(newPurchase.amount) * 100,
-      },
-      quantity: 1,
-    },
-  ];
-
-  const session = await stripeInstance.checkout.sessions.create({
-    success_url: `${origin}/loading/my-enrollments`,
-    cancel_url: `${origin}/`,
-    line_items,
-    mode: "payment",
-    metadata: {
-      purchaseId: newPurchase._id.toString(),
-    },
-  });
-
-  res.json({ success: true, session_url: session.url });
-}; */
-
-// Purchase course razorpay
+// Purchase course
 export const purchaseCourseRZP = async (req, res) => {
   const { courseId } = req.body;
   const { userId } = await req.auth();

@@ -6,7 +6,6 @@ import {
   getSingleCourseProgress,
   getUserCourseProgress,
   getUserData,
-  // purchaseCourse,
   purchaseCourseRZP,
   updateUserCourseProgress,
   userEnrolledCourses,
@@ -17,7 +16,7 @@ const userRouter = express.Router();
 
 userRouter.get("/data", protect, wrapAsync(getUserData));
 userRouter.get("/enrolled-courses", protect, wrapAsync(userEnrolledCourses));
-// userRouter.post("/purchase", protect, wrapAsync(purchaseCourse));
+
 userRouter.post("/purchase-rzp", protect, wrapAsync(purchaseCourseRZP));
 userRouter.post("/verify-rzp", protect, wrapAsync(verifyRazorpayPayment));
 
