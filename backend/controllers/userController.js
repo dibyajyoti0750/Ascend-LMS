@@ -3,6 +3,7 @@ import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
 import ExpressError from "../utils/expressError.js";
 import CourseProgress from "../models/CourseProgress.js";
+import crypto from "crypto";
 import Razorpay from "razorpay";
 
 // Get user data
@@ -74,6 +75,47 @@ export const purchaseCourseRZP = async (req, res) => {
     key: process.env.RZP_KEY_ID,
     purchaseId: newPurchase._id,
   });
+};
+
+// Function to verify razorpay payment
+export const verifyRazorpayPayment = async (req, res) => {
+  const {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+    purchaseId,
+  } = req.body;
+
+  const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+  const expectedSignature = crypto
+    .createHmac("sha256", process.env.RZP_KEY_SECRET)
+    .update(body)
+    .digest("hex");
+
+  if (expectedSignature !== razorpay_signature) {
+    await Purchase.findByIdAndUpdate(purchaseId, {
+      status: "failed",
+    });
+    throw new ExpressError(400, "Invalid signature");
+  }
+
+  const purchaseData = await Purchase.findById(purchaseId);
+  const userData = await User.findById(purchaseData.userId);
+  const courseData = await Course.findById(purchaseData.courseId);
+
+  // enroll student
+  courseData.enrolledStudents.push(userData._id);
+  await courseData.save();
+
+  userData.enrolledCourses.push(courseData._id);
+  await userData.save();
+
+  purchaseData.status = "completed";
+  purchaseData.paymentId = razorpay_payment_id;
+  await purchaseData.save();
+
+  res.json({ success: true });
 };
 
 // Update user course progress

@@ -1,9 +1,5 @@
 import { Webhook } from "svix";
-import crypto from "crypto";
 import User from "../models/User.js";
-import Purchase from "../models/Purchase.js";
-import Course from "../models/Course.js";
-import ExpressError from "../utils/expressError.js";
 
 // Function to manage clerk user with DB
 export const clerkWebhooks = async (req, res) => {
@@ -56,45 +52,4 @@ export const clerkWebhooks = async (req, res) => {
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
-};
-
-// Function to verify razorpay payment
-export const verifyRazorpayPayment = async (req, res) => {
-  const {
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature,
-    purchaseId,
-  } = req.body;
-
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
-
-  const expectedSignature = crypto
-    .createHmac("sha256", process.env.RZP_KEY_SECRET)
-    .update(body)
-    .digest("hex");
-
-  if (expectedSignature !== razorpay_signature) {
-    await Purchase.findByIdAndUpdate(purchaseId, {
-      status: "failed",
-    });
-    throw new ExpressError(400, "Invalid signature");
-  }
-
-  const purchaseData = await Purchase.findById(purchaseId);
-  const userData = await User.findById(purchaseData.userId);
-  const courseData = await Course.findById(purchaseData.courseId);
-
-  // enroll student
-  courseData.enrolledStudents.push(userData._id);
-  await courseData.save();
-
-  userData.enrolledCourses.push(courseData._id);
-  await userData.save();
-
-  purchaseData.status = "completed";
-  purchaseData.paymentId = razorpay_payment_id;
-  await purchaseData.save();
-
-  res.json({ success: true });
 };

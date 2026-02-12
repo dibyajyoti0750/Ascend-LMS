@@ -9,8 +9,8 @@ import {
   purchaseCourseRZP,
   updateUserCourseProgress,
   userEnrolledCourses,
+  verifyRazorpayPayment,
 } from "../controllers/userController.js";
-import { verifyRazorpayPayment } from "../controllers/webhooks.js";
 
 const userRouter = express.Router();
 
