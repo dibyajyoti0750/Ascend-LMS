@@ -5,6 +5,17 @@ import "quill/dist/quill.snow.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import toast, { Toaster } from "react-hot-toast";
 
+import Loading from "./components/student/Loading";
+import Navbar from "./components/student/Navbar";
+
+import type { AppDispatch } from "./app/store";
+import { fetchAllCourses } from "./features/courses/courseSlice";
+import {
+  fetchUserData,
+  fetchUserEnrolledCourses,
+} from "./features/user/userSlice";
+import { setIsEducator } from "./features/educator/educatorSlice";
+
 const Home = lazy(() => import("./pages/student/Home"));
 const CourseList = lazy(() => import("./pages/student/CourseList"));
 const CourseDetails = lazy(() => import("./pages/student/CourseDetails"));
@@ -18,17 +29,6 @@ const MyCourses = lazy(() => import("./pages/educator/MyCourses"));
 const StudentsEnrolled = lazy(
   () => import("./pages/educator/StudentsEnrolled"),
 );
-
-import Loading from "./components/student/Loading";
-import Navbar from "./components/student/Navbar";
-
-import type { AppDispatch } from "./app/store";
-import { fetchAllCourses } from "./features/courses/courseSlice";
-import {
-  fetchUserData,
-  fetchUserEnrolledCourses,
-} from "./features/user/userSlice";
-import { setIsEducator } from "./features/educator/educatorSlice";
 
 export default function App() {
   const isEducatorRoute = useMatch("/educator/*");

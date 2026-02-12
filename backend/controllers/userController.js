@@ -4,6 +4,7 @@ import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
 import ExpressError from "../utils/expressError.js";
 import CourseProgress from "../models/CourseProgress.js";
+import Razorpay from "razorpay";
 
 // Get user data
 export const getUserData = async (req, res) => {
@@ -25,8 +26,8 @@ export const userEnrolledCourses = async (req, res) => {
   res.json({ success: true, enrolledCourses: userData.enrolledCourses });
 };
 
-// Purchase course
-export const purchaseCourse = async (req, res) => {
+// Purchase course stripe
+/* export const purchaseCourse = async (req, res) => {
   const { courseId } = req.body;
   const { origin } = req.headers;
   const { userId } = await req.auth();
@@ -77,6 +78,57 @@ export const purchaseCourse = async (req, res) => {
   });
 
   res.json({ success: true, session_url: session.url });
+}; */
+
+// Purchase course razorpay
+export const purchaseCourseRZP = async (req, res) => {
+  const { courseId } = req.body;
+  const { userId } = await req.auth();
+
+  const userData = await User.findById(userId);
+  const courseData = await Course.findById(courseId);
+
+  if (!userData || !courseData) {
+    throw new ExpressError(404, "Data not found");
+  }
+
+  const finalAmount =
+    courseData.coursePrice -
+    (courseData.discount * courseData.coursePrice) / 100;
+
+  const newPurchase = new Purchase({
+    courseId: courseData._id,
+    userId,
+    amount: finalAmount,
+    status: "pending",
+  });
+
+  await newPurchase.save();
+
+  // initialize razorpay
+  const razorpayInstance = new Razorpay({
+    key_id: process.env.RZP_KEY_ID,
+    key_secret: process.env.RZP_KEY_SECRET,
+  });
+
+  const options = {
+    amount: Math.round(finalAmount * 100), // paisa
+    currency: "INR",
+    receipt: `receipt_${newPurchase._id}`,
+    notes: {
+      purchaseId: newPurchase._id.toString(), // like Stripe metadata
+    },
+  };
+
+  const order = await razorpayInstance.orders.create(options);
+
+  res.json({
+    success: true,
+    orderId: order.id,
+    amount: order.amount,
+    key: process.env.RZP_KEY_ID,
+    purchaseId: newPurchase._id,
+  });
 };
 
 // Update user course progress

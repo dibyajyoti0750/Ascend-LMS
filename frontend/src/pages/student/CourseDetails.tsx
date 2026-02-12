@@ -1,7 +1,11 @@
 import YouTube from "react-youtube";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Loading from "../../components/student/Loading";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import humanizeDuration from "humanize-duration";
 import {
   BadgeCheck,
   BookOpenText,
@@ -15,23 +19,25 @@ import {
   TvMinimalPlay,
   Users,
 } from "lucide-react";
-import humanizeDuration from "humanize-duration";
 import {
   calculateChapterTime,
   calculateCourseDuration,
   calculateNoOfLectures,
   calculateRating,
 } from "../../utils/calculate";
-import Footer from "../../components/student/Footer";
-import type { Course } from "../../features/courses/course.types";
-import axios from "axios";
-import { useAuth } from "@clerk/clerk-react";
-import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
+import type { Course } from "../../features/courses/course.types";
+import Loading from "../../components/student/Loading";
+import Footer from "../../components/student/Footer";
 
 interface PlayerData {
   videoId?: string;
+}
+
+interface RazorpaySuccessResponse {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
 }
 
 export default function CourseDetails() {
@@ -81,7 +87,7 @@ export default function CourseDetails() {
     })();
   }
 
-  const enrollCourse = async () => {
+  /* const enrollCourse = async () => {
     try {
       if (!userData) {
         return toast.error("Login to enroll");
@@ -108,6 +114,52 @@ export default function CourseDetails() {
 
       const { session_url } = data;
       window.location.replace(session_url);
+    } catch (error) {
+      const msg =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(msg);
+    }
+  }; */
+
+  const enrollCourse = async () => {
+    try {
+      if (!userData) return toast.error("Login to enroll");
+      if (isAlreadyEnrolled) return toast.error("Already enrolled");
+
+      const token = await getToken();
+      if (!token) return toast.error("Unauthorized");
+
+      const { data } = await axios.post(
+        backendUrl + "/api/user/purchase-rzp",
+        { courseId: courseData?._id },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (!data.success) return toast.error("Something went wrong");
+
+      const options = {
+        key: data.key,
+        amount: data.amount,
+        currency: "INR",
+        order_id: data.orderId,
+
+        // This runs after a successful payment
+        handler: async (response: RazorpaySuccessResponse) => {
+          await axios.post(
+            backendUrl + "/api/user/verify-rzp",
+            {
+              ...response,
+              purchaseId: data.purchaseId,
+            },
+            { headers: { Authorization: `Bearer ${token}` } },
+          );
+
+          window.location.replace("/loading/my-enrollments");
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
       const msg =
         error instanceof Error ? error.message : "Something went wrong";
