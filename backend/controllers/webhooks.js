@@ -1,4 +1,3 @@
-import Stripe from "stripe";
 import { Webhook } from "svix";
 import crypto from "crypto";
 import User from "../models/User.js";
@@ -59,6 +58,7 @@ export const clerkWebhooks = async (req, res) => {
   }
 };
 
+// Function to verify razorpay payment
 export const verifyRazorpayPayment = async (req, res) => {
   const {
     razorpay_order_id,

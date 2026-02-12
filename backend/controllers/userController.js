@@ -1,4 +1,3 @@
-import Stripe from "stripe";
 import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
@@ -62,7 +61,7 @@ export const purchaseCourseRZP = async (req, res) => {
     currency: "INR",
     receipt: `receipt_${newPurchase._id}`,
     notes: {
-      purchaseId: newPurchase._id.toString(), // like Stripe metadata
+      purchaseId: newPurchase._id.toString(),
     },
   };
 

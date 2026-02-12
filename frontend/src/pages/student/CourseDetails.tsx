@@ -385,7 +385,7 @@ export default function CourseDetails() {
               onClick={enrollCourse}
               className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 text-white font-semibold cursor-pointer active:bg-purple-800"
             >
-              {isAlreadyEnrolled ? "Already Enrolled" : "Buy Now"}
+              {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
             </button>
 
             <div className="py-4 md:py-5">
