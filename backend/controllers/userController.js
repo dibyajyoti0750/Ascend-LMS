@@ -42,6 +42,7 @@ export const purchaseCourseRZP = async (req, res) => {
     courseData.coursePrice -
     (courseData.discount * courseData.coursePrice) / 100;
 
+  // Create a record in our database first
   const newPurchase = new Purchase({
     courseId: courseData._id,
     userId,

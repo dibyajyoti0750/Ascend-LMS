@@ -18,6 +18,7 @@ import books from "./stack-of-books.png";
 import money from "./money.png";
 import upload from "./upload.png";
 import education from "./education.png";
+import warning from "./warning.png";
 
 export const assets = {
   logo,
@@ -37,6 +38,7 @@ export const assets = {
   money,
   upload,
   education,
+  warning,
 };
 
 export const dummyCourses = [
