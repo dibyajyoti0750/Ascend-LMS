@@ -66,14 +66,16 @@ export default function CourseDetails() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!data.success) {
-          toast.error(data.message);
+        setCourseData(data.courseData);
+      } catch (error: unknown) {
+        let msg = "Something went wrong";
+
+        if (axios.isAxiosError(error)) {
+          msg = error.response?.data?.message || error.message || msg;
+        } else if (error instanceof Error) {
+          msg = error.message;
         }
 
-        setCourseData(data.courseData);
-      } catch (error) {
-        const msg =
-          error instanceof Error ? error.message : "Something went wrong";
         toast.error(msg);
       } finally {
         setLoading(false);
@@ -94,8 +96,6 @@ export default function CourseDetails() {
         { courseId: courseData?._id },
         { headers: { Authorization: `Bearer ${token}` } },
       );
-
-      if (!data.success) return toast.error("Something went wrong");
 
       const options = {
         key: data.key,
@@ -120,9 +120,15 @@ export default function CourseDetails() {
 
       const rzp = new window.Razorpay(options);
       rzp.open();
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
+      }
+
       toast.error(msg);
     }
   };

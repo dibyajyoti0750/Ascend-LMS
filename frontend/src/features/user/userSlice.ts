@@ -28,15 +28,16 @@ export const fetchUserData = createAsyncThunk<User, string>(
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!data.success) {
-        toast.error(data.message);
-        return rejectWithValue(data.message);
+      return data.user;
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
       }
 
-      return data.user;
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
       toast.error(msg);
       return rejectWithValue(msg);
     }
@@ -54,15 +55,16 @@ export const fetchUserEnrolledCourses = createAsyncThunk<Course[], string>(
         },
       );
 
-      if (!data.success) {
-        toast.error(data.message);
-        return rejectWithValue(data.message);
+      return data.enrolledCourses;
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
       }
 
-      return data.enrolledCourses;
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
       toast.error(msg);
       return rejectWithValue(msg);
     }

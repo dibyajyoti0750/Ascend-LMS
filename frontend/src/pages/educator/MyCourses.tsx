@@ -30,12 +30,16 @@ export default function MyCourses() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (data.success) {
-          setCourses(data.courses);
+        setCourses(data.courses);
+      } catch (error: unknown) {
+        let msg = "Something went wrong";
+
+        if (axios.isAxiosError(error)) {
+          msg = error.response?.data?.message || error.message || msg;
+        } else if (error instanceof Error) {
+          msg = error.message;
         }
-      } catch (error) {
-        const msg =
-          error instanceof Error ? error.message : "Something went wrong";
+
         toast.error(msg);
       }
     };
@@ -68,11 +72,17 @@ export default function MyCourses() {
       );
 
       toast.success(data.message);
-    } catch (error) {
+    } catch (error: unknown) {
       setCourses(previousCourses); // rollback
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
-      toast.error(msg);
+
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
+      }
+
       toast.error(msg);
     }
   };

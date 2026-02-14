@@ -6,7 +6,7 @@ export const getAllCourses = async (req, res) => {
   const courses = await Course.find({ isPublished: true })
     .select(["-courseContent", "-enrolledStudents"])
     .populate({ path: "educator" });
-  res.json({ success: true, courses });
+  res.status(200).json({ success: true, courses });
 };
 
 // Get course by Id
@@ -28,5 +28,5 @@ export const getCourseById = async (req, res) => {
     });
   });
 
-  res.json({ success: true, courseData });
+  res.status(200).json({ success: true, courseData });
 };

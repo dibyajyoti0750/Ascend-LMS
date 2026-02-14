@@ -26,14 +26,16 @@ export default function StudentsEnrolled() {
           { headers: { Authorization: `Bearer ${token}` } },
         );
 
-        if (!data.success) {
-          toast.error(data.message);
+        setEnrolledStudents(data.enrolledStudents.reverse());
+      } catch (error: unknown) {
+        let msg = "Something went wrong";
+
+        if (axios.isAxiosError(error)) {
+          msg = error.response?.data?.message || error.message || msg;
+        } else if (error instanceof Error) {
+          msg = error.message;
         }
 
-        setEnrolledStudents(data.enrolledStudents.reverse());
-      } catch (error) {
-        const msg =
-          error instanceof Error ? error.message : "Something went wrong";
         toast.error(msg);
       }
     };

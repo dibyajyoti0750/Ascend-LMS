@@ -74,14 +74,16 @@ export default function Player() {
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      if (!data.success) {
-        toast.error(data.message);
+      setProgressData(data.progressData);
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
       }
 
-      setProgressData(data.progressData);
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
       toast.error(msg);
     }
   };
@@ -100,15 +102,17 @@ export default function Player() {
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      if (data.success) {
-        toast.success(data.message);
-        getCourseProgress();
-      } else {
-        toast.error(data.message);
+      toast.success(data.message);
+      getCourseProgress();
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
       }
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
+
       toast.error(msg);
     }
   };
@@ -127,15 +131,17 @@ export default function Player() {
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      if (data.success) {
-        toast.success(data.message);
-        setInitialRating(rating); // keep UI in sync
-      } else {
-        toast.error(data.message);
+      toast.success(data.message);
+      setInitialRating(rating); // keep UI in sync
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
       }
-    } catch (error) {
-      const msg =
-        error instanceof Error ? error.message : "Something went wrong";
+
       toast.error(msg);
     }
   };

@@ -11,41 +11,43 @@ export default function Navbar() {
   const { user } = useUser();
   const navigate = useNavigate();
 
-  // const { getToken } = useAuth();
-  // const dispatch = useDispatch();
-  // const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  /* const { getToken } = useAuth();
+  const dispatch = useDispatch();
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  // Use this function to make the website a multi-educator platform:-
-  // const becomeEducator = async () => {
-  //   try {
-  //     if (isEducator) {
-  //       navigate("/educator");
-  //       return;
-  //     }
+  Use this function to make the website a multi-educator platform:-
+  const becomeEducator = async () => {
+    try {
+      if (isEducator) {
+        navigate("/educator");
+        return;
+      }
 
-  //     const token = await getToken();
-  //     if (!token) {
-  //       toast.error("Unauthorized");
-  //       return;
-  //     }
+      const token = await getToken();
+      if (!token) {
+        toast.error("Unauthorized");
+        return;
+      }
 
-  //     const { data } = await axios.get(
-  //       backendUrl + "/api/educator/update-role",
-  //       { headers: { Authorization: `Bearer ${token}` } },
-  //     );
+      const { data } = await axios.get(
+        backendUrl + "/api/educator/update-role",
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
 
-  //     if (!data.success) {
-  //       toast.error(data.message);
-  //     }
+      dispatch(setIsEducator(true));
+      toast.success(data.message);
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
 
-  //     dispatch(setIsEducator(true));
-  //     toast.success(data.message);
-  //   } catch (error) {
-  //     const msg =
-  //       error instanceof Error ? error.message : "Something went wrong";
-  //     toast.error(msg);
-  //   }
-  // };
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
+      }
+
+      toast.error(msg);
+    }
+  }; */
 
   return (
     <>

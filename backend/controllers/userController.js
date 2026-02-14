@@ -15,7 +15,7 @@ export const getUserData = async (req, res) => {
     throw new ExpressError(404, "User not found");
   }
 
-  res.json({ success: true, user });
+  res.status(200).json({ success: true, user });
 };
 
 // Get user enrolled courses with lectureUrl
@@ -23,7 +23,9 @@ export const userEnrolledCourses = async (req, res) => {
   const { userId } = await req.auth();
   const userData = await User.findById(userId).populate("enrolledCourses");
 
-  res.json({ success: true, enrolledCourses: userData.enrolledCourses });
+  res
+    .status(200)
+    .json({ success: true, enrolledCourses: userData.enrolledCourses });
 };
 
 // Purchase course
@@ -140,7 +142,7 @@ export const updateUserCourseProgress = async (req, res) => {
     });
   }
 
-  res.json({ success: true, message: "Progress updated" });
+  res.status(200).json({ success: true, message: "Progress updated" });
 };
 
 // Get user course progress for MyEnrollments
@@ -164,7 +166,7 @@ export const getUserCourseProgress = async (req, res) => {
     };
   });
 
-  res.json({ success: true, progressMap });
+  res.status(200).json({ success: true, progressMap });
 };
 
 // Get user course progress for a single course
@@ -185,7 +187,7 @@ export const getSingleCourseProgress = async (req, res) => {
     throw new ExpressError(404, "Course progress not found");
   }
 
-  res.json({ success: true, progressData });
+  res.status(200).json({ success: true, progressData });
 };
 
 // Add user ratings to course
@@ -222,5 +224,5 @@ export const addUserRating = async (req, res) => {
 
   await course.save();
 
-  res.json({ success: true, message: "Rating added" });
+  res.status(200).json({ success: true, message: "Rating added" });
 };
