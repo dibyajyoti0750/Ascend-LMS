@@ -1,5 +1,4 @@
 import express from "express";
-import { protect } from "../middlewares/auth.js";
 import {
   getAllCourses,
   getCourseById,
@@ -9,6 +8,6 @@ import wrapAsync from "../middlewares/wrapAsync.js";
 const courseRouter = express.Router();
 
 courseRouter.get("/all", wrapAsync(getAllCourses));
-courseRouter.get("/:id", protect, wrapAsync(getCourseById));
+courseRouter.get("/:id", wrapAsync(getCourseById));
 
 export default courseRouter;
