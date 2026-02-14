@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Route, Routes, useMatch } from "react-router-dom";
 import "quill/dist/quill.snow.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 import Loading from "./components/student/Loading";
 import Navbar from "./components/student/Navbar";
@@ -36,22 +36,25 @@ export default function App() {
   const { getToken } = useAuth();
   const { user } = useUser();
 
+  // Load public data
   useEffect(() => {
-    const loadInitialData = async () => {
-      const token = await getToken();
-      if (!token) {
-        toast.error("Unauthorized");
-        return;
-      }
+    dispatch(fetchAllCourses());
+  }, [dispatch]);
 
-      dispatch(fetchAllCourses(token));
+  // Load protected data
+  useEffect(() => {
+    const loadUserData = async () => {
+      const token = await getToken();
+      if (!token) return;
+
       dispatch(fetchUserData(token));
       dispatch(fetchUserEnrolledCourses(token));
     };
 
-    loadInitialData();
+    loadUserData();
   }, [dispatch, getToken]);
 
+  // Set educator role
   useEffect(() => {
     dispatch(setIsEducator(user?.publicMetadata.role === "educator"));
   }, [dispatch, user]);

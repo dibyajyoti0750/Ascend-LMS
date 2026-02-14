@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import humanizeDuration from "humanize-duration";
 import {
   BadgeCheck,
@@ -25,10 +25,10 @@ import {
   calculateNoOfLectures,
   calculateRating,
 } from "../../utils/calculate";
-import type { RootState } from "../../app/store";
-import type { Course } from "../../features/courses/course.types";
+import type { AppDispatch, RootState } from "../../app/store";
 import Loading from "../../components/student/Loading";
 import Footer from "../../components/student/Footer";
+import { fetchCourseById } from "../../features/courses/courseSlice";
 
 interface PlayerData {
   videoId?: string;
@@ -40,48 +40,31 @@ export default function CourseDetails() {
     0: true,
   });
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
-  const [courseData, setCourseData] = useState<Course | null>(null);
-  const [loading, setLoading] = useState(false);
   const [playerData, setPlayerData] = useState<PlayerData | null>(null);
 
   const { id } = useParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const { courseData, courseDataStatus, courseDataError } = useSelector(
+    (state: RootState) => state.courses,
+  );
   const { getToken } = useAuth();
+
   const currency = import.meta.env.VITE_CURRENCY;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-  // React allows state updates during render as long as they are conditional.
-  // No useEffect, No dependency arrays, No cascading renders
-  if (!courseData && !loading && id) {
-    setLoading(true);
+  // Always fetch when id changes
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchCourseById(id));
+    }
+  }, [dispatch, id]);
 
-    (async () => {
-      const token = await getToken();
-      if (!token) {
-        toast.error("Unauthorized");
-        return;
-      }
-
-      try {
-        const { data } = await axios.get(`${backendUrl}/api/course/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setCourseData(data.courseData);
-      } catch (error: unknown) {
-        let msg = "Something went wrong";
-
-        if (axios.isAxiosError(error)) {
-          msg = error.response?.data?.message || error.message || msg;
-        } else if (error instanceof Error) {
-          msg = error.message;
-        }
-
-        toast.error(msg);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }
+  // Failure toast
+  useEffect(() => {
+    if (courseDataStatus === "failed" && courseDataError) {
+      toast.error(courseDataError);
+    }
+  }, [courseDataStatus, courseDataError]);
 
   const enrollCourse = async () => {
     try {

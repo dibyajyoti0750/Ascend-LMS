@@ -49,6 +49,10 @@ export interface Course {
 }
 
 export interface CourseState {
+  courseData: Course | null;
+  courseDataStatus: "idle" | "loading" | "succeeded" | "failed";
+  courseDataError: string | null;
+
   allCourses: Course[];
   allCoursesStatus: "idle" | "loading" | "succeeded" | "failed";
 }
