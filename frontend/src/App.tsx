@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Route, Routes, useMatch } from "react-router-dom";
 import "quill/dist/quill.snow.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 import Loading from "./components/student/Loading";
 import Navbar from "./components/student/Navbar";
@@ -38,7 +38,9 @@ export default function App() {
 
   // Load public data
   useEffect(() => {
-    dispatch(fetchAllCourses());
+    dispatch(fetchAllCourses())
+      .unwrap()
+      .catch(() => toast.error("Failed to fetch all courses"));
   }, [dispatch]);
 
   // Load protected data
@@ -47,8 +49,13 @@ export default function App() {
       const token = await getToken();
       if (!token) return;
 
-      dispatch(fetchUserData(token));
-      dispatch(fetchUserEnrolledCourses(token));
+      dispatch(fetchUserData(token))
+        .unwrap()
+        .catch(() => toast.error("Failed to fetch user data"));
+
+      dispatch(fetchUserEnrolledCourses(token))
+        .unwrap()
+        .catch(() => toast.error("Failed to fetch user enrolled courses"));
     };
 
     loadUserData();

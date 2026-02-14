@@ -44,9 +44,7 @@ export default function CourseDetails() {
 
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const { courseData, courseDataStatus, courseDataError } = useSelector(
-    (state: RootState) => state.courses,
-  );
+  const { courseData } = useSelector((state: RootState) => state.courses);
   const { getToken } = useAuth();
 
   const currency = import.meta.env.VITE_CURRENCY;
@@ -54,21 +52,16 @@ export default function CourseDetails() {
 
   // Always fetch when id changes
   useEffect(() => {
-    if (id) {
-      dispatch(fetchCourseById(id));
-    }
-  }, [dispatch, id]);
+    if (!id) return;
 
-  // Failure toast
-  useEffect(() => {
-    if (courseDataStatus === "failed" && courseDataError) {
-      toast.error(courseDataError);
-    }
-  }, [courseDataStatus, courseDataError]);
+    dispatch(fetchCourseById(id))
+      .unwrap()
+      .catch((err) => toast.error(err));
+  }, [dispatch, id]);
 
   const enrollCourse = async () => {
     try {
-      if (!userData) return toast.error("Login to enroll");
+      if (!userData) return toast.error("Sign in to enroll");
       if (isAlreadyEnrolled) return toast.error("Already enrolled");
 
       const token = await getToken();

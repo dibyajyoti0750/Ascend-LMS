@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Course, CourseState } from "./course.types";
 import axios from "axios";
-import toast from "react-hot-toast";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -31,7 +30,6 @@ export const fetchAllCourses = createAsyncThunk<Course[]>(
         msg = error.message;
       }
 
-      toast.error(msg);
       return rejectWithValue(msg);
     }
   },

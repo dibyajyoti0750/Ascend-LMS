@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { User } from "../educator/data.types";
 import axios from "axios";
-import toast from "react-hot-toast";
 import type { Course } from "../courses/course.types";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -38,7 +37,6 @@ export const fetchUserData = createAsyncThunk<User, string>(
         msg = error.message;
       }
 
-      toast.error(msg);
       return rejectWithValue(msg);
     }
   },
@@ -65,7 +63,6 @@ export const fetchUserEnrolledCourses = createAsyncThunk<Course[], string>(
         msg = error.message;
       }
 
-      toast.error(msg);
       return rejectWithValue(msg);
     }
   },
