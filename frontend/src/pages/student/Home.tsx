@@ -9,7 +9,6 @@ export default function Home() {
     <div className="flex flex-col items-center space-y-7 text-center">
       <Hero />
       {/* <Companies /> */}
-      <p>"have to fix this section"</p>
       <CoursesSection />
       <TestimonialsSection />
       <CallToAction />

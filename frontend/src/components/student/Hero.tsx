@@ -1,9 +1,10 @@
+import YouTube from "react-youtube";
 import { assets } from "../../assets/assets";
 import SearchBar from "./SearchBar";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col items-center justify-center w-full md:pt-36 pt-20 px-7 md:px-0 space-y-8 text-center bg-linear-to-b from-purple-100/80">
+    <div className="flex flex-col items-center justify-center w-full pt-16 px-8 md:px-0 space-y-10 text-center bg-linear-to-b from-purple-100/80">
       <h1 className="text-4xl md:text-6xl font-black text-gray-800 max-w-4xl mx-auto text-center relative">
         Built for the Top 1% Who Actually{" "}
         <span className="text-purple-800">Take Action</span>
@@ -14,7 +15,7 @@ export default function Hero() {
         />
       </h1>
 
-      <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-gray-700 max-w-3xl mx-auto px-4 text-center leading-relaxed mt-6">
+      <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium text-gray-700 max-w-3xl mx-auto px-4 text-center leading-relaxed">
         <span className="font-bold">Ascend</span> by John Doe is designed to
         help you break limits, build wealth, and step into the Top 1%.{" "}
         <span className="text-purple-800 font-semibold">
@@ -23,6 +24,21 @@ export default function Hero() {
       </h2>
 
       <SearchBar />
+
+      <div className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300 my-2">
+        <YouTube
+          videoId="pCqZBOIVBA4"
+          opts={{
+            playerVars: {
+              autoplay: 0,
+              mute: 1,
+              controls: 1,
+              modestbranding: 1,
+            },
+          }}
+          iframeClassName="w-full aspect-video"
+        />
+      </div>
     </div>
   );
 }
