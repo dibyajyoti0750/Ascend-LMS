@@ -47,7 +47,6 @@ export default function App() {
   useEffect(() => {
     const loadUserData = async () => {
       const token = await getToken();
-      console.log(token);
       if (!token) return;
 
       dispatch(fetchUserData(token))
