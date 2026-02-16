@@ -91,7 +91,7 @@ export const deleteCourse = async (req, res) => {
 // Get dashboard data
 export const educatorDashboardData = async (req, res) => {
   const educatorId = await req.auth().userId;
-  const courses = await Course.find({ educatorId });
+  const courses = await Course.find({ educator: educatorId });
   const totalCourses = courses.length;
 
   const courseIds = courses.map((course) => course._id);
@@ -131,7 +131,7 @@ export const educatorDashboardData = async (req, res) => {
 // Get enrolled students data with purchase data
 export const getEnrolledStudentsData = async (req, res) => {
   const educatorId = await req.auth().userId;
-  const courses = await Course.find({ educatorId });
+  const courses = await Course.find({ educator: educatorId });
   const courseIds = courses.map((course) => course._id);
 
   const purchases = await Purchase.find({
