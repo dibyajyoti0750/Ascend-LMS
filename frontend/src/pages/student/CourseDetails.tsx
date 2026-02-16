@@ -11,6 +11,7 @@ import {
   BookOpenText,
   CalendarDays,
   ChevronDown,
+  CircleCheckBig,
   CirclePlay,
   Clock,
   Globe,
@@ -121,11 +122,11 @@ export default function CourseDetails() {
 
   return courseData ? (
     <>
-      <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between px-4 py-4 md:px-36 md:py-20 text-left">
+      <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between p-4 md:px-36 md:py-20 text-left">
         <div className="absolute top-0 left-0 w-full h-section-height bg-black"></div>
 
         {/* left column */}
-        <div className="flex-1 max-w-xl md:max-w-2xl z-10 md:text-gray-100 space-y-3 md:space-y-5">
+        <div className="flex-1 max-w-xl md:max-w-2xl z-10 md:text-gray-100 space-y-3 md:space-y-6">
           <h1 className="text-2xl leading-9 md:text-5xl md:leading-11 font-semibold">
             {courseData.courseTitle}
           </h1>
@@ -137,8 +138,9 @@ export default function CourseDetails() {
             }}
           ></p>
 
-          <p className="px-1.5 py-0.5 bg-gray-200 text-gray-700 text-sm font-semibold w-fit rounded">
-            Bestseller
+          <p className="flex items-center gap-1 px-1.5 py-0.5 bg-gray-200 text-gray-700 text-sm font-bold w-fit rounded">
+            <span>Bestseller</span>{" "}
+            <CircleCheckBig size={16} className="text-purple-700" />
           </p>
 
           <div className="flex items-center text-sm font-light gap-2 py-2 md:py-1">
