@@ -27,7 +27,7 @@ export default function CoursesSection() {
         Upgrade Your{" "}
         <span className="text-purple-700 font-bold">Knowledge</span>
       </h2>
-      <p className="text-sm md:text-base text-gray-500 mt-3">
+      <p className="text-sm md:text-base text-gray-500 mt-3 max-w-xl">
         Discover top rated programs across diverse categories, designed to
         support continuous learning and long term skill development.
       </p>

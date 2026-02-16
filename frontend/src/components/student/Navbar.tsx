@@ -58,8 +58,8 @@ export default function Navbar() {
           <p>
             Price increases in less than 24 hours. Join now before it's too
             late.
-            <span className="line-through mx-2 opacity-70">$47</span>
-            <span className="font-bold text-yellow-300">$12/once</span>
+            <span className="line-through mx-2 opacity-70">$27</span>
+            <span className="font-bold text-yellow-300">$16/once</span>
           </p>
         </div>
       </div>

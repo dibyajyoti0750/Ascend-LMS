@@ -307,7 +307,7 @@ export default function AddCourse() {
             >
               <div className="flex justify-between items-center p-3 border-b border-gray-400">
                 <div className="flex items-center gap-1.5">
-                  <button
+                  <div
                     onClick={() => handleChapter("toggle", ch.chapterId)}
                     className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
                   >
@@ -316,7 +316,7 @@ export default function AddCourse() {
                         ch.collapsed && "-rotate-90"
                       }`}
                     />
-                  </button>
+                  </div>
                   <span className="font-semibold">{ch.chapterTitle}</span>
                 </div>
 
@@ -324,7 +324,7 @@ export default function AddCourse() {
                   {ch.chapterContent.length} Lectures
                 </span>
 
-                <button
+                <div
                   title="Delete chapter"
                   className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
                 >
@@ -332,7 +332,7 @@ export default function AddCourse() {
                     size={22}
                     onClick={() => handleChapter("remove", ch.chapterId)}
                   />
-                </button>
+                </div>
               </div>
 
               {!ch.collapsed && (
@@ -355,7 +355,7 @@ export default function AddCourse() {
                         - {lecture.isPreviewFree ? "Free Preview" : "Paid"}
                       </span>
 
-                      <button
+                      <div
                         title="Delete lecture"
                         className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
                       >
@@ -365,7 +365,7 @@ export default function AddCourse() {
                             handleLecture("remove", ch.chapterId, lectureIndex)
                           }
                         />
-                      </button>
+                      </div>
                     </div>
                   ))}
 
@@ -405,12 +405,12 @@ export default function AddCourse() {
           <div className="bg-white text-gray-700 p-4 rounded-md relative w-full max-w-96">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold mb-4">Add Lecture</h2>
-              <button
+              <div
                 title="Close"
                 className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
               >
                 <X size={22} onClick={() => setShowLecturePopup(false)} />
-              </button>
+              </div>
             </div>
 
             <div className="mb-2">
@@ -497,12 +497,12 @@ export default function AddCourse() {
           <div className="bg-white text-gray-700 p-4 rounded-md relative w-full max-w-96">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Enter Chapter Name</h2>
-              <button
+              <div
                 title="Close"
                 className="flex justify-center items-center p-1 rounded-full hover:bg-gray-100 cursor-pointer"
               >
                 <X size={22} onClick={() => setShowChapterPopup(false)} />
-              </button>
+              </div>
             </div>
 
             <input
