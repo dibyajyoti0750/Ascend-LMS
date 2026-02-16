@@ -19,7 +19,7 @@ export default function CourseCard({ course }: CourseCardProps) {
       {/* Thumbnail */}
       <div className="overflow-hidden">
         <img
-          src={course.courseThumbnail}
+          src={course.courseThumbnail.url}
           alt="thumbnail"
           loading="lazy"
           className="w-full object-cover"
@@ -28,15 +28,15 @@ export default function CourseCard({ course }: CourseCardProps) {
 
       {/* Content */}
       <div className="space-y-2 p-4 text-left">
-        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">
+        <h3 className="line-clamp-2 text-lg font-bold text-gray-900">
           {course.courseTitle}
         </h3>
 
-        <p className="text-xs text-gray-500">{course.educator.name}</p>
+        <p className="text-sm text-gray-500">{course.educator.name}</p>
 
         {/* Rating */}
         <div className="flex items-center gap-1.5 text-xs">
-          <span className="font-medium text-gray-800">
+          <span className="font-semibold text-gray-800">
             {calculateRating(course)}
           </span>
           <div className="flex items-center gap-0.5">

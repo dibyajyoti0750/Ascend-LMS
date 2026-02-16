@@ -45,7 +45,7 @@ export interface Course {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  courseThumbnail: string;
+  courseThumbnail: { url: string; public_id: string };
 }
 
 export interface CourseState {

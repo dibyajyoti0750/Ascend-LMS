@@ -107,7 +107,7 @@ export default function MyEnrollments() {
                 <tr key={i} className="border border-gray-500/20">
                   <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3">
                     <img
-                      src={course.courseThumbnail}
+                      src={course.courseThumbnail.url}
                       alt="thumbnail"
                       className="w-14 sm:w-24 md:w-28"
                     />

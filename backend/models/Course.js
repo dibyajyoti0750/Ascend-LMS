@@ -27,8 +27,14 @@ const courseSchema = new mongoose.Schema(
     courseTitle: { type: String, required: true },
     courseDescription: { type: String, required: true },
     courseThumbnail: {
-      type: String,
-      default: "https://placehold.co/600x400?text=No+Thumbnail",
+      url: {
+        type: String,
+        default: "https://placehold.co/600x400?text=No+Thumbnail",
+      },
+      public_id: {
+        type: String,
+        default: null,
+      },
     },
     coursePrice: { type: Number, required: true },
     isPublished: { type: Boolean, default: true },

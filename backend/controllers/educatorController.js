@@ -1,4 +1,3 @@
-import { clerkClient } from "@clerk/express";
 import { v2 as cloudinary } from "cloudinary";
 import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
@@ -7,7 +6,7 @@ import ExpressError from "../utils/expressError.js";
 import CourseProgress from "../models/CourseProgress.js";
 
 // Update role to educator
-export const updateRoleToEducator = async (req, res) => {
+/* export const updateRoleToEducator = async (req, res) => {
   const { userId } = await req.auth();
 
   await clerkClient.users.updateUserMetadata(userId, {
@@ -19,7 +18,7 @@ export const updateRoleToEducator = async (req, res) => {
   res
     .status(200)
     .json({ success: true, message: "You can publish a course now" });
-};
+}; */
 
 // Add new course
 export const addCourse = async (req, res) => {
@@ -27,21 +26,21 @@ export const addCourse = async (req, res) => {
   const imageFile = req.file;
   const educatorId = await req.auth().userId;
 
-  let thumbnailUrl;
-
-  if (imageFile) {
-    const imageUpload = await cloudinary.uploader.upload(imageFile.path);
-    thumbnailUrl = imageUpload.secure_url;
-  }
-
   const parsedCourseData = JSON.parse(courseData);
   parsedCourseData.educator = educatorId;
 
-  if (thumbnailUrl) {
-    parsedCourseData.courseThumbnail = thumbnailUrl;
+  if (imageFile) {
+    const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+      folder: "Ascend",
+    });
+
+    parsedCourseData.courseThumbnail = {
+      url: imageUpload.secure_url,
+      public_id: imageUpload.public_id,
+    };
   }
 
-  const newCourse = await Course.create(parsedCourseData);
+  await Course.create(parsedCourseData);
 
   res.status(200).json({ success: true, message: "Course published" });
 };
@@ -49,7 +48,7 @@ export const addCourse = async (req, res) => {
 // Get educator courses
 export const getEducatorCourses = async (req, res) => {
   const educatorId = await req.auth().userId;
-  const courses = await Course.find({ educatorId });
+  const courses = await Course.find({ educator: educatorId });
   res.status(200).json({ success: true, courses });
 };
 
@@ -73,6 +72,11 @@ export const deleteCourse = async (req, res) => {
       400,
       "Cannot delete a course with enrolled students",
     );
+  }
+
+  // delete the course thumb
+  if (course.courseThumbnail?.public_id) {
+    await cloudinary.uploader.destroy(course.courseThumbnail.public_id);
   }
 
   await Course.findByIdAndDelete(courseId);

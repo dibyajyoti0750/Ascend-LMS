@@ -306,7 +306,7 @@ export default function Player() {
             </div>
           ) : (
             <img
-              src={courseData ? courseData.courseThumbnail : ""}
+              src={courseData ? courseData.courseThumbnail.url : ""}
               alt="thumbnail"
             />
           )}

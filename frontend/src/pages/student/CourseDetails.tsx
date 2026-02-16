@@ -140,7 +140,11 @@ export default function CourseDetails() {
 
           <p className="flex items-center gap-1 px-1.5 py-0.5 bg-gray-200 text-gray-700 text-sm font-bold w-fit rounded">
             <span>Bestseller</span>{" "}
-            <CircleCheckBig size={16} className="text-purple-700" />
+            <CircleCheckBig
+              size={16}
+              strokeWidth={3}
+              className="text-purple-700"
+            />
           </p>
 
           <div className="flex items-center text-sm font-light gap-2 py-2 md:py-1">
@@ -306,7 +310,7 @@ export default function CourseDetails() {
             />
           ) : (
             <img
-              src={courseData.courseThumbnail}
+              src={courseData.courseThumbnail.url}
               alt="thumbnail"
               className="w-full object-cover"
             />
