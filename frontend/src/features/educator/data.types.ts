@@ -25,3 +25,12 @@ export interface User extends Student {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface EditCourse {
+  courseTitle: string;
+  courseDescription: string;
+  courseThumbnail: string;
+  coursePrice: number;
+  discount: number;
+  isPublished: boolean;
+}

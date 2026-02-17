@@ -9,6 +9,8 @@ import toast from "react-hot-toast";
 import { Edit, Trash2 } from "lucide-react";
 import { assets } from "../../assets/assets";
 import DeleteCourseModal from "../../components/educator/DeleteCourseModal";
+import type { EditCourse } from "../../features/educator/data.types";
+import EditCourseModal from "../../components/educator/EditCourseModal";
 
 export default function MyCourses() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
@@ -17,6 +19,7 @@ export default function MyCourses() {
     id: string;
     title: string;
   }>(null);
+  const [editingCourse, setEditingCourse] = useState<null | EditCourse>(null);
 
   const currency = import.meta.env.VITE_CURRENCY;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -92,6 +95,8 @@ export default function MyCourses() {
     }
   };
 
+  const handleEditingCourse = async () => {};
+
   return courses ? (
     <div className="h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
       <div className="w-full">
@@ -164,6 +169,16 @@ export default function MyCourses() {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-between">
                         <Edit
+                          onClick={() =>
+                            setEditingCourse({
+                              courseTitle: course.courseTitle,
+                              courseDescription: course.courseDescription,
+                              coursePrice: course.coursePrice,
+                              courseThumbnail: course.courseThumbnail.url,
+                              discount: course.discount,
+                              isPublished: course.isPublished,
+                            })
+                          }
                           size={20}
                           className="text-gray-400 hover:text-blue-500 cursor-pointer transition-colors duration-200"
                         />
@@ -193,6 +208,14 @@ export default function MyCourses() {
           courseTitle={deletingCourse.title}
           onCancel={() => setDeletingCourse(null)}
           onConfirm={() => handleDelete(deletingCourse.id)}
+        />
+      )}
+
+      {editingCourse && (
+        <EditCourseModal
+          course={editingCourse}
+          onClose={() => setEditingCourse(null)}
+          onSave={() => handleEditingCourse}
         />
       )}
     </div>

@@ -242,6 +242,7 @@ export default function AddCourse() {
                 }}
                 value={coursePrice ?? ""}
                 placeholder="0"
+                min={0}
                 className="outline-none py-2 px-3 w-full rounded border border-gray-500"
                 required
               />
