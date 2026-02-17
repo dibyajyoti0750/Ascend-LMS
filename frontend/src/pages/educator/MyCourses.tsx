@@ -6,7 +6,7 @@ import type { RootState } from "../../app/store";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Trash2 } from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
 import { assets } from "../../assets/assets";
 import DeleteCourseModal from "../../components/educator/DeleteCourseModal";
 
@@ -162,16 +162,23 @@ export default function MyCourses() {
                     </td>
 
                     <td className="px-4 py-3">
-                      <Trash2
-                        onClick={() =>
-                          setDeletingCourse({
-                            id: course._id,
-                            title: course.courseTitle,
-                          })
-                        }
-                        size={20}
-                        className="text-gray-400 hover:text-red-500 cursor-pointer transition"
-                      />
+                      <div className="flex items-center justify-between">
+                        <Edit
+                          size={20}
+                          className="text-gray-400 hover:text-blue-500 cursor-pointer transition-colors duration-200"
+                        />
+
+                        <Trash2
+                          onClick={() =>
+                            setDeletingCourse({
+                              id: course._id,
+                              title: course.courseTitle,
+                            })
+                          }
+                          size={20}
+                          className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors duration-200"
+                        />
+                      </div>
                     </td>
                   </tr>
                 ))
