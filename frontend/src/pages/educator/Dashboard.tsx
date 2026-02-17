@@ -85,7 +85,7 @@ export default function Dashboard() {
                 {currency}
                 {dashboardData.totalEarnings}
               </p>
-              <p className={columnStyles.totalTitle}>Total Earnings</p>
+              <p className={columnStyles.totalTitle}>Total Revenue</p>
             </div>
           </div>
         </div>
