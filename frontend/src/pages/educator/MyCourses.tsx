@@ -95,8 +95,6 @@ export default function MyCourses() {
     }
   };
 
-  const handleEditingCourse = async () => {};
-
   return courses ? (
     <div className="h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
       <div className="w-full">
@@ -171,10 +169,11 @@ export default function MyCourses() {
                         <Edit
                           onClick={() =>
                             setEditingCourse({
+                              _id: course._id,
                               courseTitle: course.courseTitle,
                               courseDescription: course.courseDescription,
                               coursePrice: course.coursePrice,
-                              courseThumbnail: course.courseThumbnail.url,
+                              courseThumbnail: course.courseThumbnail,
                               discount: course.discount,
                               isPublished: course.isPublished,
                             })
@@ -215,7 +214,6 @@ export default function MyCourses() {
         <EditCourseModal
           course={editingCourse}
           onClose={() => setEditingCourse(null)}
-          onSave={() => handleEditingCourse}
         />
       )}
     </div>

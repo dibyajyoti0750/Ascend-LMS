@@ -1,27 +1,137 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from "react";
 import type { EditCourse } from "../../features/educator/data.types";
-import { UploadCloud, X } from "lucide-react";
+import { LoaderCircle, UploadCloud, X } from "lucide-react";
 import Quill from "quill";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 interface Props {
   course: EditCourse;
   onClose: () => void;
-  onSave: () => void;
 }
 
-export default function EditCourseModal({ course, onClose, onSave }: Props) {
+export default function EditCourseModal({ course, onClose }: Props) {
   const quillRef = useRef<Quill | null>(null);
   const descRef = useRef<HTMLDivElement | null>(null);
 
   const [formData, setFormData] = useState({
     ...course,
   });
+  const [thumbnailPreview, setThumbnailPreview] = useState(
+    formData.courseThumbnail?.url,
+  );
+  const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [thumbnail, setThumbnail] = useState(formData.courseThumbnail);
+  // Disable If Nothing Changed
+  const [previousCourseData] = useState(course);
+  const currentDescription =
+    quillRef.current?.root.innerHTML || formData.courseDescription;
+  const isChanged =
+    formData.courseTitle !== previousCourseData.courseTitle ||
+    formData.coursePrice !== previousCourseData.coursePrice ||
+    formData.discount !== previousCourseData.discount ||
+    formData.isPublished !== previousCourseData.isPublished ||
+    currentDescription !== previousCourseData.courseDescription ||
+    !!thumbnailFile;
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  // ) => {};
+  // Validate form data
+  const descriptionText = quillRef.current?.getText().trim() || "";
+  const isValid =
+    formData.courseTitle.trim() !== "" &&
+    descriptionText !== "" &&
+    formData.coursePrice !== null &&
+    formData.coursePrice > 0 &&
+    formData.discount !== null &&
+    formData.discount >= 0 &&
+    formData.discount <= 100;
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { getToken } = useAuth();
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value, type } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        type === "checkbox"
+          ? (e.target as HTMLInputElement).checked
+          : type === "number"
+            ? value === ""
+              ? null
+              : Number(value)
+            : value,
+    }));
+  };
+
+  const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setThumbnailFile(file);
+
+    const previewUrl = URL.createObjectURL(file);
+    setThumbnailPreview(previewUrl);
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    try {
+      e.preventDefault();
+      setIsSubmitting(true);
+
+      const updatedCourseData = {
+        ...formData,
+        courseDescription: quillRef.current?.root.innerHTML,
+      };
+
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("courseData", JSON.stringify(updatedCourseData));
+
+      if (thumbnailFile) {
+        formDataToSend.append("newThumbnail", thumbnailFile);
+      }
+
+      if (!thumbnailFile) delete updatedCourseData.courseThumbnail;
+
+      const token = await getToken();
+      if (!token) {
+        toast.error("Unauthorized");
+        return;
+      }
+
+      const { data } = await axios.patch(
+        `${backendUrl}/api/educator/update/course/${course._id}`,
+        formDataToSend,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      toast.success(data.message);
+      onClose();
+    } catch (error: unknown) {
+      let msg = "Something went wrong";
+
+      if (axios.isAxiosError(error)) {
+        msg = error.response?.data?.message || error.message || msg;
+      } else if (error instanceof Error) {
+        msg = error.message;
+      }
+
+      toast.error(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     if (!quillRef.current && descRef.current) {
@@ -37,6 +147,15 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
     }
   }, [formData.courseDescription]);
 
+  // Revoke URL on cleanup to avoid memory leak
+  useEffect(() => {
+    return () => {
+      if (thumbnailPreview?.startsWith("blob:")) {
+        URL.revokeObjectURL(thumbnailPreview);
+      }
+    };
+  }, [thumbnailPreview]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-gray-100 flex flex-col max-h-[90vh]">
@@ -48,15 +167,12 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
             onClick={onClose}
             className="p-2 rounded-full hover:bg-gray-100 transition"
           >
-            <X size={20} className="text-gray-500" />
+            <X size={20} className="text-gray-500 cursor-pointer" />
           </button>
         </div>
 
         {/* Form */}
-        <form
-          onSubmit={onSave}
-          className="flex-1 overflow-y-auto px-5 py-3 space-y-4"
-        >
+        <form className="flex-1 overflow-y-auto px-5 py-3 space-y-4">
           {/* Title */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700">
@@ -66,8 +182,8 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
               type="text"
               name="courseTitle"
               value={formData.courseTitle}
-              // onChange={handleChange}
-              className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition"
+              onChange={handleChange}
+              className="w-full outline-sky-300 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm transition"
               required
             />
           </div>
@@ -85,15 +201,15 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
             <div className="md:col-span-2 space-y-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">
-                  Price
+                  Course Price
                 </label>
                 <input
                   type="number"
                   name="coursePrice"
                   min={0}
                   value={formData.coursePrice}
-                  // onChange={handleChange}
-                  className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition"
+                  onChange={handleChange}
+                  className="w-full outline-sky-300 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm transition"
                   required
                 />
               </div>
@@ -108,8 +224,8 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
                   min={0}
                   max={100}
                   value={formData.discount}
-                  // onChange={handleChange}
-                  className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition"
+                  onChange={handleChange}
+                  className="w-full outline-sky-300 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm transition"
                   required
                 />
               </div>
@@ -119,7 +235,7 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
                   type="checkbox"
                   name="isPublished"
                   checked={formData.isPublished}
-                  // onChange={handleChange}
+                  onChange={handleChange}
                   className="h-4 w-4"
                 />
                 <label className="text-sm text-gray-700">Published</label>
@@ -136,12 +252,18 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
                 htmlFor="thumbnail"
                 className="relative block w-full h-48 rounded-lg border-2 border-dashed bg-gray-50 overflow-hidden cursor-pointer group"
               >
-                <input hidden id="thumbnail" type="file" accept="image/*" />
+                <input
+                  onChange={handleThumbnailChange}
+                  hidden
+                  id="thumbnail"
+                  type="file"
+                  accept="image/*"
+                />
 
-                {thumbnail ? (
+                {thumbnailPreview ? (
                   <div>
                     <img
-                      src={thumbnail}
+                      src={thumbnailPreview}
                       alt="Thumbnail preview"
                       className="w-full h-full object-cover"
                     />
@@ -177,11 +299,19 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
           </button>
 
           <button
-            type="submit"
-            onClick={onSave}
-            className="px-5 py-2.5 text-sm font-medium rounded-lg bg-purple-800 text-white hover:bg-purple-900 transition shadow-md cursor-pointer"
+            onClick={handleSubmit}
+            disabled={isSubmitting || !isChanged || !isValid}
+            className={`px-5 py-2.5 text-sm font-medium rounded-lg bg-purple-800 text-white transition shadow-md ${
+              isSubmitting || !isChanged || !isValid
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-purple-900 cursor-pointer"
+            }`}
           >
-            Save Changes
+            {isSubmitting ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              "Save Changes"
+            )}
           </button>
         </div>
       </div>

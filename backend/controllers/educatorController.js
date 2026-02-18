@@ -20,6 +20,13 @@ import CourseProgress from "../models/CourseProgress.js";
     .json({ success: true, message: "You can publish a course now" });
 }; */
 
+// Get educator courses
+export const getEducatorCourses = async (req, res) => {
+  const educatorId = await req.auth().userId;
+  const courses = await Course.find({ educator: educatorId });
+  res.status(200).json({ success: true, courses });
+};
+
 // Add new course
 export const addCourse = async (req, res) => {
   const { courseData } = req.body;
@@ -45,11 +52,48 @@ export const addCourse = async (req, res) => {
   res.status(200).json({ success: true, message: "Course published" });
 };
 
-// Get educator courses
-export const getEducatorCourses = async (req, res) => {
-  const educatorId = await req.auth().userId;
-  const courses = await Course.find({ educator: educatorId });
-  res.status(200).json({ success: true, courses });
+export const updateCourse = async (req, res) => {
+  const { courseData } = req.body;
+  const imageFile = req.file;
+
+  const educatorId = req.auth().userId;
+  const { courseId } = req.params;
+
+  const course = await Course.findById(courseId);
+
+  if (!course) {
+    throw new ExpressError(404, "Course not found");
+  }
+
+  if (course.educator.toString() !== educatorId) {
+    throw new ExpressError(403, "You are not allowed to edit this course");
+  }
+
+  const parsedCourseData = JSON.parse(courseData);
+
+  if (imageFile) {
+    if (course.courseThumbnail?.public_id) {
+      await cloudinary.uploader.destroy(course.courseThumbnail.public_id);
+    }
+
+    const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
+      folder: "Ascend",
+    });
+
+    parsedCourseData.courseThumbnail = {
+      url: imageUpload.secure_url,
+      public_id: imageUpload.public_id,
+    };
+  }
+
+  await Course.findByIdAndUpdate(courseId, parsedCourseData, {
+    new: true,
+    runValidators: true,
+  });
+
+  res
+    .status(200)
+    .json({ success: true, message: "Course updated successfully" });
 };
 
 // Delete a course

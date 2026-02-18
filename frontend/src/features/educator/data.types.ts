@@ -27,9 +27,13 @@ export interface User extends Student {
 }
 
 export interface EditCourse {
+  _id: string;
   courseTitle: string;
   courseDescription: string;
-  courseThumbnail: string;
+  courseThumbnail?: {
+    url: string;
+    public_id: string;
+  };
   coursePrice: number;
   discount: number;
   isPublished: boolean;
