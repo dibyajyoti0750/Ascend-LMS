@@ -17,17 +17,11 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
     ...course,
   });
 
-  const [thumbnailPreview, setThumbnailPreview] = useState(
-    formData.courseThumbnail,
-  );
+  const [thumbnail, setThumbnail] = useState(formData.courseThumbnail);
 
-  const [thumbnailFile, setThumbnailFile] = useState<File | undefined>();
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {};
-
-  const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  // ) => {};
 
   useEffect(() => {
     if (!quillRef.current && descRef.current) {
@@ -72,7 +66,7 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
               type="text"
               name="courseTitle"
               value={formData.courseTitle}
-              onChange={handleChange}
+              // onChange={handleChange}
               className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition"
               required
             />
@@ -98,7 +92,7 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
                   name="coursePrice"
                   min={0}
                   value={formData.coursePrice}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition"
                   required
                 />
@@ -114,7 +108,7 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
                   min={0}
                   max={100}
                   value={formData.discount}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition"
                   required
                 />
@@ -125,7 +119,7 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
                   type="checkbox"
                   name="isPublished"
                   checked={formData.isPublished}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   className="h-4 w-4"
                 />
                 <label className="text-sm text-gray-700">Published</label>
@@ -142,30 +136,31 @@ export default function EditCourseModal({ course, onClose, onSave }: Props) {
                 htmlFor="thumbnail"
                 className="relative block w-full h-48 rounded-lg border-2 border-dashed bg-gray-50 overflow-hidden cursor-pointer group"
               >
-                <input
-                  hidden
-                  id="thumbnail"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleThumbnailChange}
-                />
+                <input hidden id="thumbnail" type="file" accept="image/*" />
 
-                {thumbnailPreview ? (
-                  <img
-                    src={thumbnailPreview}
-                    alt="Thumbnail preview"
-                    className="w-full h-full object-cover"
-                  />
+                {thumbnail ? (
+                  <div>
+                    <img
+                      src={thumbnail}
+                      alt="Thumbnail preview"
+                      className="w-full h-full object-cover"
+                    />
+
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
+                      <UploadCloud size={28} className="text-white" />
+                    </div>
+                  </div>
                 ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 group-hover:text-black transition">
-                    <UploadCloud size={32} />
-                    <span className="text-xs mt-2">Click to upload</span>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <UploadCloud
+                      size={32}
+                      className="text-gray-500 group-hover:text-black"
+                    />
+                    <span className="text-xs mt-2 text-gray-500 group-hover:text-black">
+                      Click to upload
+                    </span>
                   </div>
                 )}
-
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
-                  <UploadCloud size={28} className="text-white" />
-                </div>
               </label>
             </div>
           </div>
