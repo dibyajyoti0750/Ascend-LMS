@@ -19,6 +19,8 @@ import money from "./money.png";
 import upload from "./upload.png";
 import education from "./education.png";
 import warning from "./warning.png";
+import stripeIcon from "./stripe.png";
+import razorpayIcon from "./razorpay.png";
 
 export const assets = {
   logo,
@@ -39,6 +41,8 @@ export const assets = {
   upload,
   education,
   warning,
+  stripeIcon,
+  razorpayIcon,
 };
 
 export const dummyCourses = [

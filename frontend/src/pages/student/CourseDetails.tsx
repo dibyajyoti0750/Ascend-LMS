@@ -1,5 +1,5 @@
 import YouTube from "react-youtube";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
@@ -30,23 +30,29 @@ import type { AppDispatch, RootState } from "../../app/store";
 import Loading from "../../components/student/Loading";
 import Footer from "../../components/student/Footer";
 import { fetchCourseById } from "../../features/courses/courseSlice";
+import PaymentModal from "./PaymentModal";
+
+type PaymentMethod = "stripe" | "razorpay";
 
 interface PlayerData {
   videoId?: string;
 }
 
 export default function CourseDetails() {
+  const { id } = useParams();
   const { userData } = useSelector((state: RootState) => state.user);
   const [openSections, setOpenSections] = useState<Record<number, boolean>>({
     0: true,
   });
+
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [playerData, setPlayerData] = useState<PlayerData | null>(null);
 
-  const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { courseData } = useSelector((state: RootState) => state.courses);
   const { getToken } = useAuth();
+  const navigate = useNavigate();
 
   const currency = import.meta.env.VITE_CURRENCY;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -60,43 +66,45 @@ export default function CourseDetails() {
       .catch((err) => toast.error(err));
   }, [dispatch, id]);
 
-  const enrollCourse = async () => {
+  const handlePayment = async (method: PaymentMethod) => {
     try {
       if (!userData) return toast.error("Sign in to enroll");
-      if (isAlreadyEnrolled) return toast.error("Already enrolled");
-
       const token = await getToken();
       if (!token) return toast.error("Unauthorized");
 
-      const { data } = await axios.post(
-        backendUrl + "/api/user/purchase-rzp",
-        { courseId: courseData?._id },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      if (method === "stripe") {
+        console.log(method);
+      } else if (method === "razorpay") {
+        const { data } = await axios.post(
+          backendUrl + "/api/user/purchase-rzp",
+          { courseId: courseData?._id },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
 
-      const options = {
-        key: data.key,
-        amount: data.amount,
-        currency: "INR",
-        order_id: data.orderId,
+        const options = {
+          key: data.key,
+          amount: data.amount,
+          currency: "INR",
+          order_id: data.orderId,
 
-        // This runs after a successful payment
-        handler: async (response: RazorpayResponse) => {
-          await axios.post(
-            backendUrl + "/api/user/verify-rzp",
-            {
-              ...response,
-              purchaseId: data.purchaseId,
-            },
-            { headers: { Authorization: `Bearer ${token}` } },
-          );
+          // This runs after a successful payment
+          handler: async (response: RazorpayResponse) => {
+            await axios.post(
+              backendUrl + "/api/user/verify-rzp",
+              {
+                ...response,
+                purchaseId: data.purchaseId,
+              },
+              { headers: { Authorization: `Bearer ${token}` } },
+            );
 
-          window.location.replace("/loading/my-enrollments");
-        },
-      };
+            window.location.replace("/loading/my-enrollments");
+          },
+        };
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+      }
     } catch (error: unknown) {
       let msg = "Something went wrong";
 
@@ -363,12 +371,21 @@ export default function CourseDetails() {
               </div>
             </div>
 
-            <button
-              onClick={enrollCourse}
-              className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 text-white font-semibold cursor-pointer active:bg-purple-800"
-            >
-              {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
-            </button>
+            {isAlreadyEnrolled ? (
+              <button
+                onClick={() => navigate("/my-enrollments")}
+                className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-semibold active:bg-purple-800 transition-all duration-200 cursor-pointer"
+              >
+                Already Enrolled
+              </button>
+            ) : (
+              <button
+                onClick={() => setOpenPaymentModal(true)}
+                className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-semibold active:bg-purple-800 transition-all duration-200 cursor-pointer"
+              >
+                Enroll Now
+              </button>
+            )}
 
             <div className="py-4 md:py-5">
               <p className="md:text-xl text-lg font-medium text-gray-800">
@@ -387,6 +404,12 @@ export default function CourseDetails() {
         </div>
       </div>
 
+      {openPaymentModal && (
+        <PaymentModal
+          onClose={() => setOpenPaymentModal(false)}
+          onContinue={handlePayment}
+        />
+      )}
       <Footer />
     </>
   ) : (
