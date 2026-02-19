@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
+import DailyCountdown from "./DailyCountdown";
 
 export default function Navbar() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
@@ -52,15 +53,9 @@ export default function Navbar() {
   return (
     <>
       <div className="w-full bg-purple-800 text-white text-center py-2 px-4">
-        <div className="flex items-center justify-center gap-3 text-xs sm:text-sm md:text-base font-medium">
+        <div className="flex justify-center gap-3">
           <img src={assets.warning} alt="warning" className="w-4 sm:w-8" />
-
-          <p>
-            Price increases in less than 24 hours. Join now before it's too
-            late.
-            <span className="line-through mx-2 opacity-70">$27</span>
-            <span className="font-bold text-yellow-300">$16/once</span>
-          </p>
+          <DailyCountdown />
         </div>
       </div>
 

@@ -19,6 +19,7 @@
     "quill": "^2.0.3",
     "rc-progress": "^4.0.0",
     "react": "^19.2.0",
+    "react-countdown": "^2.3.6",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
     "react-redux": "^9.2.0",
