@@ -20,7 +20,7 @@ export default function SearchBar({ data }: InputData) {
   return (
     <form
       onSubmit={searchHandler}
-      className="max-w-xl w-full h-12 md:h-14 flex items-center bg-white border border-gray-300 rounded-full focus-within:border-purple-700 transition-colors duration-200"
+      className="max-w-xl w-full h-12 md:h-14 flex items-center bg-white border border-gray-300 rounded-full focus-within:border-sky-500 focus-within:shadow-md transition-all duration-300"
     >
       <Search className="w-10 mx-3 text-gray-500" />
 

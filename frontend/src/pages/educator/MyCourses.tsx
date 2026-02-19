@@ -57,6 +57,17 @@ export default function MyCourses() {
     }
   }, [isEducator, backendUrl, getToken]);
 
+  // Sync with updated course data
+  const handleCourseUpdate = (updatedCourse: Course) => {
+    setCourses(
+      (prev) =>
+        prev?.map((course) =>
+          course._id === updatedCourse._id ? updatedCourse : course,
+        ) || null,
+    );
+  };
+
+  // Delete course
   const handleDelete = async (courseId: string) => {
     setDeletingCourse(null);
 
@@ -214,6 +225,7 @@ export default function MyCourses() {
         <EditCourseModal
           course={editingCourse}
           onClose={() => setEditingCourse(null)}
+          onCourseUpdated={handleCourseUpdate}
         />
       )}
     </div>

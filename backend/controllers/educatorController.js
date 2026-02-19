@@ -86,14 +86,20 @@ export const updateCourse = async (req, res) => {
     };
   }
 
-  await Course.findByIdAndUpdate(courseId, parsedCourseData, {
-    new: true,
-    runValidators: true,
-  });
+  const updatedCourse = await Course.findByIdAndUpdate(
+    courseId,
+    parsedCourseData,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
 
-  res
-    .status(200)
-    .json({ success: true, message: "Course updated successfully" });
+  res.status(200).json({
+    success: true,
+    message: "Course updated successfully",
+    updatedCourse,
+  });
 };
 
 // Delete a course

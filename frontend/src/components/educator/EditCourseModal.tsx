@@ -11,13 +11,19 @@ import Quill from "quill";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import type { Course } from "../../features/courses/course.types";
 
 interface Props {
   course: EditCourse;
   onClose: () => void;
+  onCourseUpdated: (updatedCourse: Course) => void;
 }
 
-export default function EditCourseModal({ course, onClose }: Props) {
+export default function EditCourseModal({
+  course,
+  onClose,
+  onCourseUpdated,
+}: Props) {
   const quillRef = useRef<Quill | null>(null);
   const descRef = useRef<HTMLDivElement | null>(null);
 
@@ -84,6 +90,7 @@ export default function EditCourseModal({ course, onClose }: Props) {
     setThumbnailPreview(previewUrl);
   };
 
+  // Submit the changes
   const handleSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault();
@@ -116,8 +123,9 @@ export default function EditCourseModal({ course, onClose }: Props) {
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      toast.success(data.message);
+      onCourseUpdated(data.updatedCourse);
       onClose();
+      toast.success(data.message);
     } catch (error: unknown) {
       let msg = "Something went wrong";
 
