@@ -7,6 +7,7 @@ import {
   getUserCourseProgress,
   getUserData,
   purchaseCourseRZP,
+  purchaseCourseStripe,
   updateUserCourseProgress,
   userEnrolledCourses,
   verifyRazorpayPayment,
@@ -19,6 +20,8 @@ userRouter.get("/enrolled-courses", protect, wrapAsync(userEnrolledCourses));
 
 userRouter.post("/purchase-rzp", protect, wrapAsync(purchaseCourseRZP));
 userRouter.post("/verify-rzp", protect, wrapAsync(verifyRazorpayPayment));
+
+userRouter.post("/purchase-stripe", protect, wrapAsync(purchaseCourseStripe));
 
 userRouter.get("/course-progress", protect, getUserCourseProgress);
 userRouter.get("/course-progress/:courseId", protect, getSingleCourseProgress);

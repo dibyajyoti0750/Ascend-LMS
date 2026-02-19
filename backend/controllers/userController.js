@@ -1,10 +1,11 @@
+import crypto from "crypto";
+import Razorpay from "razorpay";
+import Stripe from "stripe";
 import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
 import ExpressError from "../utils/expressError.js";
 import CourseProgress from "../models/CourseProgress.js";
-import crypto from "crypto";
-import Razorpay from "razorpay";
 
 // Get user data
 export const getUserData = async (req, res) => {
@@ -35,7 +36,7 @@ export const userEnrolledCourses = async (req, res) => {
     .json({ success: true, enrolledCourses: userData.enrolledCourses });
 };
 
-// Purchase course
+// Purchase course Razorpay
 export const purchaseCourseRZP = async (req, res) => {
   const { courseId } = req.body;
   const { userId } = await req.auth();
@@ -51,7 +52,7 @@ export const purchaseCourseRZP = async (req, res) => {
     courseData.coursePrice -
     (courseData.discount * courseData.coursePrice) / 100;
 
-  // Create a record in our database first
+  // create a record in our database first
   const newPurchase = new Purchase({
     courseId: courseData._id,
     userId,
@@ -87,7 +88,7 @@ export const purchaseCourseRZP = async (req, res) => {
   });
 };
 
-// Function to verify razorpay payment
+// Function to verify Razorpay payment
 export const verifyRazorpayPayment = async (req, res) => {
   const {
     razorpay_order_id,
@@ -126,6 +127,68 @@ export const verifyRazorpayPayment = async (req, res) => {
   await purchaseData.save();
 
   res.json({ success: true });
+};
+
+// Purchase course Stripe
+export const purchaseCourseStripe = async (req, res) => {
+  const { origin } = req.headers;
+  const { courseId } = req.body;
+  const { userId } = await req.auth();
+
+  const userData = await User.findById(userId);
+  const courseData = await Course.findById(courseId);
+
+  if (!userData || !courseData) {
+    throw new ExpressError(404, "Data not found");
+  }
+
+  const finalAmount =
+    courseData.coursePrice -
+    (courseData.discount * courseData.coursePrice) / 100;
+
+  const existingPurchase = await Purchase.findOne({
+    userId,
+    courseId,
+    status: "completed",
+  });
+
+  if (existingPurchase) {
+    throw new ExpressError(400, "Course already purchased");
+  }
+
+  const newPurchase = await Purchase.create({
+    courseId: courseData._id,
+    userId,
+    amount: finalAmount,
+  });
+
+  const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+  const session = await stripeInstance.checkout.sessions.create({
+    success_url: `${origin}/loading/my-enrollments`,
+    cancel_url: `${origin}/`,
+    mode: "payment",
+    line_items: [
+      {
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: courseData.courseTitle,
+          },
+          unit_amount: Math.round(finalAmount * 100),
+        },
+        quantity: 1,
+      },
+    ],
+    metadata: {
+      purchaseId: newPurchase._id.toString(),
+    },
+  });
+
+  res.status(200).json({
+    success: true,
+    session_url: session.url,
+  });
 };
 
 // Update user course progress
