@@ -142,10 +142,7 @@ export const purchaseCourseStripe = async (req, res) => {
     throw new ExpressError(404, "Data not found");
   }
 
-  const finalAmount =
-    courseData.coursePrice -
-    (courseData.discount * courseData.coursePrice) / 100;
-
+  // prevent duplicate completed purchase
   const existingPurchase = await Purchase.findOne({
     userId,
     courseId,
@@ -156,10 +153,16 @@ export const purchaseCourseStripe = async (req, res) => {
     throw new ExpressError(400, "Course already purchased");
   }
 
+  const finalAmount =
+    courseData.coursePrice -
+    (courseData.discount * courseData.coursePrice) / 100;
+
+  // create purchase with pending status
   const newPurchase = await Purchase.create({
     courseId: courseData._id,
     userId,
     amount: finalAmount,
+    status: "pending",
   });
 
   const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);

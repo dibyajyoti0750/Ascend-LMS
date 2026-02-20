@@ -1,5 +1,8 @@
 import { Webhook } from "svix";
+import Stripe from "stripe";
 import User from "../models/User.js";
+import Purchase from "../models/Purchase.js";
+import Course from "../models/Course.js";
 
 // Function to manage clerk user with DB
 export const clerkWebhooks = async (req, res) => {
@@ -51,5 +54,82 @@ export const clerkWebhooks = async (req, res) => {
     }
   } catch (error) {
     res.json({ success: false, message: error.message });
+  }
+};
+
+// Stripe webhooks
+const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+export const stripeWebhooks = async (req, res) => {
+  const signature = req.headers["stripe-signature"];
+  let event;
+
+  try {
+    event = stripeInstance.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (error) {
+    return res.status(400).send(`Webhook Error: ${error.message}`);
+  }
+
+  try {
+    switch (event.type) {
+      // SUCCESS CASE
+      case "checkout.session.completed": {
+        const session = event.data.object;
+        const purchaseId = session.metadata?.purchaseId;
+
+        if (!purchaseId) break;
+
+        const purchase = await Purchase.findById(purchaseId);
+        if (!purchase) break;
+
+        // Idempotency check
+        if (purchase.status === "completed") break;
+
+        const user = await User.findById(purchase.userId);
+        const course = await Course.findById(purchase.courseId);
+
+        if (!user || !course) break;
+
+        // addToSet adds a value to an array only if it doesn’t already exist
+        await Course.findByIdAndUpdate(course._id, {
+          $addToSet: { enrolledStudents: user._id },
+        });
+
+        await User.findByIdAndUpdate(user._id, {
+          $addToSet: { enrolledCourses: course._id },
+        });
+
+        purchase.status = "completed";
+        await purchase.save();
+
+        break;
+      }
+
+      // FAILURE CASE (for async payments)
+      case "checkout.session.async_payment_failed": {
+        const session = event.data.object;
+        const purchaseId = session.metadata?.purchaseId;
+
+        if (!purchaseId) break;
+
+        await Purchase.findByIdAndUpdate(purchaseId, {
+          status: "failed",
+        });
+
+        break;
+      }
+
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
+    }
+
+    return res.json({ received: true });
+  } catch (error) {
+    console.error("Webhook error:", error);
+    return res.status(500).json({ error: "Internal webhook error" });
   }
 };
