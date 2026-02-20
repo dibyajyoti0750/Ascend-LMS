@@ -61,8 +61,10 @@ export default function Navbar() {
 
       <div className="flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 py-5 bg-purple-50 shadow">
         <Link to="/" className="flex items-center gap-2">
-          <img src={assets.logo} alt="Logo" className="w-8 md:w-9" />
-          <p className="text-sky-500 text-lg md:text-xl font-bold">Ascend</p>
+          <img src={assets.logo} alt="Logo" className="w-8 md:w-10" />
+          <p className="text-purple-600 text-lg md:text-2xl font-bold">
+            Ascend
+          </p>
         </Link>
 
         <div className="hidden md:flex items-center gap-5 text-gray-500">
