@@ -116,8 +116,13 @@ export const verifyRazorpayPayment = async (req, res) => {
   const courseData = await Course.findById(purchaseData.courseId);
 
   // enroll student
-  courseData.enrolledStudents.push(userData._id);
-  await courseData.save();
+  await Course.findByIdAndUpdate(courseData._id, {
+    $addToSet: { enrolledStudents: userData._id },
+  });
+
+  await User.findByIdAndUpdate(userData._id, {
+    $addToSet: { enrolledCourses: courseData._id },
+  });
 
   userData.enrolledCourses.push(courseData._id);
   await userData.save();

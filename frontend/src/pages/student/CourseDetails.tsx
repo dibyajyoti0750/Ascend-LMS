@@ -47,6 +47,7 @@ export default function CourseDetails() {
 
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [playerData, setPlayerData] = useState<PlayerData | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -68,6 +69,7 @@ export default function CourseDetails() {
 
   const handlePayment = async (method: PaymentMethod) => {
     try {
+      setPaymentProcessing(true);
       if (!userData) return toast.error("Sign in to enroll");
       const token = await getToken();
       if (!token) return toast.error("Unauthorized");
@@ -124,6 +126,8 @@ export default function CourseDetails() {
       }
 
       toast.error(msg);
+    } finally {
+      setPaymentProcessing(false);
     }
   };
 
@@ -417,6 +421,7 @@ export default function CourseDetails() {
         <PaymentModal
           onClose={() => setOpenPaymentModal(false)}
           onContinue={handlePayment}
+          paymentProcessing={paymentProcessing}
         />
       )}
       <Footer />
