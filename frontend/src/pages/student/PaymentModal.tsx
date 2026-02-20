@@ -83,7 +83,7 @@ export default function PaymentModal({
         <div className="mt-6 space-y-3">
           <button
             onClick={() => onContinue(selected)}
-            className="w-full rounded-lg bg-linear-to-r from-indigo-500 to-indigo-600 py-3 text-sm font-medium text-white transition hover:opacity-90 cursor-pointer"
+            className="w-full rounded-lg bg-linear-to-r from-indigo-500 to-indigo-600 py-3 text-sm font-medium text-white transition hover:opacity-90 active:opacity-90 cursor-pointer"
           >
             Continue
           </button>

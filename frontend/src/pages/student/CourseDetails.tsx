@@ -81,7 +81,7 @@ export default function CourseDetails() {
 
         if (data.success) {
           const { session_url } = data;
-          window.location.replace(session_url);
+          window.location.href = session_url;
         }
       } else if (method === "razorpay") {
         const { data } = await axios.post(
