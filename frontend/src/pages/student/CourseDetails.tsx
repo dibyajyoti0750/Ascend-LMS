@@ -73,7 +73,16 @@ export default function CourseDetails() {
       if (!token) return toast.error("Unauthorized");
 
       if (method === "stripe") {
-        console.log(method);
+        const { data } = await axios.post(
+          `${backendUrl}/api/user/purchase-stripe`,
+          { courseId: courseData?._id },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+
+        if (data.success) {
+          const { session_url } = data;
+          window.location.replace(session_url);
+        }
       } else if (method === "razorpay") {
         const { data } = await axios.post(
           backendUrl + "/api/user/purchase-rzp",

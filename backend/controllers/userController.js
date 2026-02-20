@@ -88,7 +88,7 @@ export const purchaseCourseRZP = async (req, res) => {
   });
 };
 
-// Function to verify Razorpay payment
+// Verify Razorpay payment
 export const verifyRazorpayPayment = async (req, res) => {
   const {
     razorpay_order_id,
