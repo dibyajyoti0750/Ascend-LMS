@@ -124,9 +124,6 @@ export const verifyRazorpayPayment = async (req, res) => {
     $addToSet: { enrolledCourses: courseData._id },
   });
 
-  userData.enrolledCourses.push(courseData._id);
-  await userData.save();
-
   purchaseData.status = "completed";
   purchaseData.paymentId = razorpay_payment_id;
   await purchaseData.save();
