@@ -17,24 +17,28 @@ export default function TestimonialsSection() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-auto gap-10 mt-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 items-start">
         {dummyTestimonial.map((testimonial, index) => (
           <div
             key={index}
-            className="rounded-xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+            className={`rounded-xl border border-gray-100 bg-white shadow-sm 
+            hover:shadow-md transition-all duration-300 overflow-hidden
+            ${expandedIndex === index ? "h-auto" : "h-65"}`}
           >
             {/* User */}
-            <div className="flex items-center gap-4 px-6 py-5 bg-gray-100">
+            <div className="flex items-center gap-4 px-5 py-4 bg-gray-100">
               <img
                 className="h-12 w-12 rounded-full object-cover"
                 src={testimonial.image}
                 alt={testimonial.name}
               />
               <div className="flex flex-col items-start">
-                <h3 className="text-base font-medium text-gray-900">
+                <h3 className="text-base font-medium text-gray-900 truncate">
                   {testimonial.name}
                 </h3>
-                <p className="text-sm text-gray-500">{testimonial.role}</p>
+                <p className="text-sm text-gray-500 truncate">
+                  {testimonial.role}
+                </p>
               </div>
             </div>
 
@@ -57,7 +61,7 @@ export default function TestimonialsSection() {
               <div className="mt-4 text-sm text-gray-600 leading-relaxed">
                 {expandedIndex === index
                   ? testimonial.feedback
-                  : testimonial.feedback.slice(0, 145)}
+                  : testimonial.feedback.slice(0, 80)}
 
                 {expandedIndex === index ? "" : "..."}
 
