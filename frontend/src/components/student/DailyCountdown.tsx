@@ -13,7 +13,7 @@ export default function DailyCountdown() {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-5 text-sm sm:text-base md:text-lg font-bold">
+      <div className="flex justify-center items-center gap-4 text-xs md:text-lg font-bold">
         <Countdown date={tomorrow} renderer={renderer} />
         <p>HURRY UP!! Join now before it's too late.</p>
         <div className="flex items-center gap-2">

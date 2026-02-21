@@ -53,8 +53,8 @@ export default function Navbar() {
   return (
     <>
       <div className="w-full bg-purple-800 text-white text-center py-2 px-4">
-        <div className="flex justify-center gap-3">
-          <img src={assets.warning} alt="warning" className="w-4 sm:w-8" />
+        <div className="flex justify-center items-center gap-3">
+          <img src={assets.warning} alt="warning" className="w-8 h-8" />
           <DailyCountdown />
         </div>
       </div>
