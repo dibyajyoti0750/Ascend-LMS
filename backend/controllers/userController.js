@@ -259,7 +259,10 @@ export const getSingleCourseProgress = async (req, res) => {
   }).select("courseId completed lectureCompleted");
 
   if (!progressData) {
-    throw new ExpressError(404, "Course progress not found");
+    return res.status(200).json({
+      success: true,
+      progressData: null,
+    });
   }
 
   res.status(200).json({ success: true, progressData });

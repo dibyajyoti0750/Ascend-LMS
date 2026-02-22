@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { RootState } from "../../app/store";
@@ -61,7 +61,8 @@ export default function Player() {
     getCourseData();
   }, [courseId, enrolledCourses, userData]);
 
-  const getCourseProgress = async () => {
+  // useCallback memorizes a function so React does not recreate it on every render
+  const getCourseProgress = useCallback(async () => {
     try {
       const token = await getToken();
       if (!token) {
@@ -70,7 +71,7 @@ export default function Player() {
       }
 
       const { data } = await axios.get(
-        `${backendUrl}/api/course-progress/${courseId}`,
+        `${backendUrl}/api/user/course-progress/${courseId}`,
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
@@ -86,7 +87,7 @@ export default function Player() {
 
       toast.error(msg);
     }
-  };
+  }, [backendUrl, getToken, courseId]);
 
   const markLectureAsComplete = async (lectureId: string) => {
     try {
@@ -146,13 +147,18 @@ export default function Player() {
     }
   };
 
+  useEffect(() => {
+    const fetchProgress = async () => {
+      if (!courseId) return;
+      await getCourseProgress();
+    };
+
+    fetchProgress();
+  }, [courseId, getCourseProgress]);
+
   const toggleSection = (index: number) => {
     setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }));
   };
-
-  useEffect(() => {
-    getCourseProgress();
-  }, [courseId]);
 
   return courseData ? (
     <>
@@ -270,6 +276,9 @@ export default function Player() {
                   </p>
                 </div>
 
+                {/* Gotta fix this: click marks all lectures of that module as checked, I guess not in the backend, only the UI */}
+                {/* After marked as complete, the checkbox is still un-checkable */}
+                {/* Refreshing the page un-checks all boxes, only UI btw */}
                 <>
                   {(() => {
                     const isCompleted =

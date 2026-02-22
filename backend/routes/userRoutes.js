@@ -23,9 +23,20 @@ userRouter.post("/verify-rzp", protect, wrapAsync(verifyRazorpayPayment));
 
 userRouter.post("/purchase-stripe", protect, wrapAsync(purchaseCourseStripe));
 
-userRouter.get("/course-progress", protect, getUserCourseProgress);
-userRouter.get("/course-progress/:courseId", protect, getSingleCourseProgress);
-userRouter.post("/update-course-progress", protect, updateUserCourseProgress);
-userRouter.post("/add-rating", protect, addUserRating);
+userRouter.get("/course-progress", protect, wrapAsync(getUserCourseProgress));
+
+userRouter.get(
+  "/course-progress/:courseId",
+  protect,
+  wrapAsync(getSingleCourseProgress),
+);
+
+userRouter.post(
+  "/update-course-progress",
+  protect,
+  wrapAsync(updateUserCourseProgress),
+);
+
+userRouter.post("/add-rating", protect, wrapAsync(addUserRating));
 
 export default userRouter;
