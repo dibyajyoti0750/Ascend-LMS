@@ -164,7 +164,7 @@ export const educatorDashboardData = async (req, res) => {
       {
         _id: { $in: course.enrolledStudents },
       },
-      "name imageUrl",
+      "name email imageUrl",
     );
 
     students.forEach((student) => {

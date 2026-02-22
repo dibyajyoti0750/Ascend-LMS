@@ -13,7 +13,6 @@ export default function StudentsEnrolled() {
   const [enrolledStudents, setEnrolledStudents] = useState<
     StudentEnrolled[] | null
   >(null);
-  console.log(enrolledStudents);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
@@ -47,31 +46,45 @@ export default function StudentsEnrolled() {
   }, [backendUrl, getToken, isEducator]);
 
   return enrolledStudents ? (
-    <div className="min-h-screen flex flex-col items-start justify-between p-4 pt-8 md:p-8">
+    <div className="min-h-screen flex flex-col items-center p-4 pt-8 md:p-8 bg-gray-50">
+      {/* Page Header */}
+      <div className="mb-6 w-full max-w-5xl">
+        <h1 className="text-2xl font-semibold text-gray-800">
+          Enrolled Students
+        </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Manage and contact students enrolled in your courses.
+        </p>
+      </div>
+
       <div className="flex flex-col items-center max-w-5xl w-full overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm">
         <table className="table-fixed md:table-auto w-full overflow-hidden pb-4">
-          <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
-            <tr>
-              <th className="px-4 py-3 text-center hidden sm:table-cell">#</th>
-              <th className="px-4 py-3">Student</th>
-              <th className="px-4 py-3">Course</th>
-              <th className="px-4 py-3 hidden sm:table-cell">Purchase Date</th>
-              <th className="px-4 py-3 text-center">Action</th>
+          {/* Table Header */}
+          <thead className="sticky top-0 bg-white z-10 border-b border-gray-100">
+            <tr className="text-gray-500 uppercase text-[11px] tracking-wider">
+              <th className="p-4 text-center hidden sm:table-cell">#</th>
+              <th className="p-4 text-left">Student</th>
+              <th className="p-4 text-left">Course</th>
+              <th className="p-4 hidden sm:table-cell text-left">
+                Purchase Date
+              </th>
+              <th className="p-4 text-center">Action</th>
             </tr>
           </thead>
 
-          <tbody className="text-sm text-gray-600">
+          {/* Table Body */}
+          <tbody className="text-sm text-gray-700">
             {!enrolledStudents.length ? (
               <tr>
-                <td colSpan={4} className="py-5 text-center">
-                  <div className="flex flex-col items-center justify-center gap-2">
+                <td colSpan={5} className="py-16 text-center">
+                  <div className="flex flex-col items-center justify-center gap-3">
                     <img
                       src={assets.education}
                       alt="education"
                       className="w-40 opacity-20"
                     />
 
-                    <p className="text-gray-600 text-sm mb-6">
+                    <p className="text-gray-500 text-sm">
                       No students have enrolled in your courses yet.
                     </p>
                   </div>
@@ -81,19 +94,19 @@ export default function StudentsEnrolled() {
               enrolledStudents.map((item, index) => (
                 <tr
                   key={index}
-                  className="border-b border-gray-200 hover:bg-gray-50 transition"
+                  className="border-b border-gray-100 hover:bg-gray-50 transition duration-150"
                 >
-                  <td className="px-4 py-3 text-center hidden sm:table-cell">
+                  <td className="p-4 text-center hidden sm:table-cell">
                     {index + 1}
                   </td>
 
                   {/* Student */}
-                  <td className="px-4 py-3">
+                  <td className="p-4">
                     <div className="flex items-center space-x-3">
                       <img
                         src={item.student.imageUrl}
                         alt="profile"
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-sky-200"
                       />
                       <div className="flex flex-col">
                         <span className="font-medium truncate">
@@ -107,18 +120,18 @@ export default function StudentsEnrolled() {
                   </td>
 
                   {/* Course */}
-                  <td className="px-4 py-3 truncate">{item.courseTitle}</td>
+                  <td className="p-4 truncate">{item.courseTitle}</td>
 
                   {/* Date */}
-                  <td className="px-4 py-3 hidden sm:table-cell">
+                  <td className="p-4 hidden sm:table-cell">
                     {new Date(item.purchaseDate).toLocaleDateString("en-IN")}
                   </td>
 
                   {/* Action */}
-                  <td className="px-4 py-3 text-center">
+                  <td className="p-4 text-center">
                     <a
                       href={`mailto:${item.student.email}`}
-                      className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+                      className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
                     >
                       Contact
                     </a>

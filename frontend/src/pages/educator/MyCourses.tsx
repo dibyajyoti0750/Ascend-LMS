@@ -107,110 +107,112 @@ export default function MyCourses() {
   };
 
   return courses ? (
-    <div className="h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
-      <div className="w-full">
-        <h2 className="pb-4 text-lg font-medium">My Courses</h2>
+    <div className="min-h-screen flex flex-col items-center p-4 pt-8 md:p-8 bg-gray-50">
+      {/* Page Header */}
+      <div className="mb-6 w-full max-w-5xl">
+        <h1 className="text-2xl font-semibold text-gray-800">My Courses</h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Track revenue, monitor enrollments, and manage your course listings.
+        </p>
+      </div>
 
-        <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-200">
-          <table className="md:table-auto table-fixed w-full overflow-hidden">
-            <thead className="text-gray-700 border-b border-gray-200 text-sm text-left">
+      <div className="flex flex-col items-center max-w-5xl w-full overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm">
+        <table className="table-fixed md:table-auto w-full overflow-hidden pb-4">
+          {/* Table Header */}
+          <thead className="sticky top-0 bg-white z-10 border-b border-gray-100">
+            <tr className="text-gray-500 uppercase text-[11px] tracking-wider">
+              <th className="p-4 text-left">All Courses</th>
+              <th className="p-4 text-left">Revenue</th>
+              <th className="p-4 text-left">Students</th>
+              <th className="p-4 text-left">Published On</th>
+              <th className="p-4 text-left">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody className="text-sm text-gray-700">
+            {!courses.length ? (
               <tr>
-                <th className="px-4 py-3 font-semibold truncate">
-                  All Courses
-                </th>
-                <th className="px-4 py-3 font-semibold truncate">Revenue</th>
-                <th className="px-4 py-3 font-semibold truncate">Students</th>
-                <th className="px-4 py-3 font-semibold truncate">
-                  Published On
-                </th>
-                <th className="px-4 py-3 font-semibold truncate">Actions</th>
-              </tr>
-            </thead>
+                <td colSpan={5} className="py-16 text-center">
+                  <div className="flex flex-col items-center justify-center gap-3">
+                    <img
+                      src={assets.education}
+                      alt="education"
+                      className="w-40 opacity-20"
+                    />
 
-            <tbody className="text-sm text-gray-600">
-              {!courses.length ? (
-                <tr>
-                  <td colSpan={5} className="py-5 text-center">
-                    <div className="flex flex-col items-center justify-center gap-2">
-                      <img
-                        src={assets.education}
-                        alt="education"
-                        className="w-40 opacity-20"
+                    <p className="text-gray-500 text-sm">
+                      You haven't published any courses yet.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              courses.map((course, index) => (
+                <tr
+                  key={index}
+                  className="border-b border-gray-100 hover:bg-gray-50 transition duration-150"
+                >
+                  <td className="p-4 flex items-center space-x-3 truncate">
+                    <img
+                      src={course.courseThumbnail.url}
+                      alt="thumbnail"
+                      className="w-28"
+                    />
+                    <span className="truncate hidden md:block">
+                      {course.courseTitle}
+                    </span>
+                  </td>
+
+                  <td className="p-4">
+                    {currency}{" "}
+                    {Math.floor(
+                      course.enrolledStudents.length *
+                        (course.coursePrice -
+                          (course.discount * course.coursePrice) / 100),
+                    )}
+                  </td>
+
+                  <td className="p-4">{course.enrolledStudents.length}</td>
+
+                  <td className="p-4">
+                    {new Date(course.createdAt).toLocaleDateString("en-IN")}
+                  </td>
+
+                  <td className="p-4">
+                    <div className="flex items-start gap-6">
+                      <Edit
+                        onClick={() =>
+                          setEditingCourse({
+                            _id: course._id,
+                            courseTitle: course.courseTitle,
+                            courseDescription: course.courseDescription,
+                            coursePrice: course.coursePrice,
+                            courseThumbnail: course.courseThumbnail,
+                            discount: course.discount,
+                            isPublished: course.isPublished,
+                          })
+                        }
+                        size={20}
+                        className="text-gray-400 hover:text-blue-500 cursor-pointer transition-colors duration-200"
                       />
 
-                      <p className="text-gray-600 text-sm mb-6">
-                        You haven't published any courses yet.
-                      </p>
+                      <Trash2
+                        onClick={() =>
+                          setDeletingCourse({
+                            id: course._id,
+                            title: course.courseTitle,
+                          })
+                        }
+                        size={20}
+                        className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors duration-200"
+                      />
                     </div>
                   </td>
                 </tr>
-              ) : (
-                courses.map((course, index) => (
-                  <tr key={index} className="border-b border-gray-200">
-                    <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
-                      <img
-                        src={course.courseThumbnail.url}
-                        alt="thumbnail"
-                        className="w-24"
-                      />
-                      <span className="truncate hidden md:block">
-                        {course.courseTitle}
-                      </span>
-                    </td>
-
-                    <td className="px-4 py-3">
-                      {currency}{" "}
-                      {Math.floor(
-                        course.enrolledStudents.length *
-                          (course.coursePrice -
-                            (course.discount * course.coursePrice) / 100),
-                      )}
-                    </td>
-
-                    <td className="px-4 py-3">
-                      {course.enrolledStudents.length}
-                    </td>
-
-                    <td className="px-4 py-3">
-                      {new Date(course.createdAt).toLocaleDateString("en-IN")}
-                    </td>
-
-                    <td className="px-4 py-3">
-                      <div className="flex items-center justify-between">
-                        <Edit
-                          onClick={() =>
-                            setEditingCourse({
-                              _id: course._id,
-                              courseTitle: course.courseTitle,
-                              courseDescription: course.courseDescription,
-                              coursePrice: course.coursePrice,
-                              courseThumbnail: course.courseThumbnail,
-                              discount: course.discount,
-                              isPublished: course.isPublished,
-                            })
-                          }
-                          size={20}
-                          className="text-gray-400 hover:text-blue-500 cursor-pointer transition-colors duration-200"
-                        />
-
-                        <Trash2
-                          onClick={() =>
-                            setDeletingCourse({
-                              id: course._id,
-                              title: course.courseTitle,
-                            })
-                          }
-                          size={20}
-                          className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors duration-200"
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
       {deletingCourse && (
