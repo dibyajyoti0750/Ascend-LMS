@@ -21,6 +21,8 @@ import education from "./education.png";
 import warning from "./warning.png";
 import stripeIcon from "./stripe.png";
 import razorpayIcon from "./razorpay.png";
+import check from "./check.png";
+import play from "./play.png";
 
 export const assets = {
   logo,
@@ -43,6 +45,8 @@ export const assets = {
   warning,
   stripeIcon,
   razorpayIcon,
+  check,
+  play,
 };
 
 export const dummyTestimonial = [

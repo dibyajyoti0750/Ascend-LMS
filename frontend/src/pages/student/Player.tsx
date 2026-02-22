@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { RootState } from "../../app/store";
-import { ChevronDown, CircleCheck, CirclePlay } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { calculateChapterTime } from "../../utils/calculate";
 import humanizeDuration from "humanize-duration";
 import Rating from "../../components/student/Rating";
@@ -13,6 +13,7 @@ import Loading from "../../components/student/Loading";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
+import { assets } from "../../assets/assets";
 
 interface PlayerData extends Lecture {
   chapter: number;
@@ -197,15 +198,19 @@ export default function Player() {
                     openSections[index] ? "max-h-96" : "max-h-0"
                   }`}
                 >
-                  <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 border-t border-gray-300">
+                  <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 space-y-2 border-t border-gray-300 max-h-40 overflow-y-auto">
                     {chapter.chapterContent.map((lecture, i) => (
-                      <li key={i} className="flex items-center gap-2 py-1.5">
+                      <li key={i} className="flex items-center gap-3 py-1.5">
                         {progressData?.lectureCompleted.includes(
                           lecture.lectureId,
                         ) ? (
-                          <CircleCheck className="text-blue-600" />
+                          <img
+                            src={assets.check}
+                            alt="completed"
+                            className="w-5 h-5"
+                          />
                         ) : (
-                          <CirclePlay
+                          <img
                             onClick={() =>
                               setPlayerData({
                                 ...lecture,
@@ -213,7 +218,10 @@ export default function Player() {
                                 lecture: i + 1,
                               })
                             }
-                            className="text-gray-600 cursor-pointer"
+                            src={assets.play}
+                            alt="play"
+                            className="w-5 h-5 cursor-pointer"
+                            title="Play lecture"
                           />
                         )}
 
@@ -276,9 +284,6 @@ export default function Player() {
                   </p>
                 </div>
 
-                {/* Gotta fix this: click marks all lectures of that module as checked, I guess not in the backend, only the UI */}
-                {/* After marked as complete, the checkbox is still un-checkable */}
-                {/* Refreshing the page un-checks all boxes, only UI btw */}
                 <>
                   {(() => {
                     const isCompleted =
