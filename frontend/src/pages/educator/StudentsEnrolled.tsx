@@ -13,6 +13,7 @@ export default function StudentsEnrolled() {
   const [enrolledStudents, setEnrolledStudents] = useState<
     StudentEnrolled[] | null
   >(null);
+  console.log(enrolledStudents);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
@@ -47,18 +48,15 @@ export default function StudentsEnrolled() {
 
   return enrolledStudents ? (
     <div className="min-h-screen flex flex-col items-start justify-between p-4 pt-8 md:p-8">
-      <div className="flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md bg-white border border-gray-200">
+      <div className="flex flex-col items-center max-w-5xl w-full overflow-hidden rounded-xl bg-white border border-gray-200 shadow-sm">
         <table className="table-fixed md:table-auto w-full overflow-hidden pb-4">
-          <thead className="text-gray-700 border-b border-gray-200 text-sm text-left">
+          <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider">
             <tr>
-              <th className="px-4 py-3 font-semibold text-center hidden sm:table-cell">
-                #
-              </th>
-              <th className="px-4 py-3 font-semibold">Student Name</th>
-              <th className="px-4 py-3 font-semibold">Course Title</th>
-              <th className="px-4 py-3 font-semibold hidden sm:table-cell">
-                Date
-              </th>
+              <th className="px-4 py-3 text-center hidden sm:table-cell">#</th>
+              <th className="px-4 py-3">Student</th>
+              <th className="px-4 py-3">Course</th>
+              <th className="px-4 py-3 hidden sm:table-cell">Purchase Date</th>
+              <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
 
@@ -81,24 +79,49 @@ export default function StudentsEnrolled() {
               </tr>
             ) : (
               enrolledStudents.map((item, index) => (
-                <tr key={index} className="border-b border-gray-200">
+                <tr
+                  key={index}
+                  className="border-b border-gray-200 hover:bg-gray-50 transition"
+                >
                   <td className="px-4 py-3 text-center hidden sm:table-cell">
                     {index + 1}
                   </td>
 
-                  <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
-                    <img
-                      src={item.student.imageUrl}
-                      alt="profile"
-                      className="w-10 rounded-full"
-                    />
-                    <span className="truncate">{item.student.name}</span>
+                  {/* Student */}
+                  <td className="px-4 py-3">
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={item.student.imageUrl}
+                        alt="profile"
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div className="flex flex-col">
+                        <span className="font-medium truncate">
+                          {item.student.name}
+                        </span>
+                        <span className="text-gray-500 text-xs truncate">
+                          {item.student.email}
+                        </span>
+                      </div>
+                    </div>
                   </td>
 
+                  {/* Course */}
                   <td className="px-4 py-3 truncate">{item.courseTitle}</td>
 
+                  {/* Date */}
                   <td className="px-4 py-3 hidden sm:table-cell">
                     {new Date(item.purchaseDate).toLocaleDateString("en-IN")}
+                  </td>
+
+                  {/* Action */}
+                  <td className="px-4 py-3 text-center">
+                    <a
+                      href={`mailto:${item.student.email}`}
+                      className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+                    >
+                      Contact
+                    </a>
                   </td>
                 </tr>
               ))

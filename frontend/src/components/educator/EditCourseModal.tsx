@@ -309,10 +309,10 @@ export default function EditCourseModal({
           <button
             onClick={handleSubmit}
             disabled={isSubmitting || !isChanged || !isValid}
-            className={`px-5 py-2.5 text-sm font-medium rounded-lg bg-purple-800 text-white transition shadow-md ${
+            className={`px-5 py-2.5 text-sm font-medium rounded-lg text-white transition shadow-md ${
               isSubmitting || !isChanged || !isValid
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-purple-900 cursor-pointer"
+                ? "opacity-60 bg-gray-500 cursor-not-allowed"
+                : "bg-purple-800 hover:bg-purple-900 cursor-pointer"
             }`}
           >
             {isSubmitting ? (
