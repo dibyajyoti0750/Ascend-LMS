@@ -163,7 +163,7 @@ export default function Player() {
 
   return courseData ? (
     <>
-      <div className="p-4 sm:p-10 flex flex-col-reverse md:grid md:grid-cols-2 gap-5 md:gap-10 md:px-36">
+      <div className="p-4 md:px-36 md:py-24 flex flex-col-reverse md:grid md:grid-cols-2 gap-5 md:gap-10">
         {/* Left column */}
         <div className="text-gray-800">
           <h2 className="text-2xl font-semibold">{courseData.courseTitle}</h2>

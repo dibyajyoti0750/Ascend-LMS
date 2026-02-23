@@ -74,7 +74,7 @@ export default function MyEnrollments() {
 
   return (
     <>
-      <div className="md:px-36 px-8 pt-10">
+      <div className="md:px-36 md:py-28 px-8 py-10">
         <h1 className="text-2xl font-semibold">My Enrollments</h1>
         <table className="table-fixed md:table-auto w-full overflow-hidden border mt-10">
           <thead className="text-gray-900 border border-gray-500/20 text-sm text-left max-sm:hidden">

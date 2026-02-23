@@ -1,19 +1,27 @@
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function CallToAction() {
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-col items-center gap-4 pt-10 pb-24">
+    <div className="flex flex-col items-center gap-4 pb-28">
       <h1 className="text-xl md:text-4xl text-purple-900 font-bold">
-        Learn. Apply. Grow.
+        Take the First Step Today
       </h1>
 
       <p className="text-gray-500 sm:text-sm text-center max-w-xl">
-        Practical education built to help you move from understanding concepts
-        to using them with confidence.
+        Small progress every day adds up. Let's get you started.
       </p>
 
       <div className="flex items-center font-medium gap-6 mt-4">
-        <button className="px-10 py-3 rounded-md text-white bg-purple-700 hover:bg-purple-800 transition cursor-pointer">
+        <button
+          onClick={() => {
+            navigate("/course-list");
+            window.scrollTo(0, 0);
+          }}
+          className="px-10 py-3 rounded-md text-white bg-purple-700 hover:bg-purple-800 transition cursor-pointer"
+        >
           Get started
         </button>
 

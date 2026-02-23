@@ -26,7 +26,7 @@ export default function CourseList() {
 
   return (
     <>
-      <div className="relative md:px-36 px-8 pt-20 text-left">
+      <div className="relative md:px-36 px-8 p-28 text-left">
         <div className="flex md:flex-row flex-col gap-6 items-start justify-between w-full">
           <div>
             <h1 className="text-4xl font-semibold text-purple-900 mb-2">
@@ -51,7 +51,7 @@ export default function CourseList() {
             <p>{input}</p>
             <X
               onClick={() => navigate("/course-list")}
-              className="text-gray-600 w-5"
+              className="text-gray-600 w-5 cursor-pointer"
             />
           </div>
         )}

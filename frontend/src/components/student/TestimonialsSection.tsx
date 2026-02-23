@@ -11,8 +11,9 @@ export default function TestimonialsSection() {
       <div className="max-w-xl mx-auto">
         <h2 className="text-3xl font-bold text-purple-900">Testimonials</h2>
         <p className="mt-4 text-gray-500 leading-relaxed">
-          Words from learners who trusted a focused learning process and stayed
-          with it. What they share is simple, measured, and real.
+          Real words from learners who once felt confused, unsure, and stuck.
+          They trusted the process, stayed consistent, and made progress step by
+          step.
         </p>
       </div>
 
