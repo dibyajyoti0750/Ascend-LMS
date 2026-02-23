@@ -68,7 +68,10 @@ export default function App() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className="min-h-screen bg-white">
+      <div
+        onContextMenu={(e) => e.preventDefault()}
+        className="min-h-screen bg-white overflow-x-hidden"
+      >
         <Toaster />
         {!isEducatorRoute && <Navbar />}
 
