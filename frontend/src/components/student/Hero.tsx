@@ -27,7 +27,7 @@ export default function Hero() {
 
       <div
         onContextMenu={(e) => e.preventDefault()}
-        className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300 my-2"
+        className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300 my-4"
       >
         <YouTube
           videoId="H_AGA8ONNEA"

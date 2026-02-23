@@ -25,9 +25,9 @@
   }
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 @theme {
   --spacing-section-height: 400px;

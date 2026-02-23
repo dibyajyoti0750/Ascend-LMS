@@ -29,7 +29,7 @@ export default function SearchBar({ data }: InputData) {
         value={input}
         type="text"
         placeholder="Search"
-        className="h-full w-full outline-none text-gray-600"
+        className="h-full w-full outline-none text-lg text-gray-600"
       />
 
       <button
