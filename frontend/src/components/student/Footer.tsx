@@ -26,10 +26,10 @@ export default function Footer() {
           <ul className="flex md:flex-col w-full justify-between text-sm text-white/80 md:space-y-2">
             {["Home", "About us", "Contact us", "Privacy policy"].map(
               (el, i) => (
-                <li key={i} className="hover:text-white w-fit">
+                <li key={i} className="hover:text-white hover:underline w-fit">
                   <a href="#">{el}</a>
                 </li>
-              )
+              ),
             )}
           </ul>
         </div>

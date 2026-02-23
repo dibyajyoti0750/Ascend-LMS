@@ -52,27 +52,27 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full bg-purple-800 text-white text-center py-2 px-4">
+      <div className="w-full bg-purple-800 text-white text-center p-4">
         <div className="flex justify-center items-center gap-3">
           <img src={assets.warning} alt="warning" className="w-8 h-8" />
           <DailyCountdown />
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-36 py-5 bg-purple-50 shadow">
+      <div className="flex items-center justify-between px-4 md:px-14 py-3 bg-purple-50 shadow">
         <Link to="/" className="flex items-center gap-2">
           <img src={assets.logo} alt="Logo" className="w-8 md:w-10" />
-          <p className="text-purple-600 text-lg md:text-2xl font-bold">
+          <p className="text-purple-700 text-lg md:text-2xl font-bold">
             Ascend
           </p>
         </Link>
 
-        <div className="hidden md:flex items-center gap-5 text-gray-500">
+        <div className="hidden md:flex items-center gap-5 text-gray-600 font-medium">
           <div className="flex items-center gap-2">
             {isEducator && (
               <button
                 onClick={() => navigate("/educator")}
-                className="rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:bg-gray-200/60 hover:text-purple-500 active:scale-95 cursor-pointer"
+                className="rounded-md px-3 py-2 text-sm transition-all duration-200 ease-in-out hover:bg-gray-200/60 hover:text-purple-500 active:scale-95 cursor-pointer"
               >
                 Educator Dashboard
               </button>
@@ -81,7 +81,7 @@ export default function Navbar() {
             {user && (
               <Link
                 to="/my-enrollments"
-                className="rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ease-in-out hover:bg-gray-200/60 hover:text-purple-500 active:scale-95"
+                className="rounded-md px-3 py-2 text-sm transition-all duration-200 ease-in-out hover:bg-gray-200/60 hover:text-purple-500 active:scale-95"
               >
                 My Enrollments
               </Link>
@@ -101,7 +101,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Screens */}
-        <div className="md:hidden flex items-center gap-3 sm:gap-5 text-gray-500 text-sm">
+        <div className="md:hidden flex items-center gap-3 text-gray-600 text-sm">
           <div className="flex items-center">
             {isEducator && (
               <button
