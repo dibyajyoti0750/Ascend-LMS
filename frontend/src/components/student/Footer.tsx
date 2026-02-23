@@ -51,7 +51,7 @@ export default function Footer() {
               placeholder="How can we help?*"
               className="border border-gray-500/30 bg-gray-800 text-gray-300 placeholder-gray-500 outline-none rounded text-sm w-full h-20 px-2 resize-none"
             ></textarea>
-            <button className="bg-purple-700 w-24 h-9 text-white font-medium rounded cursor-pointer">
+            <button className="bg-[#6F00FF] w-24 h-9 text-white font-medium rounded cursor-pointer">
               Submit
             </button>
           </div>

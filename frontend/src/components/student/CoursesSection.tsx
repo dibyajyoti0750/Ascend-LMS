@@ -26,7 +26,7 @@ export default function CoursesSection() {
       <div className="flex flex-col justify-center items-center">
         <h2 className="text-3xl font-medium text-gray-700">
           Unlock Your{" "}
-          <span className="text-purple-700 font-bold">Next Level</span>
+          <span className="text-[#6F00FF] font-bold">Next Level</span>
         </h2>
         <p className="text-sm md:text-base text-gray-500 mt-3 max-w-xl">
           Structured programs designed to improve your mindset and daily habits.

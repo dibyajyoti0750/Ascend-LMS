@@ -20,7 +20,7 @@ export default function CallToAction() {
             navigate("/course-list");
             window.scrollTo(0, 0);
           }}
-          className="px-10 py-3 rounded-md text-white bg-purple-700 hover:bg-purple-800 transition cursor-pointer"
+          className="px-10 py-3 rounded-md text-white bg-[#6F00FF] hover:bg-purple-800 transition cursor-pointer"
         >
           Get started
         </button>

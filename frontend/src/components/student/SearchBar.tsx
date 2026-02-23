@@ -34,7 +34,7 @@ export default function SearchBar({ data }: InputData) {
 
       <button
         type="submit"
-        className="bg-purple-700 hover:bg-purple-800 transition-colors duration-200 rounded-full text-white text-lg font-medium px-4 md:px-8.5 py-1.5 md:py-2.5 mx-1 cursor-pointer"
+        className="bg-[#6F00FF] hover:bg-purple-800 transition-colors duration-200 rounded-full text-white text-lg font-medium px-4 md:px-8.5 py-1.5 md:py-2.5 mx-1 cursor-pointer"
       >
         Search
       </button>
