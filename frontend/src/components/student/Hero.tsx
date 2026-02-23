@@ -25,13 +25,17 @@ export default function Hero() {
 
       <SearchBar />
 
-      <div className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300 my-2">
+      <div
+        onContextMenu={(e) => e.preventDefault()}
+        className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300 my-2"
+      >
         <YouTube
-          videoId="pCqZBOIVBA4"
+          videoId="H_AGA8ONNEA"
           opts={{
             playerVars: {
-              autoplay: 0,
+              rel: 0,
               mute: 1,
+              autoplay: 0,
               controls: 1,
               modestbranding: 1,
             },
