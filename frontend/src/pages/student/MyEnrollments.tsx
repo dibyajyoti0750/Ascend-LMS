@@ -127,7 +127,7 @@ export default function MyEnrollments() {
                       </div>
                       <Line
                         strokeWidth={1}
-                        strokeColor={"#ad46ff"}
+                        strokeColor={"#6F00FF"}
                         percent={
                           progressArray[i]
                             ? (progressArray[i].lectureCompleted * 100) /
@@ -152,7 +152,7 @@ export default function MyEnrollments() {
                   <td className="px-4 py-3 max-sm:text-right">
                     <button
                       onClick={() => navigate("/player/" + course._id)}
-                      className="px-3 sm:px-6 py-1.5 sm:py-2.5 bg-purple-700 max-sm:text-xs text-white font-medium cursor-pointer"
+                      className="px-3 sm:px-6 py-1.5 sm:py-2.5 bg-[#6F00FF] max-sm:text-xs text-white font-medium cursor-pointer"
                     >
                       {progressArray[i] &&
                       progressArray[i].lectureCompleted /

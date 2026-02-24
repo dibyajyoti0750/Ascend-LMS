@@ -38,6 +38,7 @@ export interface Course {
   coursePrice: number;
   isPublished: boolean;
   discount: number;
+  isBestSeller: boolean;
   courseContent: Chapter[];
   educator: Educator;
   enrolledStudents: string[];

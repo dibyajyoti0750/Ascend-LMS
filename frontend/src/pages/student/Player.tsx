@@ -165,49 +165,55 @@ export default function Player() {
     <>
       <div className="p-4 md:px-36 md:py-24 flex flex-col-reverse md:grid md:grid-cols-2 gap-5 md:gap-10">
         {/* Left column */}
-        <div className="text-gray-800">
-          <h2 className="text-2xl font-semibold">{courseData.courseTitle}</h2>
+        <div className="text-gray-800 space-y-4">
+          <h2 className="text-2xl font-bold">{courseData.courseTitle}</h2>
 
-          <div className="pt-5">
+          <div className="border border-slate-200 rounded-lg overflow-hidden bg-white">
             {courseData.courseContent.map((chapter, index) => (
               <div
                 key={index}
-                className="border border-gray-300 bg-white mb-2 rounded"
+                className="border-b border-slate-200 last:border-0"
               >
                 <div
                   onClick={() => toggleSection(index)}
-                  className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded cursor-pointer select-none"
+                  className="flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     <ChevronDown
-                      className={`transform transition-transform ${openSections[index] ? "rotate-180" : ""}`}
+                      size={20}
+                      className={`text-slate-400 transition-transform duration-300 ${
+                        openSections[index] ? "rotate-180" : ""
+                      }`}
                     />
-                    <p className="font-semibold md:text-base text-sm">
+                    <p className="font-bold text-slate-800">
                       {chapter.chapterTitle}
                     </p>
                   </div>
 
-                  <p className="text-sm md:text-base">
+                  <p className="text-sm text-slate-800 font-medium">
                     {chapter.chapterContent.length} lectures •{" "}
                     {calculateChapterTime(chapter)}
                   </p>
                 </div>
 
                 <div
-                  className={`overflow-hidden transition-all duration-300 ${
+                  className={`overflow-hidden transition-all duration-300 ease-in-out ${
                     openSections[index] ? "max-h-96" : "max-h-0"
                   }`}
                 >
-                  <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 space-y-2 border-t border-gray-300 max-h-40 overflow-y-auto">
+                  <ul className="bg-white md:pl-10 pl-4 pr-4 py-4 space-y-3 max-h-96 overflow-y-auto">
                     {chapter.chapterContent.map((lecture, i) => (
-                      <li key={i} className="flex items-center gap-3 py-1.5">
+                      <li
+                        key={i}
+                        className="flex items-center gap-3 py-2 group"
+                      >
                         {progressData?.lectureCompleted.includes(
                           lecture.lectureId,
                         ) ? (
                           <img
                             src={assets.check}
                             alt="completed"
-                            className="w-5 h-5"
+                            className="w-6 h-6"
                           />
                         ) : (
                           <img
@@ -220,17 +226,19 @@ export default function Player() {
                             }
                             src={assets.play}
                             alt="play"
-                            className="w-5 h-5 cursor-pointer"
+                            className="w-6 h-6 cursor-pointer"
                             title="Play lecture"
                           />
                         )}
 
                         <div className="flex items-center justify-between w-full text-sm md:text-base">
-                          <p>{lecture.lectureTitle}</p>
+                          <p className="text-sm text-slate-700 font-medium group-hover:text-slate-900 transition-colors">
+                            {lecture.lectureTitle}
+                          </p>
 
-                          <div className="flex gap-2">
+                          <div className="flex items-center gap-4">
                             {lecture.lectureUrl && (
-                              <p
+                              <button
                                 onClick={() =>
                                   setPlayerData({
                                     ...lecture,
@@ -238,17 +246,17 @@ export default function Player() {
                                     lecture: i + 1,
                                   })
                                 }
-                                className="text-blue-500 underline cursor-pointer"
+                                className="flex items-center gap-1.5 font-semibold text-[#6F00FF] hover:text-purple-800 underline underline-offset-4 cursor-pointer"
                               >
                                 Watch
-                              </p>
+                              </button>
                             )}
-                            <p>
+                            <span className="text-xs text-slate-600">
                               {humanizeDuration(
                                 lecture.lectureDuration * 60 * 1000,
                                 { units: ["h", "m"] },
                               )}
-                            </p>
+                            </span>
                           </div>
                         </div>
                       </li>

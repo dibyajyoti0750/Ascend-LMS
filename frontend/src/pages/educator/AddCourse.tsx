@@ -35,6 +35,7 @@ export default function AddCourse() {
   const [courseTitle, setCourseTitle] = useState("");
   const [coursePrice, setCoursePrice] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number | null>(null);
+  const [isBestSeller, setIsBestSeller] = useState(true);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [showChapterPopup, setShowChapterPopup] = useState(false);
@@ -154,6 +155,7 @@ export default function AddCourse() {
         courseDescription: quillRef.current?.root.innerHTML,
         coursePrice,
         discount,
+        isBestSeller,
         courseContent: chapters,
       };
 
@@ -178,6 +180,7 @@ export default function AddCourse() {
         setCourseTitle("");
         setCoursePrice(null);
         setDiscount(null);
+        setIsBestSeller(false);
         setThumbnail(null);
         setChapters([]);
         if (quillRef.current) {
@@ -264,6 +267,17 @@ export default function AddCourse() {
                 className="outline-none py-2 px-3 w-full rounded border border-gray-500"
                 required
               />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <input
+                type="checkbox"
+                name="isBestSeller"
+                checked={isBestSeller}
+                onChange={(e) => setIsBestSeller(e.target.checked)}
+                className="h-4 w-4"
+              />
+              <p>Add to bestseller</p>
             </div>
           </div>
 

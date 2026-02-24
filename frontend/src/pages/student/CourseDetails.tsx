@@ -169,10 +169,12 @@ export default function CourseDetails() {
             />
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-400 text-white text-xs font-bold rounded-md">
-                <CircleCheckBig size={14} strokeWidth={2.5} />
-                <span>BESTSELLER</span>
-              </div>
+              {courseData.isBestSeller && (
+                <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-md">
+                  <CircleCheckBig size={14} strokeWidth={2.5} />
+                  <span>BESTSELLER</span>
+                </div>
+              )}
 
               <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
                 <div className="flex items-center gap-1.5">
@@ -215,6 +217,7 @@ export default function CourseDetails() {
                         {chapter.chapterTitle}
                       </p>
                     </div>
+
                     <p className="text-sm text-slate-800 font-medium">
                       {chapter.chapterContent.length} lectures •{" "}
                       {calculateChapterTime(chapter)}
