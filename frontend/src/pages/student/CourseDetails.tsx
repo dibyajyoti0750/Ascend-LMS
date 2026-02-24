@@ -143,52 +143,50 @@ export default function CourseDetails() {
 
   return courseData ? (
     <>
-      <div className="flex md:flex-row flex-col-reverse gap-10 relative items-start justify-between p-4 md:px-36 md:py-20 text-left">
-        <div className="absolute top-0 left-0 w-full h-section-height bg-black"></div>
-
+      <div className="flex flex-col-reverse md:flex-row gap-10 items-start justify-around p-4 md:px-40 md:py-14 text-left">
         {/* left column */}
-        <div className="flex-1 max-w-xl md:max-w-2xl z-10 md:text-gray-100 space-y-3 md:space-y-6">
-          <h1 className="text-2xl leading-9 md:text-5xl md:leading-11 font-semibold">
+        <div className="flex-1 max-w-4xl space-y-3 md:space-y-6">
+          <h1 className="text-2xl md:text-5xl font-bold">
             {courseData.courseTitle}
           </h1>
 
           <p
-            className="pb-2 md:pb-0 text-sm md:text-base"
+            className="py-2 md:py-0 text-sm md:text-base"
             dangerouslySetInnerHTML={{
               __html: `${courseData?.courseDescription.slice(0, 350)}...`,
             }}
           ></p>
 
-          <p className="flex items-center gap-1 px-1.5 py-0.5 bg-gray-200 text-gray-700 text-sm font-bold w-fit rounded">
-            <span>Bestseller</span>{" "}
-            <CircleCheckBig
-              size={16}
-              strokeWidth={3}
-              className="text-purple-700"
-            />
+          <p className="w-fit flex items-center gap-1.5 px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-sm">
+            <span>BESTSELLER</span> <CircleCheckBig size={14} strokeWidth={3} />
           </p>
 
-          <div className="flex items-center text-sm font-light gap-2 py-2 md:py-1">
-            <CalendarDays size={18} />
-            <p>
-              Last updated at{" "}
-              {new Date(courseData.updatedAt).toLocaleDateString("en-IN")}
-            </p>
-            <Globe size={18} />
-            <p>English</p>
+          <div className="flex text-sm font-light gap-5">
+            <div className="flex gap-1.5">
+              <CalendarDays size={18} />
+              <p>
+                Last updated at:{" "}
+                {new Date(courseData.updatedAt).toLocaleDateString("en-IN")}
+              </p>
+            </div>
+
+            <div className="flex gap-1.5">
+              <Globe size={18} />
+              <p>English</p>
+            </div>
           </div>
 
           {/* reviews and ratings */}
           <div className="flex flex-wrap md:flex-nowrap items-center bg-white text-sm md:text-base rounded-lg p-0.5 md:max-w-xl shadow-custom-card">
-            <div className="flex flex-col items-center justify-center gap-2 bg-purple-800 self-stretch px-3 py-1 md:px-8 md:py-2 rounded-s-md">
+            <div className="flex flex-col items-center justify-center gap-2 bg-[#6F00FF] text-white self-stretch px-3 py-1 md:px-8 md:py-2 rounded-s-md">
               <BadgeCheck className="size-5 md:size-7" />
               <p className="text-sm font-semibold">Premium</p>
             </div>
 
             <div className="flex flex-1 justify-around items-center py-2 text-gray-800">
-              <div className="flex flex-col items-center justify-center gap-1">
-                <span>Course by</span>
-                <span className="text-blue-500 underline">
+              <div className="flex flex-col items-center justify-center gap-1.5">
+                <span className="font-semibold">Course by</span>
+                <span className="text-blue-500">
                   {courseData.educator.name}
                 </span>
               </div>
@@ -213,7 +211,7 @@ export default function CourseDetails() {
                   ))}
                 </div>
 
-                <p className="text-sm font-light pt-2">
+                <p className="text-sm pt-2">
                   {courseData.courseRatings.length}{" "}
                   {courseData.courseRatings.length > 1 ? "ratings" : "rating"}
                 </p>
@@ -226,7 +224,7 @@ export default function CourseDetails() {
                 <p className="text-sm font-semibold">
                   {courseData.enrolledStudents.length}
                 </p>
-                <p className="text-sm font-light pt-2">
+                <p className="text-sm pt-2">
                   {courseData.enrolledStudents.length > 1
                     ? "students"
                     : "student"}
@@ -235,7 +233,7 @@ export default function CourseDetails() {
             </div>
           </div>
 
-          <div className="py-5 text-gray-800">
+          <div className="text-gray-800 py-5">
             <h2 className="text-2xl font-semibold">Course content</h2>
 
             <div className="pt-4">
@@ -312,8 +310,9 @@ export default function CourseDetails() {
             <h3 className="text-2xl font-semibold text-gray-800">
               Description
             </h3>
+
             <p
-              className="rich-text"
+              className="rich-text pt-4"
               dangerouslySetInnerHTML={{
                 __html: courseData.courseDescription,
               }}
@@ -322,7 +321,7 @@ export default function CourseDetails() {
         </div>
 
         {/* right column */}
-        <div className="max-w-course-card z-10 shadow-2xl overflow-hidden p-0.5 bg-white">
+        <div className="max-w-course-card z-10 shadow-2xl overflow-hidden bg-white rounded-lg">
           {playerData ? (
             <YouTube
               videoId={playerData.videoId}
@@ -337,15 +336,15 @@ export default function CourseDetails() {
             />
           )}
 
-          <div className="p-5">
+          <div className="p-5 space-y-3">
             <div className="flex items-center gap-2">
               <Timer className="text-red-500 size-5 md:size-7" />
-              <p className="text-red-500 text-sm md:text-base">
-                <span className="font-semibold">5 days</span> left at this price
+              <p className="text-red-500 text-sm md:text-base font-semibold">
+                5 days left at this price
               </p>
             </div>
 
-            <div className="flex gap-3 items-center py-2 md:py-3">
+            <div className="flex gap-4 items-center py-2">
               <p className="text-gray-800 md:text-4xl text-2xl font-bold">
                 {currency}
                 {(
@@ -363,54 +362,36 @@ export default function CourseDetails() {
               </p>
             </div>
 
-            <div className="flex items-center text-xs md:text-base gap-4 py-1 md:py-2 text-gray-500">
-              <div className="flex items-center gap-1">
-                <Star className="fill-yellow-500 text-yellow-500 size-5 md:size-7" />
-                <p>{calculateRating(courseData)}</p>
-              </div>
+            <button
+              onClick={() =>
+                isAlreadyEnrolled
+                  ? navigate("/my-enrollments")
+                  : setOpenPaymentModal(true)
+              }
+              className="w-full py-4 bg-[#6F00FF] hover:bg-purple-800 text-white font-bold text-lg rounded-sm transition-all mb-4"
+            >
+              {isAlreadyEnrolled ? "Go to Course" : "Enroll Now"}
+            </button>
 
-              <div className="h-4 w-px bg-gray-500/40" />
-
-              <div className="flex items-center gap-1">
-                <Clock className="size-5 md:size-7" />
-                <p>{calculateCourseDuration(courseData)}</p>
-              </div>
-
-              <div className="h-4 w-px bg-gray-500/40" />
-
-              <div className="flex items-center gap-1">
-                <BookOpenText className="size-5 md:size-7" />
-                <p>{calculateNoOfLectures(courseData)} lessons</p>
-              </div>
-            </div>
-
-            {isAlreadyEnrolled ? (
-              <button
-                onClick={() => navigate("/my-enrollments")}
-                className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-semibold active:bg-purple-800 transition-all duration-200 cursor-pointer"
-              >
-                Already Enrolled
-              </button>
-            ) : (
-              <button
-                onClick={() => setOpenPaymentModal(true)}
-                className="md:mt-5 mt-3 w-full py-3 rounded-lg bg-purple-700 hover:bg-purple-800 text-white font-semibold active:bg-purple-800 transition-all duration-200 cursor-pointer"
-              >
-                Enroll Now
-              </button>
-            )}
-
-            <div className="py-4 md:py-5">
-              <p className="md:text-xl text-lg font-medium text-gray-800">
-                What will you get?
+            <div>
+              <p className="font-bold text-gray-900 mb-3">
+                This course includes:
               </p>
-
-              <ul className="ml-4 pt-2 text-sm md:text-base list-disc text-gray-500">
-                <li>Lifetime access with free updates.</li>
-                <li>Step-by-step, hands-on project guidance.</li>
-                <li>Downloadable resources and source code.</li>
-                <li>Quizzes to test your knowledge.</li>
-                <li>Certificate of completion.</li>
+              <ul className="space-y-2 text-sm md:text-base text-gray-700">
+                <li className="flex items-center gap-3">
+                  <Clock size={16} /> {calculateCourseDuration(courseData)}{" "}
+                  on-demand video
+                </li>
+                <li className="flex items-center gap-3">
+                  <BookOpenText size={16} /> {calculateNoOfLectures(courseData)}{" "}
+                  lessons
+                </li>
+                <li className="flex items-center gap-3">
+                  <span>✓</span> Lifetime access
+                </li>
+                <li className="flex items-center gap-3">
+                  <span>✓</span> Certificate of completion
+                </li>
               </ul>
             </div>
           </div>
