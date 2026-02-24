@@ -101,7 +101,7 @@ export default function PaymentModal({
 
           <button
             onClick={onClose}
-            className="w-full rounded-lg bg-gray-200 py-3 text-sm font-medium text-gray-700 hover:bg-gray-300 transition cursor-pointer"
+            className="w-full rounded-lg bg-white border border-red-100 py-3 text-sm font-medium text-red-500 hover:bg-red-50 transition cursor-pointer"
           >
             Go Back
           </button>

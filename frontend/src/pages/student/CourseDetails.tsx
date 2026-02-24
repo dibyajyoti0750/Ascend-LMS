@@ -1,13 +1,13 @@
 import YouTube from "react-youtube";
+import Countdown from "react-countdown";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import humanizeDuration from "humanize-duration";
 import {
-  BadgeCheck,
   BookOpenText,
   CalendarDays,
   ChevronDown,
@@ -15,10 +15,11 @@ import {
   CirclePlay,
   Clock,
   Globe,
+  InfinityIcon,
   Star,
   Timer,
+  Trophy,
   TvMinimalPlay,
-  Users,
 } from "lucide-react";
 import {
   calculateChapterTime,
@@ -57,6 +58,14 @@ export default function CourseDetails() {
 
   const currency = import.meta.env.VITE_CURRENCY;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  // Countdown
+  const fiveDaysLater = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 5);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }, []);
 
   // Always fetch when id changes
   useEffect(() => {
@@ -143,159 +152,119 @@ export default function CourseDetails() {
 
   return courseData ? (
     <>
-      <div className="flex flex-col-reverse md:flex-row gap-10 items-start justify-around p-4 md:px-40 md:py-14 text-left">
+      <div className="flex flex-col-reverse md:flex-row gap-10 items-start justify-between p-4 md:px-52 md:py-16 text-left">
         {/* left column */}
-        <div className="flex-1 max-w-4xl space-y-3 md:space-y-6">
-          <h1 className="text-2xl md:text-5xl font-bold">
-            {courseData.courseTitle}
-          </h1>
+        <div className="max-w-4xl space-y-8 text-slate-900">
+          {/* Header Section */}
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-5xl py-4 font-extrabold tracking-tight">
+              {courseData.courseTitle}
+            </h1>
 
-          <p
-            className="py-2 md:py-0 text-sm md:text-base"
-            dangerouslySetInnerHTML={{
-              __html: `${courseData?.courseDescription.slice(0, 350)}...`,
-            }}
-          ></p>
+            <div
+              className="text-slate-600 text-base md:text-lg leading-relaxed max-w-3xl"
+              dangerouslySetInnerHTML={{
+                __html: `${courseData?.courseDescription.slice(0, 220)}...`,
+              }}
+            />
 
-          <p className="w-fit flex items-center gap-1.5 px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-sm">
-            <span>BESTSELLER</span> <CircleCheckBig size={14} strokeWidth={3} />
-          </p>
-
-          <div className="flex text-sm font-light gap-5">
-            <div className="flex gap-1.5">
-              <CalendarDays size={18} />
-              <p>
-                Last updated at:{" "}
-                {new Date(courseData.updatedAt).toLocaleDateString("en-IN")}
-              </p>
-            </div>
-
-            <div className="flex gap-1.5">
-              <Globe size={18} />
-              <p>English</p>
-            </div>
-          </div>
-
-          {/* reviews and ratings */}
-          <div className="flex flex-wrap md:flex-nowrap items-center bg-white text-sm md:text-base rounded-lg p-0.5 md:max-w-xl shadow-custom-card">
-            <div className="flex flex-col items-center justify-center gap-2 bg-[#6F00FF] text-white self-stretch px-3 py-1 md:px-8 md:py-2 rounded-s-md">
-              <BadgeCheck className="size-5 md:size-7" />
-              <p className="text-sm font-semibold">Premium</p>
-            </div>
-
-            <div className="flex flex-1 justify-around items-center py-2 text-gray-800">
-              <div className="flex flex-col items-center justify-center gap-1.5">
-                <span className="font-semibold">Course by</span>
-                <span className="text-blue-500">
-                  {courseData.educator.name}
-                </span>
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-400 text-white text-xs font-bold rounded-md">
+                <CircleCheckBig size={14} strokeWidth={2.5} />
+                <span>BESTSELLER</span>
               </div>
 
-              <div className="border-r border-gray-300 h-10"></div>
-
-              <div className="flex flex-col justify-center items-center">
-                <p className="text-base md:text-xl font-semibold">
-                  {calculateRating(courseData)}
-                </p>
-
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`size-3 md:size-4 ${
-                        i < Math.floor(calculateRating(courseData))
-                          ? "fill-yellow-500 text-yellow-500"
-                          : "text-gray-400"
-                      }`}
-                    />
-                  ))}
+              <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
+                <div className="flex items-center gap-1.5">
+                  <CalendarDays size={16} className="text-slate-400" />
+                  <span>
+                    Last updated{" "}
+                    {new Date(courseData.updatedAt).toLocaleDateString("en-IN")}
+                  </span>
                 </div>
-
-                <p className="text-sm pt-2">
-                  {courseData.courseRatings.length}{" "}
-                  {courseData.courseRatings.length > 1 ? "ratings" : "rating"}
-                </p>
-              </div>
-
-              <div className="border-r border-gray-300 h-10"></div>
-
-              <div className="flex flex-col justify-center items-center">
-                <Users className="size-4 md:size-6" />
-                <p className="text-sm font-semibold">
-                  {courseData.enrolledStudents.length}
-                </p>
-                <p className="text-sm pt-2">
-                  {courseData.enrolledStudents.length > 1
-                    ? "students"
-                    : "student"}
-                </p>
+                <div className="flex items-center gap-1.5">
+                  <Globe size={16} className="text-slate-400" />
+                  <span>English</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="text-gray-800 py-5">
-            <h2 className="text-2xl font-semibold">Course content</h2>
+          {/* Course Content Section */}
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold">Course content</h2>
 
-            <div className="pt-4">
+            <div className="border border-slate-200 rounded-lg overflow-hidden bg-white">
               {courseData.courseContent.map((chapter, index) => (
                 <div
                   key={index}
-                  className="border border-gray-200 bg-white mb-2"
+                  className="border-b border-slate-200 last:border-0"
                 >
                   <div
                     onClick={() => toggleSection(index)}
-                    className="flex items-center justify-between px-4 py-3 bg-gray-50 cursor-pointer select-none"
+                    className="flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                       <ChevronDown
-                        className={`transform transition-transform ${openSections[index] ? "rotate-180" : ""}`}
+                        size={20}
+                        className={`text-slate-400 transition-transform duration-300 ${
+                          openSections[index] ? "rotate-180" : ""
+                        }`}
                       />
-                      <p className="font-bold">{chapter.chapterTitle}</p>
+                      <p className="font-bold text-slate-800">
+                        {chapter.chapterTitle}
+                      </p>
                     </div>
-
-                    <p className="text-sm">
+                    <p className="text-sm text-slate-800 font-medium">
                       {chapter.chapterContent.length} lectures •{" "}
                       {calculateChapterTime(chapter)}
                     </p>
                   </div>
 
                   <div
-                    className={`overflow-hidden transition-all duration-300 ${openSections[index] ? "max-h-96" : "max-h-0"}`}
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      openSections[index] ? "max-h-250" : "max-h-0"
+                    }`}
                   >
-                    <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 text-gray-600 border-t border-gray-300">
+                    <ul className="bg-white px-5 py-2 divide-y divide-slate-100">
                       {chapter.chapterContent.map((lecture, i) => (
-                        <li key={i} className="flex items-center gap-2 py-1">
-                          <TvMinimalPlay size={20} />
+                        <li
+                          key={i}
+                          className="flex items-center justify-between py-3 group"
+                        >
+                          <div className="flex items-center gap-3">
+                            <TvMinimalPlay
+                              size={18}
+                              className="text-slate-400 group-hover:text-indigo-500"
+                            />
+                            <span className="text-sm text-slate-700 font-medium group-hover:text-slate-900 transition-colors">
+                              {lecture.lectureTitle}
+                            </span>
+                          </div>
 
-                          <div className="flex items-center justify-between w-full text-gray-700 text-xs md:text-sm">
-                            <p>{lecture.lectureTitle}</p>
-
-                            <div className="flex gap-2">
-                              {lecture.isPreviewFree && (
-                                <p
-                                  onClick={() =>
-                                    setPlayerData({
-                                      videoId: lecture.lectureUrl
-                                        .split("/")
-                                        .pop(),
-                                    })
-                                  }
-                                  className="flex items-center gap-1 cursor-pointer"
-                                >
-                                  <CirclePlay />
-                                  <span className="text-blue-500 underline">
-                                    Preview
-                                  </span>
-                                </p>
+                          <div className="flex items-center gap-4">
+                            {lecture.isPreviewFree && (
+                              <button
+                                title="Play lecture"
+                                onClick={() =>
+                                  setPlayerData({
+                                    videoId: lecture.lectureUrl
+                                      .split("/")
+                                      .pop(),
+                                  })
+                                }
+                                className="flex items-center gap-1.5 text-xs font-semibold text-[#6F00FF] hover:text-purple-800 underline underline-offset-4 cursor-pointer"
+                              >
+                                <CirclePlay size={18} />
+                                Preview
+                              </button>
+                            )}
+                            <span className="text-xs text-slate-600">
+                              {humanizeDuration(
+                                lecture.lectureDuration * 60 * 1000,
+                                { units: ["h", "m"] },
                               )}
-
-                              <p>
-                                {humanizeDuration(
-                                  lecture.lectureDuration * 60 * 1000,
-                                  { units: ["h", "m"] },
-                                )}
-                              </p>
-                            </div>
+                            </span>
                           </div>
                         </li>
                       ))}
@@ -306,91 +275,138 @@ export default function CourseDetails() {
             </div>
           </div>
 
-          <div className="text-sm md:text-base">
-            <h3 className="text-2xl font-semibold text-gray-800">
-              Description
-            </h3>
-
-            <p
-              className="rich-text pt-4"
-              dangerouslySetInnerHTML={{
-                __html: courseData.courseDescription,
-              }}
-            ></p>
+          {/* Detailed Description */}
+          <div className="pt-5 border-t border-slate-100">
+            <h3 className="text-2xl font-bold mb-4">Description</h3>
+            <div
+              className="rich-text max-w-none text-slate-700 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: courseData.courseDescription }}
+            />
           </div>
         </div>
 
         {/* right column */}
-        <div className="max-w-course-card z-10 shadow-2xl overflow-hidden bg-white rounded-lg">
-          {playerData ? (
-            <YouTube
-              videoId={playerData.videoId}
-              opts={{ playerVars: { autoplay: 1 } }}
-              iframeClassName="w-full aspect-video"
-            />
-          ) : (
-            <img
-              src={courseData.courseThumbnail.url}
-              alt="thumbnail"
-              className="w-full object-cover"
-            />
-          )}
+        <div className="max-w-course-card z-10 sticky top-10 shadow-2xl border border-slate-200 overflow-hidden bg-white rounded-xl">
+          {/* Media Section */}
+          <div className="relative aspect-video bg-slate-100 overflow-hidden">
+            {playerData ? (
+              <YouTube
+                videoId={playerData.videoId}
+                opts={{ playerVars: { autoplay: 1 } }}
+                iframeClassName="w-full aspect-video"
+              />
+            ) : (
+              <img
+                src={courseData.courseThumbnail.url}
+                alt="Thumbnail"
+                className="w-full h-full object-cover"
+              />
+            )}
+          </div>
 
-          <div className="p-5 space-y-3">
-            <div className="flex items-center gap-2">
-              <Timer className="text-red-500 size-5 md:size-7" />
-              <p className="text-red-500 text-sm md:text-base font-semibold">
-                5 days left at this price
+          {/* Content Section */}
+          <div className="p-6 space-y-6">
+            {/* Urgency Alert */}
+            <div className="flex items-center gap-2.5">
+              <Timer className="text-red-600 size-5" strokeWidth={2.5} />
+              <p className="text-red-700 text-sm font-bold space-x-2">
+                <Countdown
+                  date={fiveDaysLater}
+                  renderer={({ days, hours, minutes, seconds }) => {
+                    return (
+                      <span className="tabular-nums">
+                        {days}d {hours}h {minutes}m {seconds}s
+                      </span>
+                    );
+                  }}
+                />
+                <span>left at this price!</span>
               </p>
             </div>
 
-            <div className="flex gap-4 items-center py-2">
-              <p className="text-gray-800 md:text-4xl text-2xl font-bold">
-                {currency}
-                {(
-                  courseData.coursePrice -
-                  (courseData.discount * courseData.coursePrice) / 100
-                ).toFixed(2)}
-              </p>
-
-              <p className="md:text-lg font-medium text-gray-500 line-through">
-                {currency}
-                {courseData.coursePrice}
-              </p>
-              <p className="md:text-lg font-medium text-gray-500">
-                {courseData.discount}% off
-              </p>
+            {/* Pricing */}
+            <div className="space-y-1">
+              <div className="flex items-baseline gap-3">
+                <span className="text-slate-900 text-4xl font-extrabold">
+                  {currency}
+                  {(
+                    courseData.coursePrice -
+                    (courseData.discount * courseData.coursePrice) / 100
+                  ).toFixed(0)}
+                </span>
+                <span className="text-lg font-medium text-slate-400 line-through">
+                  {currency}
+                  {courseData.coursePrice}
+                </span>
+              </div>
+              <div className="inline-block px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded">
+                {courseData.discount}% OFF
+              </div>
             </div>
 
+            <div className="flex justify-around items-center gap-3">
+              <span className="flex items-center gap-1.5">
+                <Star size={18} className="text-yellow-400 fill-yellow-400" />
+                {calculateRating(courseData)}
+              </span>
+
+              <div className="border-r border-gray-300 h-5"></div>
+
+              <span className="flex items-center gap-1.5">
+                <Clock size={18} className="text-slate-400" />
+                {calculateCourseDuration(courseData)}
+              </span>
+
+              <div className="border-r border-gray-300 h-5"></div>
+
+              <span className="flex items-center gap-1.5">
+                <BookOpenText size={18} className="text-slate-400" />
+                {calculateNoOfLectures(courseData)} lessons
+              </span>
+            </div>
+
+            {/* CTA Button */}
             <button
               onClick={() =>
                 isAlreadyEnrolled
                   ? navigate("/my-enrollments")
                   : setOpenPaymentModal(true)
               }
-              className="w-full py-4 bg-[#6F00FF] hover:bg-purple-800 text-white font-bold text-lg rounded-sm transition-all mb-4"
+              className={`w-full py-4 rounded-lg font-bold text-lg transition-all active:scale-[0.98] cursor-pointer shadow-md ${
+                isAlreadyEnrolled
+                  ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-200"
+              }`}
             >
               {isAlreadyEnrolled ? "Go to Course" : "Enroll Now"}
             </button>
 
-            <div>
-              <p className="font-bold text-gray-900 mb-3">
+            <p className="text-center text-xs text-slate-400 font-medium">
+              30-Day Money-Back Guarantee
+            </p>
+
+            {/* Features List */}
+            <div className="pt-2">
+              <p className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">
                 This course includes:
               </p>
-              <ul className="space-y-2 text-sm md:text-base text-gray-700">
+              <ul className="space-y-3 text-sm text-slate-600">
                 <li className="flex items-center gap-3">
-                  <Clock size={16} /> {calculateCourseDuration(courseData)}{" "}
-                  on-demand video
+                  <Clock size={18} className="text-slate-400" />
+                  <span>
+                    <span className="font-bold text-slate-800">
+                      {calculateCourseDuration(courseData)}
+                    </span>{" "}
+                    on-demand video
+                  </span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <BookOpenText size={16} /> {calculateNoOfLectures(courseData)}{" "}
-                  lessons
+                  <InfinityIcon size={18} className="text-slate-400" />
+                  <span>Full lifetime access</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <span>✓</span> Lifetime access
-                </li>
-                <li className="flex items-center gap-3">
-                  <span>✓</span> Certificate of completion
+                  <Trophy size={18} className="text-slate-400" />
+                  <span>Certificate of completion</span>
                 </li>
               </ul>
             </div>
