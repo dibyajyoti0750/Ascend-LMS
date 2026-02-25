@@ -13,12 +13,16 @@ export default function DailyCountdown() {
 
   return (
     <>
-      <div className="flex justify-center items-center gap-4 text-xs md:text-lg font-bold">
+      <div className="flex justify-center items-center gap-4 text-xs md:text-base font-bold">
         <Countdown date={tomorrow} renderer={renderer} />
-        <p>HURRY UP!! Join now before it's too late.</p>
-        <div className="flex items-center gap-2">
-          <p className="line-through opacity-70">$60</p>
-          <p className="font-bold text-yellow-300">$36/once</p>
+        <p className="flex items-center gap-2">
+          <span>Limited-Time Launch Offer - Enroll Today & Save</span>
+          <span className="text-lg text-green-400">40%</span>
+        </p>
+
+        <div className="flex items-center gap-3">
+          <p className="text-xl font-bold text-yellow-300">$36</p>
+          <p className="text-base line-through opacity-70">$60</p>
         </div>
       </div>
     </>
