@@ -7,8 +7,32 @@ const purchaseSchema = new mongoose.Schema(
       ref: "Course",
       required: true,
     },
+
     userId: { type: String, ref: "User", required: true },
-    amount: { type: Number, required: true },
+
+    usdAmount: {
+      type: Number,
+      required: true,
+    },
+
+    inrAmount: {
+      type: Number,
+    },
+
+    exchangeRate: {
+      type: Number,
+    },
+
+    paymentGateway: {
+      type: String,
+      enum: ["stripe", "razorpay"],
+      required: true,
+    },
+
+    // Gateway specific IDs
+    orderId: String,
+    paymentId: String,
+
     status: {
       type: String,
       enum: ["pending", "completed", "failed"],

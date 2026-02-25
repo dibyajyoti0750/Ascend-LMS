@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import Stripe from "stripe";
+import axios from "axios";
 import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
@@ -36,6 +37,14 @@ export const userEnrolledCourses = async (req, res) => {
     .json({ success: true, enrolledCourses: userData.enrolledCourses });
 };
 
+// Fetch exchange rate
+const getUsdToInrRate = async () => {
+  const { data } = await axios.get(
+    "https://api.exchangerate-api.com/v4/latest/USD",
+  );
+  return data.rates.INR;
+};
+
 // Purchase course Razorpay
 export const purchaseCourseRZP = async (req, res) => {
   const { courseId } = req.body;
@@ -48,15 +57,25 @@ export const purchaseCourseRZP = async (req, res) => {
     throw new ExpressError(404, "Data not found");
   }
 
-  const finalAmount =
+  const usdAmount =
     courseData.coursePrice -
     (courseData.discount * courseData.coursePrice) / 100;
 
+  const rate = await getUsdToInrRate();
+  const inrAmount = usdAmount * rate;
+  // optional safety buffer
+  const finalInrAmount = Math.ceil(inrAmount * 1.02);
+
+  console.log(inrAmount);
+
   // create a record in our database first
   const newPurchase = new Purchase({
-    courseId: courseData._id,
+    courseId,
     userId,
-    amount: finalAmount,
+    usdAmount,
+    inrAmount: finalInrAmount,
+    exchangeRate: rate,
+    paymentGateway: "razorpay",
     status: "pending",
   });
 
@@ -69,7 +88,7 @@ export const purchaseCourseRZP = async (req, res) => {
   });
 
   const options = {
-    amount: Math.round(finalAmount * 100), // paisa
+    amount: Math.round(finalInrAmount * 100), // paisa
     currency: "INR",
     receipt: `receipt_${newPurchase._id}`,
     notes: {
@@ -163,7 +182,8 @@ export const purchaseCourseStripe = async (req, res) => {
   const newPurchase = await Purchase.create({
     courseId: courseData._id,
     userId,
-    amount: finalAmount,
+    usdAmount: finalAmount,
+    paymentGateway: "stripe",
     status: "pending",
   });
 

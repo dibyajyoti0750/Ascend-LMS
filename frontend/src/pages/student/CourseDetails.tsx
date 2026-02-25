@@ -16,6 +16,7 @@ import {
   Clock,
   Globe,
   InfinityIcon,
+  Lock,
   Star,
   Timer,
   Trophy,
@@ -236,10 +237,15 @@ export default function CourseDetails() {
                           className="flex items-center justify-between py-3 group"
                         >
                           <div className="flex items-center gap-3">
-                            <TvMinimalPlay
-                              size={18}
-                              className="text-slate-400 group-hover:text-indigo-500"
-                            />
+                            {!lecture.isPreviewFree ? (
+                              <Lock size={18} className="text-slate-700" />
+                            ) : (
+                              <TvMinimalPlay
+                                size={18}
+                                className="text-slate-700 group-hover:text-indigo-500"
+                              />
+                            )}
+
                             <span className="text-sm text-slate-700 font-medium group-hover:text-slate-900 transition-colors">
                               {lecture.lectureTitle}
                             </span>
@@ -370,16 +376,15 @@ export default function CourseDetails() {
 
             {/* CTA Button */}
             <button
-              onClick={() =>
-                isAlreadyEnrolled
-                  ? navigate("/my-enrollments")
-                  : setOpenPaymentModal(true)
-              }
-              className={`w-full py-4 rounded-lg font-bold text-lg transition-all active:scale-[0.98] cursor-pointer shadow-md ${
-                isAlreadyEnrolled
-                  ? "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-200"
-              }`}
+              onClick={() => {
+                if (isAlreadyEnrolled) {
+                  navigate("/my-enrollments");
+                  window.scrollTo(0, 0);
+                } else {
+                  setOpenPaymentModal(true);
+                }
+              }}
+              className="w-full py-4 rounded-lg font-bold text-lg bg-[#6F00FF] text-white hover:bg-purple-800 shadow-purple-200 transition-all active:scale-[0.98] cursor-pointer shadow"
             >
               {isAlreadyEnrolled ? "Go to Course" : "Enroll Now"}
             </button>

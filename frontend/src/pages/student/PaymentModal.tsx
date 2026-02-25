@@ -34,7 +34,7 @@ export default function PaymentModal({
   onContinue,
   paymentProcessing,
 }: PaymentModalProps) {
-  const [selected, setSelected] = useState<PaymentMethod>("razorpay");
+  const [selected, setSelected] = useState<PaymentMethod>("stripe");
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
