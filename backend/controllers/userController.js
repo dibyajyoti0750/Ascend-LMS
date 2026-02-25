@@ -66,8 +66,6 @@ export const purchaseCourseRZP = async (req, res) => {
   // optional safety buffer
   const finalInrAmount = Math.ceil(inrAmount * 1.02);
 
-  console.log(inrAmount);
-
   // create a record in our database first
   const newPurchase = new Purchase({
     courseId,
@@ -144,6 +142,7 @@ export const verifyRazorpayPayment = async (req, res) => {
   });
 
   purchaseData.status = "completed";
+  purchaseData.orderId = razorpay_order_id;
   purchaseData.paymentId = razorpay_payment_id;
   await purchaseData.save();
 

@@ -83,14 +83,14 @@ export const stripeWebhooks = async (req, res) => {
 
         if (!purchaseId) break;
 
-        const purchase = await Purchase.findById(purchaseId);
-        if (!purchase) break;
+        const purchaseData = await Purchase.findById(purchaseId);
+        if (!purchaseData) break;
 
         // Idempotency check
-        if (purchase.status === "completed") break;
+        if (purchaseData.status === "completed") break;
 
-        const user = await User.findById(purchase.userId);
-        const course = await Course.findById(purchase.courseId);
+        const user = await User.findById(purchaseData.userId);
+        const course = await Course.findById(purchaseData.courseId);
 
         if (!user || !course) break;
 
@@ -103,8 +103,10 @@ export const stripeWebhooks = async (req, res) => {
           $addToSet: { enrolledCourses: course._id },
         });
 
-        purchase.status = "completed";
-        await purchase.save();
+        purchaseData.status = "completed";
+        purchaseData.orderId = session.id;
+        purchaseData.paymentId = session.payment_intent;
+        await purchaseData.save();
 
         break;
       }
