@@ -408,7 +408,7 @@ export default function AddCourse() {
           title="Add course"
           type="submit"
           disabled={isSubmitting}
-          className={`bg-black text-white w-max py-2.5 px-8 rounded-md my-4 font-medium ${isSubmitting ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
+          className={`flex justify-center items-center w-24 h-12 bg-black text-white py-2.5 px-8 rounded-md my-4 font-medium ${isSubmitting ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
         >
           {isSubmitting ? <LoaderCircle className="animate-spin" /> : "Publish"}
         </button>

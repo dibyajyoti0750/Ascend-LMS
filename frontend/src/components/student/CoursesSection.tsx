@@ -25,12 +25,13 @@ export default function CoursesSection() {
     <div className="py-16 px-8 md:px-56">
       <div className="flex flex-col justify-center items-center">
         <h2 className="text-3xl font-medium text-gray-700">
-          Unlock Your{" "}
-          <span className="text-[#6F00FF] font-bold">Next Level</span>
+          Learn the Systems{" "}
+          <span className="text-[#6F00FF] font-bold">Behind Success</span>
         </h2>
-        <p className="text-sm md:text-base text-gray-500 mt-3 max-w-xl">
-          Structured programs designed to improve your mindset and daily habits.
-          Learn practical skills you can apply immediately for real growth.
+        <p className="text-sm text-gray-500 mt-3 max-w-2xl px-6">
+          Structured video courses that teach practical skills for business,
+          content creation, and self-improvement, helping you grow with clarity,
+          consistency, and measurable progress.
         </p>
       </div>
 

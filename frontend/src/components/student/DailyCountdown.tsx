@@ -17,8 +17,8 @@ export default function DailyCountdown() {
         <Countdown date={tomorrow} renderer={renderer} />
         <p>HURRY UP!! Join now before it's too late.</p>
         <div className="flex items-center gap-2">
-          <p className="line-through opacity-70">$27</p>
-          <p className="font-bold text-yellow-300">$16/once</p>
+          <p className="line-through opacity-70">$60</p>
+          <p className="font-bold text-yellow-300">$36/once</p>
         </div>
       </div>
     </>
