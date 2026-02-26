@@ -8,7 +8,7 @@ export default function AboutUs() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#131628] text-white">
       {/* Main Content Wrapper */}
       <div className="flex flex-col justify-center items-center mx-auto max-w-7xl px-6 lg:px-8">
         {/* About Us */}
@@ -17,11 +17,10 @@ export default function AboutUs() {
             About Us
           </h1>
 
-          <p className="text-lg text-gray-600 mx-auto leading-relaxed">
-            <span className="text-[#6F00FF] font-semibold">Ascend</span> is an
-            online learning platform focused on business, content creation, and
-            self-improvement. We create structured video courses designed to
-            help you build practical, real-world skills.
+          <p className="text-lg text-gray-300 mx-auto leading-relaxed">
+            <b>Ascend</b> is an online learning platform focused on business,
+            content creation, and self-improvement. We create structured video
+            courses designed to help you build practical, real-world skills.
           </p>
         </section>
 
@@ -32,7 +31,7 @@ export default function AboutUs() {
           </h2>
           <p
             dangerouslySetInnerHTML={{ __html: missionText }}
-            className="text-lg text-gray-600  mx-auto leading-relaxed"
+            className="text-lg text-gray-300 mx-auto leading-relaxed"
           ></p>
         </section>
 
@@ -50,7 +49,7 @@ export default function AboutUs() {
             />
 
             <div>
-              <p className="text-lg text-gray-600 leading-relaxed">
+              <p className="text-lg text-gray-300 leading-relaxed">
                 Ascend was founded with the belief that practical knowledge
                 creates independence. The goal is simple - build a platform that
                 teaches real skills that actually matter in today's world.
@@ -71,7 +70,7 @@ export default function AboutUs() {
         />
         <div className="absolute inset-0 bg-black/70" />
 
-        <div className="relative z-10 py-28 px-6 text-center text-white max-w-3xl mx-auto">
+        <div className="relative z-10 py-28 px-6 text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-semibold mb-6">
             Start Your Growth Journey Today
           </h2>

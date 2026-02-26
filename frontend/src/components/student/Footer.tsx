@@ -19,21 +19,22 @@ const footerLinks = [
   { title: "Terms & Conditions", link: "/terms-and-condition" },
 ];
 
-const inputStyles =
-  "border border-gray-500/30 bg-gray-800 text-gray-300 placeholder-gray-500 outline-none h-10 rounded px-2 text-sm";
-
 export default function Footer() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     message: "",
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const isFormValid =
     formData.name.trim() && formData.email.trim() && formData.message.trim();
+
+  const inputStyles =
+    "border border-gray-500/30 bg-gray-800 text-gray-300 placeholder-gray-500 outline-none rounded text-sm w-full h-9 px-2";
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -44,6 +45,12 @@ export default function Footer() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!isFormValid) {
+      toast.error("All fields are required");
+      return;
+    }
+
     setIsSubmitting(true);
 
     const cleanedData = {
@@ -51,11 +58,6 @@ export default function Footer() {
       email: formData.email.trim(),
       message: formData.message.trim(),
     };
-
-    if (!isFormValid) {
-      toast.error("All fields are required");
-      return;
-    }
 
     try {
       const { data } = await axios.post(
@@ -81,7 +83,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-900 md:px-20 text-left w-full">
+    <footer className="bg-[#131628] md:px-20 text-left w-full">
       <div className="flex flex-col md:flex-row items-start px-8 md:px-0 py-20 justify-center gap-10 md:gap-20 border-b border-white/20">
         <div className="flex flex-col md:items-start items-center w-full">
           <img src={assets.logo} alt="logo" className="w-10" />
@@ -119,7 +121,7 @@ export default function Footer() {
 
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col w-full gap-3 pt-4"
+            className="flex flex-col w-full gap-3 pt-6"
           >
             <input
               type="text"
@@ -141,16 +143,16 @@ export default function Footer() {
 
             <textarea
               name="message"
-              placeholder="How can we help?*"
-              className="border border-gray-500/30 bg-gray-800 text-gray-300 placeholder-gray-500 outline-none rounded text-sm w-full h-20 px-2 resize-none"
+              placeholder="How can we help?"
+              className="border border-gray-500/30 bg-gray-800 text-gray-300 placeholder-gray-500 outline-none rounded text-sm w-full h-24 px-2 py-2 resize-none"
               value={formData.message}
               onChange={handleChange}
-            ></textarea>
+            />
 
             <button
               type="submit"
-              disabled={!isFormValid || !isSubmitting}
-              className="flex justify-center items-center bg-[#6F00FF] w-24 h-9 text-white font-medium rounded cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              disabled={!isFormValid || isSubmitting}
+              className="flex justify-center items-center bg-[#6F00FF] w-full h-10 text-white font-medium rounded cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed transition"
             >
               {isSubmitting ? (
                 <LoaderCircle className="animate-spin" />
