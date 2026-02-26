@@ -52,7 +52,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full bg-[#6F00FF] text-white text-center p-4">
+      <div className="w-full bg-[#6F00FF] text-white text-center p-3">
         <div className="flex justify-center items-center gap-3">
           <img src={assets.warning} alt="warning" className="w-8 h-8" />
           <DailyCountdown />

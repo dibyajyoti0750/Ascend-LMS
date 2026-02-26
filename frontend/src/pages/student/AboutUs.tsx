@@ -1,5 +1,5 @@
 import Footer from "../../components/student/Footer";
-import { assets } from "../../assets/assets";
+import { assets, missionText } from "../../assets/assets";
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,12 +9,16 @@ export default function AboutUs() {
   const navigate = useNavigate();
 
   return (
-    <>
-      <div className="min-h-screen mx-auto max-w-7xl flex flex-col justify-center items-center">
+    <div className="bg-white">
+      {/* Main Content Wrapper */}
+      <div className="flex flex-col justify-center items-center mx-auto max-w-7xl px-6 lg:px-8">
         {/* About Us */}
-        <section className="px-6 py-32">
-          <h1 className="text-4xl font-bold mb-6">About Us</h1>
-          <p className="text-lg text-gray-600">
+        <section className="py-24 max-w-5xl">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+            About Us
+          </h1>
+
+          <p className="text-lg text-gray-600 mx-auto leading-relaxed">
             <span className="text-[#6F00FF] font-semibold">Ascend</span> is an
             online learning platform focused on business, content creation, and
             self-improvement. We create structured video courses designed to
@@ -23,53 +27,57 @@ export default function AboutUs() {
         </section>
 
         {/* Our Mission */}
-        <section className="py-16 px-6">
-          <div>
-            <h2 className="text-3xl font-semibold mb-6">Our Mission</h2>
-            <p className="text-lg text-gray-600">
-              Our mission is to provide practical education that leads to real
-              results. We believe learning should be clear, actionable, and
-              focused on helping individuals grow financially and personally.
-            </p>
-          </div>
+        <section className="py-10 max-w-5xl">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-6 tracking-tight">
+            Our Mission
+          </h2>
+          <p
+            dangerouslySetInnerHTML={{ __html: missionText }}
+            className="text-lg text-gray-600  mx-auto leading-relaxed"
+          ></p>
         </section>
 
         {/* Founder Section */}
-        <section className="py-16 px-6">
-          <div>
-            <h2 className="text-center text-3xl font-semibold mb-6">
-              The Founder of Ascend
-            </h2>
+        <section className="py-24 max-w-5xl w-full mx-auto">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-10 tracking-tight">
+            The Founder of Ascend
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <img
               src={assets.founder}
               alt="Founder of Ascend"
-              className="object-cover"
+              className="w-full h-section-height object-cover rounded-2xl shadow-lg"
             />
 
-            <p className="text-lg text-gray-600 py-4">
-              Ascend was founded with the belief that practical knowledge
-              creates independence. The goal is simple — build a platform that
-              teaches real skills that actually matter in today's world.
-            </p>
+            <div>
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Ascend was founded with the belief that practical knowledge
+                creates independence. The goal is simple - build a platform that
+                teaches real skills that actually matter in today's world.
+              </p>
+
+              <p className="mt-6 font-semibold text-gray-900">— John Doe</p>
+            </div>
           </div>
         </section>
       </div>
 
       {/* Join Section */}
-      <section className="relative mt-20 text-white text-center">
+      <section className="relative mt-24 border-y-4 border-[#6F00FF]">
+        {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${assets.founder})` }}
+          style={{ backgroundImage: `url(${assets.about})` }}
         />
+        <div className="absolute inset-0 bg-black/70" />
 
-        <div className="absolute inset-0 bg-black/60" />
-
-        <div className="relative z-10 py-20 px-6">
-          <h2 className="text-3xl font-semibold mb-4">
+        <div className="relative z-10 py-28 px-6 text-center text-white max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-semibold mb-6">
             Start Your Growth Journey Today
           </h2>
 
-          <p className="mb-6 text-gray-300">
+          <p className="text-gray-300 text-lg mb-8 leading-relaxed">
             Join Ascend and get access to structured courses that help you level
             up your skills and take control of your future.
           </p>
@@ -83,14 +91,14 @@ export default function AboutUs() {
                 openSignIn();
               }
             }}
-            className="inline-block bg-white text-black px-6 py-3 rounded-md font-semibold hover:opacity-90 transition"
+            className="bg-[#6F00FF] hover:bg-[#5a00d6] transition px-8 py-3 rounded-lg font-semibold shadow-lg cursor-pointer"
           >
-            {user ? "Get started" : "Sign Up Now"}
+            {user ? "Get Started" : "Sign Up Now"}
           </button>
         </div>
       </section>
 
       <Footer />
-    </>
+    </div>
   );
 }

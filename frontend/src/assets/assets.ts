@@ -24,6 +24,7 @@ import razorpayIcon from "./razorpay.png";
 import check from "./check.png";
 import play from "./play.png";
 import founder from "./founder.png";
+import about from "./about.png";
 
 export const assets = {
   logo,
@@ -49,6 +50,7 @@ export const assets = {
   check,
   play,
   founder,
+  about,
 };
 
 export const dummyTestimonial = [
@@ -77,3 +79,33 @@ export const dummyTestimonial = [
       "As someone juggling work and personal responsibilities, I needed something practical, not motivational fluff. This course helped me manage my time better, improve my habits, and build mental clarity. The biggest shift was internal. I feel more in control of my life now, and that confidence reflects in everything I do.",
   },
 ];
+
+export const missionText = `
+  <b>
+    Our mission is to provide practical education that leads to real,
+    measurable results.
+  </b>
+  <br /><br />
+  We believe learning should go beyond theory and inspiration — it
+  should translate directly into action. Every lesson we create is
+  designed to be clear, structured, and immediately applicable in the
+  real world.
+  <br /><br />
+  Knowledge is only valuable when it can be used, and our focus is on
+  equipping individuals with skills that create independence,
+  confidence, and momentum. We are committed to making education
+  straightforward and accessible, without unnecessary complexity or
+  fluff.
+  <br /><br />
+  Whether someone is building a business, developing a creative skill,
+  or working on personal growth, our goal is to provide a roadmap that
+  simplifies the process and accelerates progress. We emphasize
+  clarity, implementation, and consistency because lasting success is
+  built through deliberate action. Financial growth and personal
+  development are deeply connected. When individuals strengthen their
+  skills, mindset, and discipline, they unlock new opportunities and
+  take control of their future. Our mission is to support that
+  transformation — helping learners move from uncertainty to
+  direction, from intention to execution, and from potential to
+  tangible achievement.
+`;
