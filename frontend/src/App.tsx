@@ -16,6 +16,8 @@ import {
 } from "./features/user/userSlice";
 import { setIsEducator } from "./features/educator/educatorSlice";
 import AboutUs from "./pages/student/AboutUs";
+import Contact from "./pages/student/Contact";
+import Footer from "./components/student/Footer";
 
 const Home = lazy(() => import("./pages/student/Home"));
 const CourseList = lazy(() => import("./pages/student/CourseList"));
@@ -85,6 +87,7 @@ export default function App() {
           <Route path="/player/:courseId" element={<Player />} />
           <Route path="/loading/:path" element={<Loading />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
 
           <Route path="/educator" element={<Educator />}>
             <Route index element={<Dashboard />} />
@@ -94,6 +97,8 @@ export default function App() {
           </Route>
         </Routes>
       </div>
+
+      {!isEducatorRoute && <Footer />}
     </Suspense>
   );
 }

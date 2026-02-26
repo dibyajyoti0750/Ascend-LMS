@@ -1,4 +1,3 @@
-import Footer from "../../components/student/Footer";
 import { assets, missionText } from "../../assets/assets";
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
@@ -97,8 +96,6 @@ export default function AboutUs() {
           </button>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

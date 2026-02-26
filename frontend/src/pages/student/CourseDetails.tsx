@@ -30,7 +30,6 @@ import {
 } from "../../utils/calculate";
 import type { AppDispatch, RootState } from "../../app/store";
 import Loading from "../../components/student/Loading";
-import Footer from "../../components/student/Footer";
 import { fetchCourseById } from "../../features/courses/courseSlice";
 import PaymentModal from "./PaymentModal";
 
@@ -429,7 +428,6 @@ export default function CourseDetails() {
           paymentProcessing={paymentProcessing}
         />
       )}
-      <Footer />
     </>
   ) : (
     <Loading />

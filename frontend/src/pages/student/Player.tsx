@@ -7,7 +7,6 @@ import { calculateChapterTime } from "../../utils/calculate";
 import humanizeDuration from "humanize-duration";
 import Rating from "../../components/student/Rating";
 import YouTube from "react-youtube";
-import Footer from "../../components/student/Footer";
 import type { Course, Lecture } from "../../features/courses/course.types";
 import Loading from "../../components/student/Loading";
 import axios from "axios";
@@ -334,8 +333,6 @@ export default function Player() {
           )}
         </div>
       </div>
-
-      <Footer />
     </>
   ) : (
     <Loading />

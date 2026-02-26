@@ -5,7 +5,6 @@ import { X } from "lucide-react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import CourseCard from "../../components/student/CourseCard";
-import Footer from "../../components/student/Footer";
 
 export default function CourseList() {
   const { allCourses } = useSelector((state: RootState) => state.courses);
@@ -68,8 +67,6 @@ export default function CourseList() {
           )}
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }

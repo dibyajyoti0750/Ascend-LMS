@@ -6,7 +6,6 @@ import {
   calculateCourseDuration,
   calculateNoOfLectures,
 } from "../../utils/calculate";
-import Footer from "../../components/student/Footer";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
@@ -168,8 +167,6 @@ export default function MyEnrollments() {
           </tbody>
         </table>
       </div>
-
-      <Footer />
     </>
   );
 }
