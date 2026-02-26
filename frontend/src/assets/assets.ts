@@ -23,6 +23,7 @@ import stripeIcon from "./stripe.png";
 import razorpayIcon from "./razorpay.png";
 import check from "./check.png";
 import play from "./play.png";
+import founder from "./founder.png";
 
 export const assets = {
   logo,
@@ -47,6 +48,7 @@ export const assets = {
   razorpayIcon,
   check,
   play,
+  founder,
 };
 
 export const dummyTestimonial = [

@@ -15,6 +15,7 @@ import {
   fetchUserEnrolledCourses,
 } from "./features/user/userSlice";
 import { setIsEducator } from "./features/educator/educatorSlice";
+import AboutUs from "./pages/student/AboutUs";
 
 const Home = lazy(() => import("./pages/student/Home"));
 const CourseList = lazy(() => import("./pages/student/CourseList"));
@@ -83,6 +84,7 @@ export default function App() {
           <Route path="/my-enrollments" element={<MyEnrollments />} />
           <Route path="/player/:courseId" element={<Player />} />
           <Route path="/loading/:path" element={<Loading />} />
+          <Route path="/about-us" element={<AboutUs />} />
 
           <Route path="/educator" element={<Educator />}>
             <Route index element={<Dashboard />} />

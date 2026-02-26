@@ -153,7 +153,7 @@ export default function CourseDetails() {
 
   return courseData ? (
     <>
-      <div className="flex flex-col-reverse md:flex-row gap-10 items-start justify-between p-4 md:px-52 md:py-16 text-left">
+      <div className="flex flex-col-reverse md:flex-row gap-10 items-start justify-between p-4 md:px-52 md:py-16 mb-10 text-left">
         {/* left column */}
         <div className="max-w-4xl space-y-8 text-slate-900">
           {/* Header Section */}

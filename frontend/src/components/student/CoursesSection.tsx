@@ -44,7 +44,7 @@ export default function CoursesSection() {
       <Link
         to="/course-list"
         onClick={() => scrollTo(0, 0)}
-        className="inline-flex items-center justify-center rounded-lg bg-purple-950 px-8 py-3 text-sm font-medium text-white transition hover:bg-purple-900"
+        className="inline-flex items-center justify-center rounded-lg bg-purple-950 hover:bg-purple-900 px-8 py-3 text-sm font-medium text-white transition"
       >
         Show all courses
       </Link>

@@ -26,7 +26,7 @@ export default function CourseList() {
 
   return (
     <>
-      <div className="relative md:px-36 px-8 p-28 text-left">
+      <div className="relative p-28 md:px-36 mb-10 text-left">
         <div className="flex md:flex-row flex-col gap-6 items-start justify-between w-full">
           <div>
             <h1 className="text-4xl font-semibold text-purple-900 mb-2">

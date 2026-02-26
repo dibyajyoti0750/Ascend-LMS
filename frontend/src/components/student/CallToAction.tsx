@@ -5,7 +5,7 @@ export default function CallToAction() {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center gap-4 pb-28">
+    <div className="flex flex-col items-center gap-4 pb-40">
       <h1 className="text-xl md:text-4xl text-purple-900 font-bold">
         Take the First Step Today
       </h1>
