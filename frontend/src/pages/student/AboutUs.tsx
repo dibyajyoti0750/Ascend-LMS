@@ -1,16 +1,11 @@
 import { assets, missionText } from "../../assets/assets";
-import { useClerk, useUser } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
+import JoinSection from "../../components/student/JoinSection";
 
 export default function AboutUs() {
-  const { openSignIn } = useClerk();
-  const { user } = useUser();
-  const navigate = useNavigate();
-
   return (
     <div className="bg-[#131628] text-white">
       {/* Main Content Wrapper */}
-      <div className="flex flex-col justify-center items-center mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="flex flex-col justify-center items-center mx-auto mb-24 max-w-7xl px-6 lg:px-8">
         {/* About Us */}
         <section className="py-24 max-w-5xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
@@ -61,40 +56,7 @@ export default function AboutUs() {
         </section>
       </div>
 
-      {/* Join Section */}
-      <section className="relative mt-24 border-y-4 border-[#6F00FF]">
-        {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${assets.about})` }}
-        />
-        <div className="absolute inset-0 bg-black/70" />
-
-        <div className="relative z-10 py-28 px-6 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-semibold mb-6">
-            Start Your Growth Journey Today
-          </h2>
-
-          <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-            Join Ascend and get access to structured courses that help you level
-            up your skills and take control of your future.
-          </p>
-
-          <button
-            onClick={() => {
-              if (user) {
-                navigate("/course-list");
-                window.scrollTo(0, 0);
-              } else {
-                openSignIn();
-              }
-            }}
-            className="bg-[#6F00FF] hover:bg-[#5a00d6] transition px-8 py-3 rounded-lg font-semibold shadow-lg cursor-pointer"
-          >
-            {user ? "Get Started" : "Sign Up Now"}
-          </button>
-        </div>
-      </section>
+      <JoinSection />
     </div>
   );
 }

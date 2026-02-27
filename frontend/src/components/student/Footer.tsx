@@ -12,11 +12,11 @@ interface FormData {
 
 const footerLinks = [
   { title: "Home", link: "/" },
-  { title: "About Us", link: "/about-us" },
+  { title: "About Us", link: "/about" },
   { title: "Contact Us", link: "/contact" },
-  { title: "Privacy Policy", link: "/privacy-policy" },
-  { title: "Refund Policy", link: "/refund-policy" },
-  { title: "Terms & Conditions", link: "/terms-and-condition" },
+  { title: "Privacy Policy", link: "/privacy" },
+  { title: "Refund Policy", link: "/refund" },
+  { title: "Terms & Conditions", link: "/standard-terms" },
 ];
 
 export default function Footer() {

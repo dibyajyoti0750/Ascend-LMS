@@ -15,15 +15,16 @@ import {
   fetchUserEnrolledCourses,
 } from "./features/user/userSlice";
 import { setIsEducator } from "./features/educator/educatorSlice";
-import AboutUs from "./pages/student/AboutUs";
-import Contact from "./pages/student/Contact";
-import Footer from "./components/student/Footer";
 
 const Home = lazy(() => import("./pages/student/Home"));
 const CourseList = lazy(() => import("./pages/student/CourseList"));
 const CourseDetails = lazy(() => import("./pages/student/CourseDetails"));
 const MyEnrollments = lazy(() => import("./pages/student/MyEnrollments"));
 const Player = lazy(() => import("./pages/student/Player"));
+const AboutUs = lazy(() => import("./pages/student/AboutUs"));
+const Contact = lazy(() => import("./pages/student/Contact"));
+const Footer = lazy(() => import("./components/student/Footer"));
+const PrivacyPolicy = lazy(() => import("./pages/student/PrivacyPolicy"));
 
 const Educator = lazy(() => import("./pages/educator/Educator"));
 const Dashboard = lazy(() => import("./pages/educator/Dashboard"));
@@ -86,8 +87,9 @@ export default function App() {
           <Route path="/my-enrollments" element={<MyEnrollments />} />
           <Route path="/player/:courseId" element={<Player />} />
           <Route path="/loading/:path" element={<Loading />} />
-          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
 
           <Route path="/educator" element={<Educator />}>
             <Route index element={<Dashboard />} />
