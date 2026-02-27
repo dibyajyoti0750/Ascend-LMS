@@ -52,21 +52,21 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="w-full bg-[#6F00FF] text-white text-center p-3">
-        <div className="flex justify-center items-center gap-3">
+      <div className="w-full bg-[#6F00FF] text-white text-center px-2 py-2 md:p-3">
+        <div className="flex justify-center items-center gap-0 md:gap-3">
           <img src={assets.warning} alt="warning" className="w-8 h-8" />
           <DailyCountdown />
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-4 md:px-14 py-3 bg-[#131628] text-white shadow">
-        <Link to="/" className="flex items-center gap-3">
+      <div className="flex items-center justify-between px-2 md:px-14 py-3 md:py-4 bg-[#131628] text-white shadow">
+        <Link to="/" className="flex items-center gap-3 outline-none">
           <img
             src={assets.logo}
             alt="Logo"
-            className="w-8 md:w-10 rounded-lg"
+            className="w-6 md:w-10 rounded-lg"
           />
-          <p className="text-lg md:text-2xl font-bold">
+          <p className="text-xs md:text-xl font-bold">
             ASCEND<span className="font-light">.COM</span>
           </p>
         </Link>
@@ -105,23 +105,23 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Screens */}
-        <div className="md:hidden flex items-center gap-3 text-gray-600 text-sm">
-          <div className="flex items-center">
+        <div className="md:hidden flex items-center gap-3 text-white text-xs">
+          <div className="flex items-center gap-1.5">
             {isEducator && (
               <button
                 onClick={() => navigate("/educator")}
-                className="rounded p-2 active:bg-purple-100"
+                className="rounded p-2 active:bg-white/10"
               >
-                Educator Dashboard
+                Dashboard
               </button>
             )}
 
             {user && (
               <Link
                 to="/my-enrollments"
-                className="rounded p-2 active:bg-purple-100"
+                className="rounded p-2 active:bg-white/10"
               >
-                My Enrollments
+                Enrollments
               </Link>
             )}
           </div>

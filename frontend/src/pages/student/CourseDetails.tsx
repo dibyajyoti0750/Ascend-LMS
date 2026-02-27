@@ -159,7 +159,7 @@ export default function CourseDetails() {
 
   return courseData ? (
     <>
-      <div className="flex flex-col-reverse md:flex-row gap-10 items-start justify-between p-4 md:px-52 md:py-16 mb-10 text-left">
+      <div className="flex flex-col-reverse md:flex-row gap-10 items-start p-4 md:px-20 lg:px-40 md:py-16 mb-10">
         {/* left column */}
         <div className="max-w-4xl space-y-8 text-slate-900">
           {/* Header Section */}
@@ -301,7 +301,7 @@ export default function CourseDetails() {
         </div>
 
         {/* right column */}
-        <div className="max-w-course-card z-10 sticky top-10 shadow-2xl border border-slate-200 overflow-hidden bg-white rounded-xl">
+        <div className="w-full md:w-95 lg:w-105 shrink-0 z-10 md:sticky md:top-10 shadow-2xl border border-slate-200 overflow-hidden bg-white rounded-xl">
           {/* Media Section */}
           <div className="relative aspect-video bg-slate-100 overflow-hidden">
             {playerData ? (

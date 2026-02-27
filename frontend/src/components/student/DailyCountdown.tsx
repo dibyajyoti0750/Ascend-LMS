@@ -16,12 +16,15 @@ export default function DailyCountdown() {
       <div className="flex justify-center items-center gap-4 text-xs md:text-base font-bold">
         <Countdown date={tomorrow} renderer={renderer} />
         <p className="flex items-center gap-2">
-          <span>Limited-Time Launch Offer - Enroll Today & Save</span>
-          <span className="text-lg text-green-400">40%</span>
+          <span className="hidden md:block">
+            Limited-Time Launch Offer - Enroll Today & Save
+          </span>
+          <span className="md:hidden">Limited-Time Launch Offer</span>
+          <span className="hidden md:block text-lg text-green-400">40%</span>
         </p>
 
-        <div className="flex items-center gap-3">
-          <p className="text-xl font-bold text-yellow-300">$36</p>
+        <div className="flex items-center gap-2 md:gap-3">
+          <p className="text-base md:text-xl font-bold text-yellow-300">$36</p>
           <p className="text-base line-through opacity-70">$60</p>
         </div>
       </div>
