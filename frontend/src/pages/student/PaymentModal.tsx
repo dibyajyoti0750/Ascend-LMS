@@ -12,7 +12,7 @@ interface PaymentOption {
 
 interface PaymentModalProps {
   onClose: () => void;
-  onContinue: (method: PaymentMethod) => void;
+  onContinue: (method: PaymentMethod, agreedToRefundPolicy: boolean) => void;
   paymentProcessing: boolean;
 }
 
@@ -35,6 +35,7 @@ export default function PaymentModal({
   paymentProcessing,
 }: PaymentModalProps) {
   const [selected, setSelected] = useState<PaymentMethod>("stripe");
+  const [agreedToRefundPolicy, setAgreedToRefundPolicy] = useState(false);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -84,10 +85,33 @@ export default function PaymentModal({
 
         {/* Actions */}
         <div className="mt-6 space-y-3">
+          <div className="mt-4 rounded-lg bg-gray-50 p-3">
+            <label className="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={agreedToRefundPolicy}
+                onChange={(e) => setAgreedToRefundPolicy(e.target.checked)}
+                className="mt-1 cursor-pointer"
+              />
+              <span>
+                I agree to the{" "}
+                <a
+                  href="/refund"
+                  target="_blank"
+                  className="text-blue-600 font-medium hover:underline"
+                >
+                  Refund Policy
+                </a>{" "}
+                and understand that course access is non-refundable once
+                granted.
+              </span>
+            </label>
+          </div>
+
           <button
-            disabled={paymentProcessing}
-            onClick={() => onContinue(selected)}
-            className="w-full rounded-lg bg-linear-to-r from-indigo-500 to-indigo-600 py-3 text-sm font-medium text-white transition hover:opacity-90 active:opacity-90 cursor-pointer disabled:opacity-50"
+            disabled={paymentProcessing || !agreedToRefundPolicy}
+            onClick={() => onContinue(selected, agreedToRefundPolicy)}
+            className="w-full rounded-lg bg-linear-to-r from-indigo-500 to-indigo-600 py-3 text-sm font-medium text-white transition hover:opacity-90 active:opacity-90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {paymentProcessing ? (
               <span className="flex items-center justify-center gap-2">

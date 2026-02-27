@@ -47,14 +47,28 @@ const getUsdToInrRate = async () => {
 
 // Purchase course Razorpay
 export const purchaseCourseRZP = async (req, res) => {
-  const { courseId } = req.body;
+  const { courseId, agreedToRefundPolicy } = req.body;
   const { userId } = await req.auth();
+
+  if (!agreedToRefundPolicy) {
+    throw new ExpressError(400, "Refund policy must be accepted");
+  }
 
   const userData = await User.findById(userId);
   const courseData = await Course.findById(courseId);
 
   if (!userData || !courseData) {
     throw new ExpressError(404, "Data not found");
+  }
+
+  const existingPurchase = await Purchase.findOne({
+    userId,
+    courseId,
+    status: "completed",
+  });
+
+  if (existingPurchase) {
+    throw new ExpressError(400, "Course already purchased");
   }
 
   const usdAmount =
@@ -74,6 +88,10 @@ export const purchaseCourseRZP = async (req, res) => {
     inrAmount: finalInrAmount,
     exchangeRate: rate,
     paymentGateway: "razorpay",
+
+    agreedToRefundPolicy: true,
+    refundPolicyAcceptedAt: new Date(),
+
     status: "pending",
   });
 
@@ -129,8 +147,25 @@ export const verifyRazorpayPayment = async (req, res) => {
   }
 
   const purchaseData = await Purchase.findById(purchaseId);
+
+  if (!purchaseData) {
+    throw new ExpressError(404, "Purchase not found");
+  }
+
+  if (purchaseData.status === "completed") {
+    return res.json({ success: true });
+  }
+
+  if (purchaseData.status === "failed") {
+    throw new ExpressError(400, "Payment already marked as failed");
+  }
+
   const userData = await User.findById(purchaseData.userId);
   const courseData = await Course.findById(purchaseData.courseId);
+
+  if (!userData || !courseData) {
+    throw new ExpressError(404, "User or Course not found");
+  }
 
   // enroll student
   await Course.findByIdAndUpdate(courseData._id, {
@@ -144,6 +179,8 @@ export const verifyRazorpayPayment = async (req, res) => {
   purchaseData.status = "completed";
   purchaseData.orderId = razorpay_order_id;
   purchaseData.paymentId = razorpay_payment_id;
+  purchaseData.paidAt = new Date();
+
   await purchaseData.save();
 
   res.json({ success: true });
@@ -152,8 +189,12 @@ export const verifyRazorpayPayment = async (req, res) => {
 // Purchase course Stripe
 export const purchaseCourseStripe = async (req, res) => {
   const { origin } = req.headers;
-  const { courseId } = req.body;
+  const { courseId, agreedToRefundPolicy } = req.body;
   const { userId } = await req.auth();
+
+  if (!agreedToRefundPolicy) {
+    throw new ExpressError(400, "Refund policy must be accepted");
+  }
 
   const userData = await User.findById(userId);
   const courseData = await Course.findById(courseId);
@@ -183,6 +224,10 @@ export const purchaseCourseStripe = async (req, res) => {
     userId,
     usdAmount: finalAmount,
     paymentGateway: "stripe",
+
+    agreedToRefundPolicy: true,
+    refundPolicyAcceptedAt: new Date(),
+
     status: "pending",
   });
 

@@ -363,7 +363,7 @@ export default function AddCourse() {
                         <a
                           href={lecture.lectureUrl}
                           target="_blank"
-                          className="text-blue-500"
+                          className="text-blue-600"
                         >
                           Link
                         </a>{" "}

@@ -8,7 +8,11 @@ const purchaseSchema = new mongoose.Schema(
       required: true,
     },
 
-    userId: { type: String, ref: "User", required: true },
+    userId: {
+      type: String,
+      ref: "User",
+      required: true,
+    },
 
     usdAmount: {
       type: Number,
@@ -29,6 +33,17 @@ const purchaseSchema = new mongoose.Schema(
       required: true,
     },
 
+    // Refund consent proof
+    agreedToRefundPolicy: {
+      type: Boolean,
+      required: true,
+    },
+
+    refundPolicyAcceptedAt: {
+      type: Date,
+      required: true,
+    },
+
     // Gateway specific IDs
     orderId: String,
     paymentId: String,
@@ -37,6 +52,11 @@ const purchaseSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "completed", "failed"],
       default: "pending",
+    },
+
+    // Actual payment success timestamp
+    paidAt: {
+      type: Date,
     },
   },
   { timestamps: true },

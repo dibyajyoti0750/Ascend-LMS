@@ -25,9 +25,12 @@ export default function CallToAction() {
           Get started
         </button>
 
-        <button className="px-6.5 py-3 rounded-md flex items-center gap-1 hover:bg-purple-50 transition cursor-pointer">
+        <a
+          href="/about"
+          className="px-6.5 py-3 rounded-md flex items-center gap-1 hover:bg-purple-50 transition cursor-pointer"
+        >
           Learn more <ArrowRight />
-        </button>
+        </a>
       </div>
     </div>
   );

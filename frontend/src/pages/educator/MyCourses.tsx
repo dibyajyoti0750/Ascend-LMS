@@ -193,7 +193,7 @@ export default function MyCourses() {
                           })
                         }
                         size={20}
-                        className="text-gray-400 hover:text-blue-500 cursor-pointer transition-colors duration-200"
+                        className="text-gray-400 hover:text-blue-600 cursor-pointer transition-colors duration-200"
                       />
 
                       <Trash2

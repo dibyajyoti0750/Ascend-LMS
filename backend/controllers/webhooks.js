@@ -106,6 +106,7 @@ export const stripeWebhooks = async (req, res) => {
         purchaseData.status = "completed";
         purchaseData.orderId = session.id;
         purchaseData.paymentId = session.payment_intent;
+        purchaseData.paidAt = new Date();
         await purchaseData.save();
 
         break;

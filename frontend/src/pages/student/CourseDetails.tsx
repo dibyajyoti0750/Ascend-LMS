@@ -76,7 +76,14 @@ export default function CourseDetails() {
       .catch((err) => toast.error(err));
   }, [dispatch, id]);
 
-  const handlePayment = async (method: PaymentMethod) => {
+  const handlePayment = async (
+    method: PaymentMethod,
+    agreedToRefundPolicy: boolean,
+  ) => {
+    if (!agreedToRefundPolicy) {
+      return toast.error("Please accept the refund policy to continue");
+    }
+
     try {
       setPaymentProcessing(true);
       if (!userData) return toast.error("Sign in to enroll");
@@ -86,7 +93,7 @@ export default function CourseDetails() {
       if (method === "stripe") {
         const { data } = await axios.post(
           `${backendUrl}/api/user/purchase-stripe`,
-          { courseId: courseData?._id },
+          { courseId: courseData?._id, agreedToRefundPolicy },
           { headers: { Authorization: `Bearer ${token}` } },
         );
 
@@ -97,7 +104,7 @@ export default function CourseDetails() {
       } else if (method === "razorpay") {
         const { data } = await axios.post(
           backendUrl + "/api/user/purchase-rzp",
-          { courseId: courseData?._id },
+          { courseId: courseData?._id, agreedToRefundPolicy },
           { headers: { Authorization: `Bearer ${token}` } },
         );
 

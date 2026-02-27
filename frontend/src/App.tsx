@@ -25,6 +25,8 @@ const AboutUs = lazy(() => import("./pages/student/AboutUs"));
 const Contact = lazy(() => import("./pages/student/Contact"));
 const Footer = lazy(() => import("./components/student/Footer"));
 const PrivacyPolicy = lazy(() => import("./pages/student/PrivacyPolicy"));
+const RefundPolicy = lazy(() => import("./pages/student/RefundPolicy"));
+const TermsConditions = lazy(() => import("./pages/student/TermsConditions"));
 
 const Educator = lazy(() => import("./pages/educator/Educator"));
 const Dashboard = lazy(() => import("./pages/educator/Dashboard"));
@@ -90,6 +92,8 @@ export default function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/refund" element={<RefundPolicy />} />
+          <Route path="/standard-terms" element={<TermsConditions />} />
 
           <Route path="/educator" element={<Educator />}>
             <Route index element={<Dashboard />} />
