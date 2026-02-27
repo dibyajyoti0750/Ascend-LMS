@@ -6,6 +6,10 @@ export default function PrivacyPolicy() {
       <div className="max-w-5xl mx-auto px-6 py-16 leading-relaxed space-y-10 mb-24">
         <h1 className="text-4xl font-bold text-center mb-10">Privacy Policy</h1>
 
+        <p className="text-gray-400 text-sm mb-8">
+          Last Updated: February 27, 2026
+        </p>
+
         {/* Introduction */}
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">1. Introduction</h2>
@@ -103,35 +107,62 @@ export default function PrivacyPolicy() {
           </div>
         </section>
 
-        {/* Start checking from here */}
+        {/* Embedded content from other websites */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">
+            3. Embedded Content from Third-Party Platforms
+          </h2>
+          <p className="text-gray-300">
+            All course videos available on our platform are hosted on YouTube
+            and embedded into our website. When you view or interact with these
+            videos, YouTube may collect certain information such as your IP
+            address, device details, and usage data in accordance with its own
+            privacy policy.
+          </p>
+          <p className="text-gray-300">
+            We do not control how YouTube collects or processes data. We
+            encourage users to review YouTube's privacy policy for more
+            information.
+          </p>
+        </section>
 
         {/* How We Use Information */}
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">
-            3. How We Use Your Information
+            4. How We Use Your Information
           </h2>
+
           <ul className="list-disc pl-6 space-y-1 text-gray-300">
             <li>Create and manage user accounts</li>
-            <li>Process payments and enrollments</li>
-            <li>Provide course access</li>
-            <li>Track learning progress</li>
-            <li>Improve platform functionality</li>
-            <li>Send important updates and notifications</li>
+            <li>Provide access to purchased courses</li>
+            <li>Process payments and manage enrollments</li>
+            <li>Maintain transaction records for accounting and compliance</li>
+            <li>Track course progress and learning activity</li>
             <li>Provide customer support</li>
-            <li>Prevent fraud and misuse</li>
+            <li>Improve and maintain platform functionality</li>
+            <li>Prevent fraud, abuse, and unauthorized access</li>
           </ul>
-          <p className="text-gray-300">
-            We do not sell your personal data to third parties.
+
+          <p className="text-gray-300 mt-3">
+            We do not sell, rent, or trade your personal information to third
+            parties. However, we may share limited information with trusted
+            third-party service providers who help us operate our platform, such
+            as authentication and payment processing services.
           </p>
         </section>
 
         {/* Data Security */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">4. Data Security</h2>
+          <h2 className="text-2xl font-semibold">5. Data Security</h2>
           <p className="text-gray-300">
-            We implement appropriate security measures including encrypted
-            passwords, secure authentication systems, restricted database
-            access, and HTTPS connections to protect your data.
+            We implement appropriate security measures to protect your data,
+            including secure authentication systems provided by trusted
+            third-party services, restricted database access, and HTTPS
+            connections.
+          </p>
+          <p className="text-gray-300">
+            Authentication credentials are securely processed and managed by our
+            authentication provider in accordance with industry standards.
           </p>
           <p className="text-gray-300">
             While we strive to use commercially acceptable means to protect your
@@ -142,30 +173,40 @@ export default function PrivacyPolicy() {
 
         {/* Third Party Services */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">5. Third Party Services</h2>
+          <h2 className="text-2xl font-semibold">6. Third-Party Services</h2>
           <p className="text-gray-300">
-            We may use trusted third-party services such as payment gateways,
-            email service providers, and analytics tools. These services have
-            their own privacy policies governing the use of your information.
+            We use trusted third-party service providers to operate our
+            platform, including authentication and payment processing services.
+            These providers may process limited personal information as
+            necessary to deliver their services and are governed by their own
+            privacy policies.
+          </p>
+          <p className="text-gray-300">
+            When you contact us, your message may be processed through secure
+            email service providers to enable communication and support. We do
+            not use email services for promotional or marketing purposes.
           </p>
         </section>
 
         {/* Data Retention */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">6. Data Retention</h2>
+          <h2 className="text-2xl font-semibold">7. Data Retention</h2>
           <p className="text-gray-300">
             We retain your personal information for as long as your account
             remains active or as necessary to comply with legal obligations and
             legitimate business purposes.
           </p>
           <p className="text-gray-300">
-            You may request account deletion at any time by contacting us.
+            You may request account deletion at any time by{" "}
+            <a href="/contact" className="underline">
+              contacting us.
+            </a>
           </p>
         </section>
 
         {/* User Rights */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">7. Your Rights</h2>
+          <h2 className="text-2xl font-semibold">8. Your Rights</h2>
           <ul className="list-disc pl-6 space-y-1 text-gray-300">
             <li>Access your personal data</li>
             <li>Correct inaccurate information</li>
@@ -180,7 +221,7 @@ export default function PrivacyPolicy() {
 
         {/* Children's Privacy */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">8. Children's Privacy</h2>
+          <h2 className="text-2xl font-semibold">9. Children's Privacy</h2>
           <p className="text-gray-300">
             Our platform is not intended for children under the age of 13. We do
             not knowingly collect personal information from minors.
@@ -189,7 +230,7 @@ export default function PrivacyPolicy() {
 
         {/* Policy Updates */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">9. Updates to This Policy</h2>
+          <h2 className="text-2xl font-semibold">10. Updates to This Policy</h2>
           <p className="text-gray-300">
             We may update this Privacy Policy from time to time. Any changes
             will be posted on this page with a revised effective date.
@@ -198,12 +239,20 @@ export default function PrivacyPolicy() {
 
         {/* Contact */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">10. Contact Us</h2>
+          <h2 className="text-2xl font-semibold">11. Contact Us</h2>
           <p className="text-gray-300">
             If you have any questions regarding this Privacy Policy, you may
             contact us at:
           </p>
-          <p className="text-gray-300">Email: support@yourdomain.com</p>
+          <p className="text-gray-300">
+            Email:{" "}
+            <a
+              href="mailto:dibyajyotipramanick0750@gmail.com"
+              className="hover:underline"
+            >
+              dibyajyotipramanick0750@gmail.com
+            </a>
+          </p>
           <p className="text-gray-300">Location: India</p>
         </section>
       </div>

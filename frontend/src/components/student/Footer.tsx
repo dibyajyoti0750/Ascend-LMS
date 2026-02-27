@@ -112,10 +112,10 @@ export default function Footer() {
           <p className="text-sm text-white/80">
             Email:{" "}
             <a
-              href="mailto:developerdj996@gmail.com"
+              href="mailto:dibyajyotipramanick0750@gmail.com"
               className="hover:text-white hover:underline"
             >
-              developerdj996@gmail.com
+              dibyajyotipramanick0750@gmail.com
             </a>
           </p>
 
