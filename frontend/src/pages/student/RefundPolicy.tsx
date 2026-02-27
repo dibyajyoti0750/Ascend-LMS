@@ -4,7 +4,11 @@ export default function RefundPolicy() {
   return (
     <div className="bg-[#131628] text-white">
       <div className="max-w-5xl mx-auto px-6 py-16 leading-relaxed space-y-10 mb-24">
-        <h1 className="text-4xl font-bold text-center mb-10">Refund Policy</h1>
+        <h1 className="text-4xl font-bold text-center mb-6">Refund Policy</h1>
+
+        <p className="text-gray-400 text-sm text-center mb-12">
+          Last Updated: February 27, 2026
+        </p>
 
         <section className="space-y-4">
           <p className="text-gray-300">

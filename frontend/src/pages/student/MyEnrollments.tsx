@@ -111,9 +111,11 @@ export default function MyEnrollments() {
                       className="w-14 sm:w-24 md:w-28"
                     />
                     <div className="flex-1">
-                      <div className="flex mb-2 gap-2 text-xs md:text-base">
-                        <p>{course.courseTitle}</p>
-                        <p>
+                      <div className="flex flex-col md:flex-row mb-2 md:mb-4 gap-0.5 md:gap-2 text-xs md:text-base">
+                        <p className="text-[10px] md:text-base truncate">
+                          {course.courseTitle}
+                        </p>
+                        <p className="text-[10px] md:text-base truncate">
                           (
                           {progressArray[i]
                             ? (
