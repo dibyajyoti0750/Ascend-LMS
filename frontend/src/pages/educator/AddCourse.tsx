@@ -485,7 +485,7 @@ export default function AddCourse() {
               <p>Lecture URL</p>
               <input
                 type="text"
-                placeholder="https://youtube.com/"
+                placeholder="https://youtu.be/"
                 className="mt-1 block w-full border rounded py-1 px-2"
                 value={lectureDetails.lectureUrl}
                 onChange={(e) =>

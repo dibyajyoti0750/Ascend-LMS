@@ -273,13 +273,13 @@ export default function Player() {
         </div>
 
         {/* Right column */}
-        <div className="md:mt-13">
+        <div className="md:mt-12 rounded-xl overflow-hidden">
           {playerData ? (
             <div>
               <YouTube
                 opts={{ playerVars: { autoplay: 1 } }}
                 videoId={playerData.lectureUrl.split("/").pop()}
-                iframeClassName="w-full aspect-video"
+                iframeClassName="w-full h-full aspect-video"
               />
               <div className="flex items-center justify-between mt-4">
                 <div className="flex flex-col">
@@ -329,6 +329,7 @@ export default function Player() {
             <img
               src={courseData ? courseData.courseThumbnail.url : ""}
               alt="thumbnail"
+              className="w-full aspect-video object-cover"
             />
           )}
         </div>

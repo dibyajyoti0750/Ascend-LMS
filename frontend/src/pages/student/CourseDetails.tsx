@@ -160,7 +160,7 @@ export default function CourseDetails() {
 
   return courseData ? (
     <>
-      <div className="flex flex-col-reverse md:flex-row gap-10 items-start p-4 md:px-20 lg:px-40 md:py-16 mb-10">
+      <div className="flex flex-col-reverse md:flex-row md:justify-between gap-10 items-start p-4 md:px-20 lg:px-40 md:py-16 mb-10">
         {/* left column */}
         <div className="max-w-4xl space-y-8 text-slate-900">
           {/* Header Section */}
@@ -324,7 +324,7 @@ export default function CourseDetails() {
               <YouTube
                 videoId={playerData.videoId}
                 opts={{ playerVars: { autoplay: 1 } }}
-                iframeClassName="w-full aspect-video"
+                iframeClassName="w-full h-full aspect-video"
               />
             ) : (
               <img
