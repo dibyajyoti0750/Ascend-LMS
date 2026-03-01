@@ -31,6 +31,7 @@ export interface EditCourse {
   _id: string;
   courseTitle: string;
   courseDescription: string;
+  courseRequirements: string;
   courseThumbnail?: {
     url: string;
     public_id: string;

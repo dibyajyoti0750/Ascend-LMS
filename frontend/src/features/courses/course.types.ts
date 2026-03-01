@@ -35,6 +35,7 @@ export interface Course {
   _id: string;
   courseTitle: string;
   courseDescription: string;
+  courseRequirements: string;
   coursePrice: number;
   isPublished: boolean;
   discount: number;

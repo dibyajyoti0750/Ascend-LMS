@@ -9,6 +9,7 @@ import connectCloudinary from "./configs/cloudinary.js";
 import courseRouter from "./routes/courseRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import contactRouter from "./routes/contactRoutes.js";
+import Course from "./models/Course.js";
 
 const app = express();
 

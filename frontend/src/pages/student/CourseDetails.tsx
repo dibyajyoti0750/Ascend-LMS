@@ -299,7 +299,15 @@ export default function CourseDetails() {
           </div>
 
           {/* Detailed Description */}
-          <div className="pt-5 border-t border-slate-100">
+          <div className="pt-5 border-t border-slate-100 space-y-6">
+            <h3 className="text-2xl font-bold mb-4">Requirements</h3>
+            <div
+              className="rich-text max-w-none text-slate-700 leading-relaxed"
+              dangerouslySetInnerHTML={{
+                __html: courseData.courseRequirements,
+              }}
+            />
+
             <h3 className="text-2xl font-bold mb-4">Description</h3>
             <div
               className="rich-text max-w-none text-slate-700 leading-relaxed"

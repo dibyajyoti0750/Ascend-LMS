@@ -26,6 +26,7 @@ const courseSchema = new mongoose.Schema(
   {
     courseTitle: { type: String, required: true },
     courseDescription: { type: String, required: true },
+    courseRequirements: { type: String, required: true },
     courseThumbnail: {
       url: {
         type: String,

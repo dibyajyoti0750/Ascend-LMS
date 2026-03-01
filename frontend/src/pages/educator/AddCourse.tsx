@@ -28,8 +28,11 @@ interface Chapter {
 }
 
 export default function AddCourse() {
-  const quillRef = useRef<Quill | null>(null);
-  const editorRef = useRef<HTMLDivElement | null>(null);
+  const descriptionQuillRef = useRef<Quill | null>(null);
+  const requirementsQuillRef = useRef<Quill | null>(null);
+
+  const descriptionEditorRef = useRef<HTMLDivElement | null>(null);
+  const requirementsEditorRef = useRef<HTMLDivElement | null>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [courseTitle, setCourseTitle] = useState("");
@@ -152,7 +155,8 @@ export default function AddCourse() {
 
       const courseData = {
         courseTitle,
-        courseDescription: quillRef.current?.root.innerHTML,
+        courseDescription: descriptionQuillRef.current?.root.innerHTML,
+        courseRequirements: requirementsQuillRef.current?.root.innerHTML,
         coursePrice,
         discount,
         isBestSeller,
@@ -183,8 +187,9 @@ export default function AddCourse() {
         setIsBestSeller(false);
         setThumbnail(null);
         setChapters([]);
-        if (quillRef.current) {
-          quillRef.current.root.innerHTML = "";
+        if (descriptionQuillRef.current && requirementsQuillRef.current) {
+          descriptionQuillRef.current.root.innerHTML = "";
+          requirementsQuillRef.current.root.innerHTML = "";
         }
       }
     } catch (error: unknown) {
@@ -203,8 +208,16 @@ export default function AddCourse() {
   };
 
   useEffect(() => {
-    if (!quillRef.current && editorRef.current) {
-      quillRef.current = new Quill(editorRef.current, { theme: "snow" });
+    if (descriptionEditorRef.current && !descriptionQuillRef.current) {
+      descriptionQuillRef.current = new Quill(descriptionEditorRef.current, {
+        theme: "snow",
+      });
+    }
+
+    if (requirementsEditorRef.current && !requirementsQuillRef.current) {
+      requirementsQuillRef.current = new Quill(requirementsEditorRef.current, {
+        theme: "snow",
+      });
     }
   }, []);
 
@@ -227,8 +240,13 @@ export default function AddCourse() {
         </div>
 
         <div className="flex flex-col gap-1">
+          <p>Course Requirements</p>
+          <div ref={requirementsEditorRef}></div>
+        </div>
+
+        <div className="flex flex-col gap-1">
           <p>Course Description</p>
-          <div ref={editorRef}></div>
+          <div ref={descriptionEditorRef}></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">

@@ -186,6 +186,7 @@ export default function MyCourses() {
                             _id: course._id,
                             courseTitle: course.courseTitle,
                             courseDescription: course.courseDescription,
+                            courseRequirements: course.courseRequirements,
                             coursePrice: course.coursePrice,
                             courseThumbnail: course.courseThumbnail,
                             discount: course.discount,
