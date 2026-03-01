@@ -20,6 +20,7 @@ export default function MyCourses() {
     title: string;
   }>(null);
   const [editingCourse, setEditingCourse] = useState<null | EditCourse>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const currency = import.meta.env.VITE_CURRENCY;
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -69,8 +70,8 @@ export default function MyCourses() {
 
   // Delete course
   const handleDelete = async (courseId: string) => {
-    setDeletingCourse(null);
-
+    if (isDeleting) return; // prevent double clicks
+    setIsDeleting(true);
     const previousCourses = courses;
 
     setCourses((prev) => {
@@ -81,6 +82,7 @@ export default function MyCourses() {
     try {
       const token = await getToken();
       if (!token) {
+        setCourses(previousCourses); // rollback
         toast.error("Unauthorized");
         return;
       }
@@ -103,6 +105,9 @@ export default function MyCourses() {
       }
 
       toast.error(msg);
+    } finally {
+      setIsDeleting(false);
+      setDeletingCourse(null);
     }
   };
 
@@ -221,6 +226,7 @@ export default function MyCourses() {
           courseTitle={deletingCourse.title}
           onCancel={() => setDeletingCourse(null)}
           onConfirm={() => handleDelete(deletingCourse.id)}
+          isDeleting={isDeleting}
         />
       )}
 

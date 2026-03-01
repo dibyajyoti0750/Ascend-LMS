@@ -94,12 +94,18 @@ body {
 
 .rich-text ol {
   margin-left: 30px;
-  list-style-type: decimal;
 }
 
 .rich-text ul {
   margin-left: 30px;
+}
+
+.rich-text li[data-list="bullet"] {
   list-style-type: disc;
+}
+
+.rich-text li[data-list="ordered"] {
+  list-style-type: decimal;
 }
 
 .rich-text li {

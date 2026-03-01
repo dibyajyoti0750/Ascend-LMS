@@ -1,13 +1,17 @@
+import { LoaderCircle } from "lucide-react";
+
 interface DeleteModalProps {
   courseTitle: string;
   onCancel: () => void;
   onConfirm: () => void;
+  isDeleting: boolean;
 }
 
 export default function DeleteCourseModal({
   courseTitle,
   onCancel,
   onConfirm,
+  isDeleting,
 }: DeleteModalProps) {
   return (
     <div className="fixed inset-0 z-20 h-screen flex items-center justify-center bg-black/70 backdrop-blur-xs">
@@ -40,9 +44,15 @@ export default function DeleteCourseModal({
 
           <button
             onClick={onConfirm}
-            className="rounded-lg bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 transition cursor-pointer"
+            disabled={isDeleting}
+            className={`bg-red-600 rounded-lg px-4 py-2 text-sm text-white transition ${
+              isDeleting
+                ? "opacity-60 cursor-not-allowed"
+                : "hover:bg-red-700 cursor-pointer"
+            }
+            `}
           >
-            Delete
+            {isDeleting ? <LoaderCircle className="animate-spin" /> : "Delete"}
           </button>
         </div>
       </div>

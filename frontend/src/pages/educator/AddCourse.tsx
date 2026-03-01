@@ -217,6 +217,10 @@ export default function AddCourse() {
     if (requirementsEditorRef.current && !requirementsQuillRef.current) {
       requirementsQuillRef.current = new Quill(requirementsEditorRef.current, {
         theme: "snow",
+        modules: {
+          toolbar: [[{ list: "bullet" }]],
+        },
+        formats: ["list"],
       });
     }
   }, []);

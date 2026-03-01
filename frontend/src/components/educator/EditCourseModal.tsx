@@ -153,6 +153,10 @@ export default function EditCourseModal({
 
     const quill = new Quill(requirementsEditorRef.current, {
       theme: "snow",
+      modules: {
+        toolbar: [[{ list: "bullet" }]],
+      },
+      formats: ["list"],
     });
 
     requirementsQuillRef.current = quill;
