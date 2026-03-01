@@ -24,8 +24,14 @@ export default function EditCourseModal({
   onClose,
   onCourseUpdated,
 }: Props) {
-  const quillRef = useRef<Quill | null>(null);
-  const descRef = useRef<HTMLDivElement | null>(null);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const { getToken } = useAuth();
+
+  const descriptionQuillRef = useRef<Quill | null>(null);
+  const requirementsQuillRef = useRef<Quill | null>(null);
+
+  const descriptionEditorRef = useRef<HTMLDivElement | null>(null);
+  const requirementsEditorRef = useRef<HTMLDivElement | null>(null);
 
   const [formData, setFormData] = useState({
     ...course,
@@ -37,30 +43,28 @@ export default function EditCourseModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Disable If Nothing Changed
-  const [previousCourseData] = useState(course);
-  const currentDescription =
-    quillRef.current?.root.innerHTML || formData.courseDescription;
   const isChanged =
-    formData.courseTitle !== previousCourseData.courseTitle ||
-    formData.coursePrice !== previousCourseData.coursePrice ||
-    formData.discount !== previousCourseData.discount ||
-    formData.isPublished !== previousCourseData.isPublished ||
-    currentDescription !== previousCourseData.courseDescription ||
+    formData.courseTitle !== course.courseTitle ||
+    formData.coursePrice !== course.coursePrice ||
+    formData.discount !== course.discount ||
+    formData.isPublished !== course.isPublished ||
+    formData.courseDescription !== course.courseDescription ||
+    formData.courseRequirements !== course.courseRequirements ||
     !!thumbnailFile;
 
   // Validate form data
-  const descriptionText = quillRef.current?.getText().trim() || "";
+  const descriptionText = descriptionQuillRef.current?.getText().trim() || "";
+  const requirementsText = requirementsQuillRef.current?.getText().trim() || "";
+
   const isValid =
     formData.courseTitle.trim() !== "" &&
+    requirementsText !== "" &&
     descriptionText !== "" &&
     formData.coursePrice !== null &&
     formData.coursePrice > 0 &&
     formData.discount !== null &&
     formData.discount >= 0 &&
     formData.discount <= 100;
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const { getToken } = useAuth();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -98,8 +102,13 @@ export default function EditCourseModal({
 
       const updatedCourseData = {
         ...formData,
-        courseDescription: quillRef.current?.root.innerHTML,
+        courseDescription: descriptionQuillRef.current?.root.innerHTML,
+        courseRequirements: requirementsQuillRef.current?.root.innerHTML,
       };
+
+      if (!thumbnailFile) {
+        delete updatedCourseData.courseThumbnail;
+      }
 
       const formDataToSend = new FormData();
 
@@ -108,8 +117,6 @@ export default function EditCourseModal({
       if (thumbnailFile) {
         formDataToSend.append("newThumbnail", thumbnailFile);
       }
-
-      if (!thumbnailFile) delete updatedCourseData.courseThumbnail;
 
       const token = await getToken();
       if (!token) {
@@ -142,18 +149,46 @@ export default function EditCourseModal({
   };
 
   useEffect(() => {
-    if (!quillRef.current && descRef.current) {
-      quillRef.current = new Quill(descRef.current, {
-        theme: "snow",
-      });
+    if (!requirementsEditorRef.current || requirementsQuillRef.current) return;
+
+    const quill = new Quill(requirementsEditorRef.current, {
+      theme: "snow",
+    });
+
+    requirementsQuillRef.current = quill;
+
+    if (course.courseRequirements) {
+      quill.clipboard.dangerouslyPasteHTML(course.courseRequirements);
     }
-  }, []);
+
+    quill.on("text-change", () => {
+      setFormData((prev) => ({
+        ...prev,
+        courseRequirements: quill.root.innerHTML,
+      }));
+    });
+  }, [course.courseRequirements]);
 
   useEffect(() => {
-    if (quillRef.current && formData.courseDescription) {
-      quillRef.current.root.innerHTML = formData.courseDescription;
+    if (!descriptionEditorRef.current || descriptionQuillRef.current) return;
+
+    const quill = new Quill(descriptionEditorRef.current, {
+      theme: "snow",
+    });
+
+    descriptionQuillRef.current = quill;
+
+    if (course.courseDescription) {
+      quill.clipboard.dangerouslyPasteHTML(course.courseDescription);
     }
-  }, [formData.courseDescription]);
+
+    quill.on("text-change", () => {
+      setFormData((prev) => ({
+        ...prev,
+        courseDescription: quill.root.innerHTML,
+      }));
+    });
+  }, [course.courseDescription]);
 
   // Revoke URL on cleanup to avoid memory leak
   useEffect(() => {
@@ -196,12 +231,20 @@ export default function EditCourseModal({
             />
           </div>
 
+          {/* Requirements */}
+          <div className="space-y-2 text-sm">
+            <label className="font-medium text-gray-700">
+              Course Requirements
+            </label>
+            <div ref={requirementsEditorRef}></div>
+          </div>
+
           {/* Description */}
           <div className="space-y-2 text-sm">
             <label className="font-medium text-gray-700">
               Course Description
             </label>
-            <div ref={descRef}></div>
+            <div ref={descriptionEditorRef}></div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
