@@ -180,7 +180,7 @@ export default function Player() {
                   <div className="flex items-center gap-3">
                     <ChevronDown
                       size={20}
-                      className={`text-slate-400 transition-transform duration-300 ${
+                      className={`text-slate-400 transition-transform duration-300 shrink-0 ${
                         openSections[index] ? "rotate-180" : ""
                       }`}
                     />

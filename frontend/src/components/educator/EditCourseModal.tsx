@@ -175,7 +175,7 @@ export default function EditCourseModal({
             onClick={onClose}
             className="p-2 rounded-full hover:bg-gray-100 transition"
           >
-            <X size={20} className="text-gray-500 cursor-pointer" />
+            <X size={20} className="text-gray-500 shrink-0 cursor-pointer" />
           </button>
         </div>
 
@@ -284,7 +284,7 @@ export default function EditCourseModal({
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <UploadCloud
                       size={32}
-                      className="text-gray-500 group-hover:text-black"
+                      className="text-gray-500 group-hover:text-black shrink-0"
                     />
                     <span className="text-xs mt-2 text-gray-500 group-hover:text-black">
                       Click to upload

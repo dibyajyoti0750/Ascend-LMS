@@ -115,7 +115,7 @@ export default function PaymentModal({
           >
             {paymentProcessing ? (
               <span className="flex items-center justify-center gap-2">
-                <LoaderCircle size={22} className="animate-spin" />
+                <LoaderCircle size={22} className="animate-spin shrink-0" />
                 Processing...
               </span>
             ) : (

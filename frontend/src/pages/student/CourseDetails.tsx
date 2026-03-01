@@ -17,6 +17,7 @@ import {
   Globe,
   InfinityIcon,
   Lock,
+  Monitor,
   Star,
   Timer,
   Trophy,
@@ -178,21 +179,25 @@ export default function CourseDetails() {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               {courseData.isBestSeller && (
                 <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-md">
-                  <CircleCheckBig size={14} strokeWidth={2.5} />
+                  <CircleCheckBig
+                    size={14}
+                    strokeWidth={2.5}
+                    className="shrink-0"
+                  />
                   <span>BESTSELLER</span>
                 </div>
               )}
 
               <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
                 <div className="flex items-center gap-1.5">
-                  <CalendarDays size={16} className="text-slate-400" />
+                  <CalendarDays size={16} className="text-slate-400 shrink-0" />
                   <span>
                     Last updated{" "}
                     {new Date(courseData.updatedAt).toLocaleDateString("en-IN")}
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Globe size={16} className="text-slate-400" />
+                  <Globe size={16} className="text-slate-400 shrink-0" />
                   <span>English</span>
                 </div>
               </div>
@@ -216,7 +221,7 @@ export default function CourseDetails() {
                     <div className="flex items-center gap-3">
                       <ChevronDown
                         size={20}
-                        className={`text-slate-400 transition-transform duration-300 ${
+                        className={`text-slate-400 transition-transform duration-300 shrink-0 ${
                           openSections[index] ? "rotate-180" : ""
                         }`}
                       />
@@ -244,11 +249,14 @@ export default function CourseDetails() {
                         >
                           <div className="flex items-center gap-3">
                             {!lecture.isPreviewFree ? (
-                              <Lock size={18} className="text-slate-700" />
+                              <Lock
+                                size={18}
+                                className="text-slate-700 shrink-0"
+                              />
                             ) : (
                               <TvMinimalPlay
                                 size={18}
-                                className="text-slate-700 group-hover:text-indigo-500"
+                                className="text-slate-700 group-hover:text-indigo-500 shrink-0"
                               />
                             )}
 
@@ -322,9 +330,13 @@ export default function CourseDetails() {
           {/* Content Section */}
           <div className="p-6 space-y-6">
             {/* Urgency Alert */}
-            <div className="flex items-center gap-2.5">
-              <Timer className="text-red-600 size-5" strokeWidth={2.5} />
-              <p className="text-red-700 text-sm font-bold space-x-2">
+            <div className="flex items-center gap-2">
+              <Timer
+                className="text-red-600 size-5 shrink-0"
+                strokeWidth={2.5}
+              />
+              <p className="text-red-700 text-sm font-bold space-x-1.5">
+                <span>Price increases in</span>
                 <Countdown
                   date={fiveDaysLater}
                   renderer={({ days, hours, minutes, seconds }) => {
@@ -335,7 +347,6 @@ export default function CourseDetails() {
                     );
                   }}
                 />
-                <span>left at this price!</span>
               </p>
             </div>
 
@@ -361,21 +372,24 @@ export default function CourseDetails() {
 
             <div className="flex justify-around items-center gap-3">
               <span className="flex items-center gap-1.5">
-                <Star size={18} className="text-yellow-400 fill-yellow-400" />
+                <Star
+                  size={18}
+                  className="text-yellow-400 fill-yellow-400 shrink-0"
+                />
                 {calculateRating(courseData)}
               </span>
 
               <div className="border-r border-gray-300 h-5"></div>
 
               <span className="flex items-center gap-1.5">
-                <Clock size={18} className="text-slate-400" />
+                <Clock size={18} className="text-slate-400 shrink-0" />
                 {calculateCourseDuration(courseData)}
               </span>
 
               <div className="border-r border-gray-300 h-5"></div>
 
               <span className="flex items-center gap-1.5">
-                <BookOpenText size={18} className="text-slate-400" />
+                <BookOpenText size={18} className="text-slate-400 shrink-0" />
                 {calculateNoOfLectures(courseData)} lessons
               </span>
             </div>
@@ -395,10 +409,6 @@ export default function CourseDetails() {
               {isAlreadyEnrolled ? "Go to Course" : "Enroll Now"}
             </button>
 
-            <p className="text-center text-xs text-slate-400 font-medium">
-              30-Day Money-Back Guarantee
-            </p>
-
             {/* Features List */}
             <div className="pt-2">
               <p className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">
@@ -406,20 +416,17 @@ export default function CourseDetails() {
               </p>
               <ul className="space-y-3 text-sm text-slate-600">
                 <li className="flex items-center gap-3">
-                  <Clock size={18} className="text-slate-400" />
-                  <span>
-                    <span className="font-bold text-slate-800">
-                      {calculateCourseDuration(courseData)}
-                    </span>{" "}
-                    on-demand video
-                  </span>
+                  <InfinityIcon size={18} className="text-slate-400 shrink-0" />
+                  <span>Lifetime access + future updates</span>
                 </li>
+
                 <li className="flex items-center gap-3">
-                  <InfinityIcon size={18} className="text-slate-400" />
-                  <span>Full lifetime access</span>
+                  <Monitor size={18} className="text-slate-400 shrink-0" />
+                  <span>Access on mobile & desktop</span>
                 </li>
+
                 <li className="flex items-center gap-3">
-                  <Trophy size={18} className="text-slate-400" />
+                  <Trophy size={18} className="text-slate-400 shrink-0" />
                   <span>Certificate of completion</span>
                 </li>
               </ul>

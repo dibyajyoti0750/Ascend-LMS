@@ -193,7 +193,7 @@ export default function MyCourses() {
                           })
                         }
                         size={20}
-                        className="text-gray-400 hover:text-blue-600 cursor-pointer transition-colors duration-200"
+                        className="text-gray-400 hover:text-blue-600 cursor-pointer transition-colors duration-200 shrink-0"
                       />
 
                       <Trash2
@@ -204,7 +204,7 @@ export default function MyCourses() {
                           })
                         }
                         size={20}
-                        className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors duration-200"
+                        className="text-gray-400 hover:text-red-500 cursor-pointer transition-colors duration-200 shrink-0"
                       />
                     </div>
                   </td>

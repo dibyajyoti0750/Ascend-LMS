@@ -19,7 +19,12 @@ export default function CoursesSection() {
   }, []);
 
   if (!show)
-    return <LoaderCircle size={50} className="animate-spin text-purple-600" />;
+    return (
+      <LoaderCircle
+        size={50}
+        className="animate-spin text-purple-600 shrink-0"
+      />
+    );
 
   return (
     <div className="py-16 px-8 md:px-56">
