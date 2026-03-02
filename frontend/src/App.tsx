@@ -35,6 +35,9 @@ const MyCourses = lazy(() => import("./pages/educator/MyCourses"));
 const StudentsEnrolled = lazy(
   () => import("./pages/educator/StudentsEnrolled"),
 );
+const PaymentSuccessful = lazy(
+  () => import("./pages/student/PaymentSuccessful"),
+);
 
 export default function App() {
   const isEducatorRoute = useMatch("/educator/*");
@@ -94,6 +97,10 @@ export default function App() {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/refund" element={<RefundPolicy />} />
           <Route path="/standard-terms" element={<TermsConditions />} />
+          <Route
+            path="/payment-success/:receiptId"
+            element={<PaymentSuccessful />}
+          />
 
           <Route path="/educator" element={<Educator />}>
             <Route index element={<Dashboard />} />

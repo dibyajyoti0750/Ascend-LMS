@@ -8,7 +8,7 @@ import {
   getEnrolledStudentsData,
   updateCourse,
 } from "../controllers/educatorController.js";
-import { protect, protectEducator } from "../middlewares/auth.js";
+import { protectEducator } from "../middlewares/auth.js";
 import upload from "../configs/multer.js";
 
 const educatorRouter = express.Router();

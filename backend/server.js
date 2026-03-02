@@ -9,7 +9,7 @@ import connectCloudinary from "./configs/cloudinary.js";
 import courseRouter from "./routes/courseRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import contactRouter from "./routes/contactRoutes.js";
-import Course from "./models/Course.js";
+import purchaseRouter from "./routes/purchaseRoutes.js";
 
 const app = express();
 
@@ -30,6 +30,7 @@ app.use("/api/educator", express.json(), educatorRouter);
 app.use("/api/course", express.json(), courseRouter);
 app.use("/api/user", express.json(), userRouter);
 app.use("/api/contact", express.json(), contactRouter);
+app.use("/api/purchase", express.json(), purchaseRouter);
 
 const PORT = process.env.PORT || 8080;
 

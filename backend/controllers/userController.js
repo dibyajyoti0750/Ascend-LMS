@@ -183,7 +183,11 @@ export const verifyRazorpayPayment = async (req, res) => {
 
   await purchaseData.save();
 
-  res.json({ success: true });
+  res.json({
+    success: true,
+    purchaseId: purchaseData._id,
+    redirectUrl: `/payment-success/${purchaseData._id}`,
+  });
 };
 
 // Purchase course Stripe

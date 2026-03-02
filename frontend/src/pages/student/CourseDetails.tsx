@@ -103,35 +103,38 @@ export default function CourseDetails() {
           window.location.href = session_url;
         }
       } else if (method === "razorpay") {
-        const { data } = await axios.post(
-          backendUrl + "/api/user/purchase-rzp",
+        const purchaseResponse = await axios.post(
+          `${backendUrl}/api/user/purchase-rzp`,
           { courseId: courseData?._id, agreedToRefundPolicy },
           { headers: { Authorization: `Bearer ${token}` } },
         );
 
-        const options = {
-          key: data.key,
-          amount: data.amount,
-          currency: "INR",
-          order_id: data.orderId,
+        const purchaseData = purchaseResponse.data;
 
-          // This runs after a successful payment
-          handler: async (response: RazorpayResponse) => {
-            await axios.post(
-              backendUrl + "/api/user/verify-rzp",
+        const razorpayOptions = {
+          key: purchaseData.key,
+          amount: purchaseData.amount,
+          currency: "INR",
+          order_id: purchaseData.orderId,
+
+          handler: async (razorpayResponse: RazorpayResponse) => {
+            const verificationResponse = await axios.post(
+              `${backendUrl}/api/user/verify-rzp`,
               {
-                ...response,
-                purchaseId: data.purchaseId,
+                ...razorpayResponse,
+                purchaseId: purchaseData.purchaseId,
               },
               { headers: { Authorization: `Bearer ${token}` } },
             );
 
-            window.location.replace("/loading/my-enrollments");
+            const { redirectUrl } = verificationResponse.data;
+
+            window.location.replace(redirectUrl);
           },
         };
 
-        const rzp = new window.Razorpay(options);
-        rzp.open();
+        const razorpayInstance = new window.Razorpay(razorpayOptions);
+        razorpayInstance.open();
       }
     } catch (error: unknown) {
       let msg = "Something went wrong";
@@ -298,7 +301,7 @@ export default function CourseDetails() {
             </div>
           </div>
 
-          {/* Detailed Description */}
+          {/* Requirements & Description */}
           <div className="pt-5 border-t border-slate-100 space-y-6">
             <h3 className="text-2xl font-bold mb-4">Requirements</h3>
             <div
@@ -313,6 +316,18 @@ export default function CourseDetails() {
               className="rich-text max-w-none text-slate-700 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: courseData.courseDescription }}
             />
+
+            {/* Disclaimer */}
+            <div className="mt-8 rounded-lg bg-slate-50 border border-slate-200 p-4">
+              <p className="text-xs text-slate-600 leading-relaxed">
+                <span className="font-semibold text-slate-700">
+                  Disclaimer:
+                </span>{" "}
+                Results may vary based on individual effort, consistency, and
+                personal circumstances. The course content is for educational
+                purposes only.
+              </p>
+            </div>
           </div>
         </div>
 
