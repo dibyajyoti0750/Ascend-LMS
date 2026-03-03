@@ -86,12 +86,12 @@ export default function PaymentModal({
         {/* Actions */}
         <div className="mt-6 space-y-3">
           <div className="mt-4 rounded-lg bg-gray-50 p-3">
-            <label className="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+            <label className="flex items-start gap-3 text-sm text-gray-600">
               <input
                 type="checkbox"
                 checked={agreedToRefundPolicy}
                 onChange={(e) => setAgreedToRefundPolicy(e.target.checked)}
-                className="mt-1 cursor-pointer"
+                className="mt-1 cursor-pointer outline-none scale-125"
               />
               <span>
                 I agree to the{" "}

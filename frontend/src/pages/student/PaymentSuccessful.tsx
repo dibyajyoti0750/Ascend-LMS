@@ -18,6 +18,7 @@ interface Receipt {
 
 export default function PaymentSuccessful() {
   const [receipt, setReceipt] = useState<Receipt | null>(null);
+  const [countdown, setCountdown] = useState(7);
   const { receiptId } = useParams();
   const { getToken } = useAuth();
   const navigate = useNavigate();
@@ -54,11 +55,18 @@ export default function PaymentSuccessful() {
   useEffect(() => {
     if (!receipt) return;
 
+    const interval = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
     const timer = setTimeout(() => {
       navigate("/my-enrollments");
-    }, 5000);
+    }, 7000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
   }, [receipt, navigate]);
 
   if (!receipt) {
@@ -82,7 +90,7 @@ export default function PaymentSuccessful() {
             <div>
               <h1 className="text-lg font-semibold">Payment Confirmed</h1>
               <p className="text-sm text-green-100">
-                You are now enrolled in {receipt.courseTitle}
+                You are now enrolled in "{receipt.courseTitle}"
               </p>
             </div>
           </div>
@@ -91,10 +99,16 @@ export default function PaymentSuccessful() {
         {/* Body */}
         <div className="px-6 py-6 space-y-6">
           {/* Amount */}
-          <div className="text-center border-b border-dashed pb-6">
+          <div className="text-center border-b border-dashed border-gray-400 pb-6">
             <p className="text-sm text-gray-500">Total Paid</p>
             <p className="text-3xl font-bold text-gray-900 mt-1">
               {formattedAmount}
+            </p>
+
+            {/* Redirect Info */}
+            <p className="mt-4 text-sm text-black bg-gray-50 border border-gray-200 inline-block px-4 py-1.5 rounded">
+              Redirecting in <span className="font-bold">{countdown}s...</span>{" "}
+              Please wait
             </p>
           </div>
 
@@ -110,14 +124,6 @@ export default function PaymentSuccessful() {
             <ReceiptRow label="Status" value="Successful" />
             <ReceiptRow label="Date" value={formattedDate} />
           </div>
-
-          {/* Footer */}
-          <div className="pt-6 border-t border-dashed text-center">
-            <p className="text-xs text-gray-400">
-              This is a system generated receipt. Redirecting to your
-              enrollments...
-            </p>
-          </div>
         </div>
       </div>
     </div>
@@ -127,7 +133,7 @@ export default function PaymentSuccessful() {
 function ReceiptRow({ label, value }: { label: string; value?: string }) {
   return (
     <div className="flex justify-between items-start gap-4">
-      <span className="text-gray-500">{label}</span>
+      <span className="text-gray-600">{label}</span>
       <span className="text-gray-800 font-medium text-right break-all max-w-[60%]">
         {value || "-"}
       </span>
