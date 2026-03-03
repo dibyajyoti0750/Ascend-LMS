@@ -10,6 +10,9 @@ import courseRouter from "./routes/courseRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import contactRouter from "./routes/contactRoutes.js";
 import purchaseRouter from "./routes/purchaseRoutes.js";
+// import Course from "./models/Course.js";
+// import Purchase from "./models/Purchase.js";
+// import User from "./models/User.js";
 
 const app = express();
 
@@ -21,7 +24,7 @@ await connectCloudinary();
 // await Course.updateMany({}, { $set: { enrolledStudents: [] } });
 // await Purchase.deleteMany({});
 // await User.updateOne(
-//   { _id: "paste userId" },
+//   { _id: "user_39LVs8XyWgjWUzbiCTxXT5UFMYP" },
 //   { $set: { enrolledCourses: [] } },
 // );
 

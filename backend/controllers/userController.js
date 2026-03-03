@@ -238,7 +238,7 @@ export const purchaseCourseStripe = async (req, res) => {
   const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 
   const session = await stripeInstance.checkout.sessions.create({
-    success_url: `${origin}/loading/my-enrollments`,
+    success_url: `${origin}/payment-success/${newPurchase._id}`,
     cancel_url: `${origin}/`,
     mode: "payment",
     line_items: [

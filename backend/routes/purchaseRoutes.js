@@ -5,6 +5,6 @@ import { getPurchaseReceipt } from "../controllers/purchaseController.js";
 
 const purchaseRouter = express.Router();
 
-purchaseRouter.get("/:receiptId", protect, wrapAsync(getPurchaseReceipt));
+purchaseRouter.get("/:purchaseId", protect, wrapAsync(getPurchaseReceipt));
 
 export default purchaseRouter;

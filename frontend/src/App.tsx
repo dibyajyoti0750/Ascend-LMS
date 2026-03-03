@@ -91,14 +91,14 @@ export default function App() {
           <Route path="/course/:id" element={<CourseDetails />} />
           <Route path="/my-enrollments" element={<MyEnrollments />} />
           <Route path="/player/:courseId" element={<Player />} />
-          <Route path="/loading/:path" element={<Loading />} />
+          <Route path="/loading" element={<Loading />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/refund" element={<RefundPolicy />} />
           <Route path="/standard-terms" element={<TermsConditions />} />
           <Route
-            path="/payment-success/:receiptId"
+            path="/payment-success/:purchaseId"
             element={<PaymentSuccessful />}
           />
 

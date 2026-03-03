@@ -19,7 +19,7 @@ interface Receipt {
 export default function PaymentSuccessful() {
   const [receipt, setReceipt] = useState<Receipt | null>(null);
   const [countdown, setCountdown] = useState(7);
-  const { receiptId } = useParams();
+  const { purchaseId } = useParams();
   const { getToken } = useAuth();
   const navigate = useNavigate();
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -30,7 +30,7 @@ export default function PaymentSuccessful() {
         const token = await getToken();
 
         const { data } = await axios.get(
-          `${backendUrl}/api/purchase/${receiptId}`,
+          `${backendUrl}/api/purchase/${purchaseId}`,
           { headers: { Authorization: `Bearer ${token}` } },
         );
 
@@ -49,8 +49,8 @@ export default function PaymentSuccessful() {
       }
     };
 
-    if (receiptId) fetchReceipt();
-  }, [receiptId, backendUrl, getToken]);
+    if (purchaseId) fetchReceipt();
+  }, [purchaseId, backendUrl, getToken]);
 
   useEffect(() => {
     if (!receipt) return;

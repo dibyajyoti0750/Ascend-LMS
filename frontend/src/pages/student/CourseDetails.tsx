@@ -100,7 +100,7 @@ export default function CourseDetails() {
 
         if (data.success) {
           const { session_url } = data;
-          window.location.href = session_url;
+          window.location.replace(session_url); // open stripe checkout page
         }
       } else if (method === "razorpay") {
         const purchaseResponse = await axios.post(

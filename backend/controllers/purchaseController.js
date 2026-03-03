@@ -1,10 +1,10 @@
 import Purchase from "../models/Purchase.js";
 
 export const getPurchaseReceipt = async (req, res) => {
-  const { receiptId } = req.params;
+  const { purchaseId } = req.params;
   const { userId } = await req.auth();
 
-  const purchase = await Purchase.findById(receiptId).populate(
+  const purchase = await Purchase.findById(purchaseId).populate(
     "courseId",
     "courseTitle",
   );
