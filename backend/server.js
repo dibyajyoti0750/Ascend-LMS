@@ -17,6 +17,14 @@ const app = express();
 await connectDB();
 await connectCloudinary();
 
+// Reset DB
+// await Course.updateMany({}, { $set: { enrolledStudents: [] } });
+// await Purchase.deleteMany({});
+// await User.updateOne(
+//   { _id: "paste userId" },
+//   { $set: { enrolledCourses: [] } },
+// );
+
 // Middlewares
 app.use(cors());
 app.use(clerkMiddleware());
