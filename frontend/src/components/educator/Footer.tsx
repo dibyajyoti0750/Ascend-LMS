@@ -9,23 +9,31 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="flex md:flex-row flex-col-reverse items-center justify-between text-left w-full px-8 border-t border-gray-200">
-      <div className="flex items-center gap-4">
-        <img src={assets.logo} alt="Logo" className="w-5 md:w-9" />
+    <footer className="w-full border-t border-gray-200 px-6 md:px-8 py-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        {/* Left Section */}
+        <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+          <img src={assets.logo} alt="Logo" className="w-7 md:w-9" />
 
-        <div className="hidden md:block h-7 w-px bg-gray-500/50"></div>
+          <div className="hidden md:block h-6 w-px bg-gray-400"></div>
 
-        <p className="py-4 text-center text-xs md:text-sm text-gray-500">
-          Copyright 2025 &copy; Ascend. All Rights Reserved.
-        </p>
-      </div>
+          <p className="text-xs md:text-sm text-gray-500">
+            © 2025 Ascend. All Rights Reserved.
+          </p>
+        </div>
 
-      <div className="flex items-center gap-3 max-md:mt-4">
-        {socials.map(({ link, Icon }) => (
-          <a key={link} href={link}>
-            <Icon className="text-gray-500 hover:text-purple-600" />
-          </a>
-        ))}
+        {/* Right Section */}
+        <div className="flex items-center gap-4">
+          {socials.map(({ link, Icon }) => (
+            <a
+              key={link}
+              href={link}
+              className="text-gray-500 hover:text-purple-600 transition-colors"
+            >
+              <Icon size={18} />
+            </a>
+          ))}
+        </div>
       </div>
     </footer>
   );

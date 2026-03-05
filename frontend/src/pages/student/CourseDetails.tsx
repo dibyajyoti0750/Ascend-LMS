@@ -77,6 +77,21 @@ export default function CourseDetails() {
       .catch((err) => toast.error(err));
   }, [dispatch, id]);
 
+  const handlePaymentModal = () => {
+    if (!userData) {
+      toast.error("Sign in to enroll");
+      return;
+    }
+
+    if (isAlreadyEnrolled) {
+      navigate("/my-enrollments");
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    setOpenPaymentModal(true);
+  };
+
   const handlePayment = async (
     method: PaymentMethod,
     agreedToRefundPolicy: boolean,
@@ -419,14 +434,7 @@ export default function CourseDetails() {
 
             {/* CTA Button */}
             <button
-              onClick={() => {
-                if (isAlreadyEnrolled) {
-                  navigate("/my-enrollments");
-                  window.scrollTo(0, 0);
-                } else {
-                  setOpenPaymentModal(true);
-                }
-              }}
+              onClick={handlePaymentModal}
               className="w-full py-4 rounded-lg font-bold text-lg bg-[#6F00FF] text-white hover:bg-purple-800 shadow-purple-200 transition-all active:scale-[0.98] cursor-pointer shadow"
             >
               {isAlreadyEnrolled ? "Go to Course" : "Enroll Now"}

@@ -5,7 +5,7 @@ import SearchBar from "./SearchBar";
 export default function Hero() {
   return (
     <div className="flex flex-col items-center justify-center w-full pt-16 px-8 md:px-0 space-y-10 text-center bg-linear-to-b from-purple-100/80">
-      <h1 className="text-4xl md:text-5xl font-black text-gray-800 max-w-3xl mx-auto text-center">
+      <h1 className="text-4xl md:text-5xl font-black text-gray-800 max-w-2xl mx-auto text-center">
         Master Valuable Skills &{" "}
         <span className="text-[#6F00FF]">
           <Typewriter

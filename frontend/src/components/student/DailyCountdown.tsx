@@ -17,10 +17,9 @@ export default function DailyCountdown() {
         <Countdown date={tomorrow} renderer={renderer} />
         <p className="flex items-center gap-2">
           <span className="hidden md:block">
-            Limited-Time Launch Offer - Enroll Today & Save
+            Limited-Time Launch Offer - Enroll Today & Save 40%
           </span>
           <span className="md:hidden">Limited-Time Launch Offer</span>
-          <span className="hidden md:block text-lg text-green-400">40%</span>
         </p>
 
         <div className="flex items-center gap-2 md:gap-3">

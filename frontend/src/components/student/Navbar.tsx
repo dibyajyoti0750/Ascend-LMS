@@ -4,13 +4,20 @@ import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import DailyCountdown from "./DailyCountdown";
+import { useState } from "react";
+import { Menu } from "lucide-react";
 
 export default function Navbar() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
+  const { allCourses } = useSelector((state: RootState) => state.courses);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const { openSignIn } = useClerk();
   const { user } = useUser();
   const navigate = useNavigate();
+
+  const latestCourse = allCourses.at(-1);
 
   /* const { getToken } = useAuth();
   const dispatch = useDispatch();
@@ -59,24 +66,36 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div className="flex items-center justify-between px-2 md:px-14 py-3 md:py-4 bg-[#131628] text-white shadow">
-        <Link to="/" className="flex items-center gap-3 outline-none">
-          <img
-            src={assets.logo}
-            alt="Logo"
-            className="w-6 md:w-10 rounded-lg"
-          />
-          <p className="text-xs md:text-xl font-bold">
-            ASCEND<span className="font-light">.COM</span>
-          </p>
-        </Link>
+      <div className="relative bg-[#131628] text-white shadow">
+        <div className="flex items-center justify-between px-4 md:px-14 py-3 md:py-4">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-3">
+            <img
+              src={assets.logo}
+              alt="Logo"
+              className="w-6 md:w-10 rounded-lg"
+            />
+            <p className="text-xs md:text-xl font-bold">
+              ASCEND<span className="font-light">.COM</span>
+            </p>
+          </Link>
 
-        <div className="hidden md:flex items-center gap-5 font-medium">
-          <div className="flex items-center gap-2">
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-5 font-medium">
+            <Link
+              to={`/course/${latestCourse?._id}`}
+              className="relative px-4 py-2 text-sm font-bold bg-[#6F00FF] rounded-md hover:bg-purple-800 transition-all active:scale-95"
+            >
+              Just Launched
+              <span className="absolute -top-2 -right-2 bg-red-500 text-[10px] px-2 py-0.5 rounded-full">
+                NEW
+              </span>
+            </Link>
+
             {isEducator && (
               <button
                 onClick={() => navigate("/educator")}
-                className="rounded-md px-3 py-2 text-sm transition-all duration-200 ease-in-out hover:bg-white/10 hover:text-white active:scale-95 cursor-pointer"
+                className="rounded-md px-3 py-2 text-sm hover:bg-white/10 active:scale-95 cursor-pointer"
               >
                 Educator Dashboard
               </button>
@@ -85,54 +104,89 @@ export default function Navbar() {
             {user && (
               <Link
                 to="/my-enrollments"
-                className="rounded-md px-3 py-2 text-sm transition-all duration-200 ease-in-out hover:bg-white/10 hover:text-white active:scale-95"
+                className="rounded-md px-3 py-2 text-sm hover:bg-white/10 active:scale-95"
               >
                 My Enrollments
               </Link>
             )}
+
+            {user ? (
+              <UserButton />
+            ) : (
+              <button
+                onClick={() => openSignIn}
+                className="bg-purple-800 px-5 py-2 rounded font-semibold"
+              >
+                Sign In
+              </button>
+            )}
           </div>
 
-          {user ? (
-            <UserButton />
-          ) : (
-            <button
-              onClick={() => openSignIn()}
-              className="bg-purple-800 text-white font-semibold px-5 py-2 rounded cursor-pointer"
-            >
-              Sign In
-            </button>
-          )}
+          {/* Mobile Toggle Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden py-2 outline-none"
+          >
+            <Menu size={22} />
+          </button>
         </div>
 
-        {/* Mobile Screens */}
-        <div className="md:hidden flex items-center gap-3 text-white text-xs">
-          <div className="flex items-center gap-1.5">
+        {/* Mobile Dropdown */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="p-4 flex flex-col gap-3 text-xs bg-[#131628]">
+            <Link
+              to={`/course/${latestCourse?._id}`}
+              onClick={() => setIsOpen(false)}
+              className="relative rounded-md py-2 text-sm font-bold bg-[#6F00FF] text-center"
+            >
+              Just Launched
+              <span className="absolute -top-2 right-3 bg-red-500 text-[10px] px-2 py-0.5 rounded-full">
+                NEW
+              </span>
+            </Link>
+
             {isEducator && (
               <button
-                onClick={() => navigate("/educator")}
-                className="rounded p-2 active:bg-white/10"
+                onClick={() => {
+                  navigate("/educator");
+                  setIsOpen(false);
+                }}
+                className="text-left py-2 px-2 hover:bg-white/10 rounded transition"
               >
-                Dashboard
+                Educator Dashboard
               </button>
             )}
 
             {user && (
               <Link
                 to="/my-enrollments"
-                className="rounded p-2 active:bg-white/10"
+                onClick={() => setIsOpen(false)}
+                className="py-2 px-2 hover:bg-white/10 rounded transition"
               >
-                Enrollments
+                My Enrollments
               </Link>
             )}
-          </div>
 
-          {user ? (
-            <UserButton />
-          ) : (
-            <button onClick={() => openSignIn()}>
-              <img src={assets.userIcon} alt="User" className="w-7" />
-            </button>
-          )}
+            {user ? (
+              <div className="pt-2">
+                <UserButton />
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  openSignIn();
+                  setIsOpen(false);
+                }}
+                className="rounded-md py-2 text-sm bg-[#6F00FF] text-white font-bold active:scale-95 cursor-pointer"
+              >
+                Sign In
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>
