@@ -115,7 +115,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => openSignIn}
-                className="bg-purple-800 px-5 py-2 rounded font-semibold"
+                className="px-4 py-2 text-sm font-bold bg-[#6F00FF] rounded-md hover:bg-purple-800 text-white transition-all active:scale-95 cursor-pointer"
               >
                 Sign In
               </button>
@@ -181,7 +181,7 @@ export default function Navbar() {
                   openSignIn();
                   setIsOpen(false);
                 }}
-                className="rounded-md py-2 text-sm bg-[#6F00FF] text-white font-bold active:scale-95 cursor-pointer"
+                className="rounded-md py-2 text-sm font-bold bg-[#6F00FF] text-white active:scale-95 cursor-pointer"
               >
                 Sign In
               </button>
