@@ -31,7 +31,7 @@ export default function Hero() {
         className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300 my-4"
       >
         <YouTube
-          videoId="H_AGA8ONNEA"
+          videoId="geVXbpZmD2Y"
           opts={{
             playerVars: {
               rel: 0,
