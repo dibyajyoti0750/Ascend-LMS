@@ -114,7 +114,7 @@ export default function Navbar() {
               <UserButton />
             ) : (
               <button
-                onClick={() => openSignIn}
+                onClick={() => openSignIn()}
                 className="px-4 py-2 text-sm font-bold bg-[#6F00FF] rounded-md hover:bg-purple-800 text-white transition-all active:scale-95 cursor-pointer"
               >
                 Sign In
