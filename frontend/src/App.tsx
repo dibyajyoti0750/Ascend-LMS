@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes, useMatch } from "react-router-dom";
 import "quill/dist/quill.snow.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Loading from "./components/student/Loading";
 import Navbar from "./components/student/Navbar";
 
-import type { AppDispatch } from "./app/store";
+import type { AppDispatch, RootState } from "./app/store";
 import { fetchAllCourses } from "./features/courses/courseSlice";
 import {
   fetchUserData,
@@ -45,12 +45,18 @@ export default function App() {
   const { getToken } = useAuth();
   const { user } = useUser();
 
+  const { allCoursesStatus } = useSelector((state: RootState) => state.courses);
+
   // Load public data
   useEffect(() => {
-    dispatch(fetchAllCourses())
-      .unwrap()
-      .catch(() => toast.error("Failed to fetch all courses"));
-  }, [dispatch]);
+    if (allCoursesStatus === "idle") {
+      dispatch(fetchAllCourses())
+        .unwrap()
+        .catch(() => {
+          toast.error("Failed to fetch all courses");
+        });
+    }
+  }, [dispatch, allCoursesStatus]);
 
   // Load protected data
   useEffect(() => {

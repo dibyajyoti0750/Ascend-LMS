@@ -153,7 +153,7 @@ export const educatorDashboardData = async (req, res) => {
   });
 
   const totalEarnings = purchases.reduce(
-    (sum, purchase) => sum + purchase.amount,
+    (sum, purchase) => sum + purchase.usdAmount,
     0,
   );
 

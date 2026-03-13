@@ -2,29 +2,9 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
 import CourseCard from "./CourseCard";
-import { useEffect, useState } from "react";
-import { LoaderCircle } from "lucide-react";
 
 export default function CoursesSection() {
   const { allCourses } = useSelector((state: RootState) => state.courses);
-
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!show)
-    return (
-      <LoaderCircle
-        size={50}
-        className="animate-spin text-purple-600 shrink-0"
-      />
-    );
 
   return (
     <div className="py-16 px-8 md:px-56">
