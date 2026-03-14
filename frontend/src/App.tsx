@@ -5,6 +5,7 @@ import "quill/dist/quill.snow.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import toast, { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import Loading from "./components/student/Loading";
 import Navbar from "./components/student/Navbar";
@@ -89,6 +90,7 @@ export default function App() {
         className="min-h-screen bg-white overflow-x-hidden"
       >
         <Analytics />
+        <SpeedInsights />
         <Toaster />
         {!isEducatorRoute && <Navbar />}
 
