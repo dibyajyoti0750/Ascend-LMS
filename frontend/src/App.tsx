@@ -4,6 +4,7 @@ import { Route, Routes, useMatch } from "react-router-dom";
 import "quill/dist/quill.snow.css";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import toast, { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react";
 
 import Loading from "./components/student/Loading";
 import Navbar from "./components/student/Navbar";
@@ -87,6 +88,7 @@ export default function App() {
         onContextMenu={(e) => e.preventDefault()}
         className="min-h-screen bg-white overflow-x-hidden"
       >
+        <Analytics />
         <Toaster />
         {!isEducatorRoute && <Navbar />}
 
