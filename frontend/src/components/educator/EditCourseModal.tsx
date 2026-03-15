@@ -12,6 +12,7 @@ import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import type { Course } from "../../features/courses/course.types";
+import { api } from "../../api/axios";
 
 interface Props {
   course: EditCourse;
@@ -24,7 +25,6 @@ export default function EditCourseModal({
   onClose,
   onCourseUpdated,
 }: Props) {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
   const descriptionQuillRef = useRef<Quill | null>(null);
@@ -124,8 +124,8 @@ export default function EditCourseModal({
         return;
       }
 
-      const { data } = await axios.patch(
-        `${backendUrl}/api/educator/update/course/${course._id}`,
+      const { data } = await api.patch(
+        `/api/educator/update/course/${course._id}`,
         formDataToSend,
         { headers: { Authorization: `Bearer ${token}` } },
       );

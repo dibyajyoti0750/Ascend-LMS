@@ -1,22 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import Loading from "../../components/student/Loading";
-import type { DashboardData } from "../../features/educator/data.types";
 import { useAuth } from "@clerk/clerk-react";
-import axios from "axios";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
 import { Link } from "react-router-dom";
+import { fetchDashboardData } from "../../features/educator/educatorSlice";
 
 export default function Dashboard() {
-  const { isEducator } = useSelector((state: RootState) => state.educator);
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(
-    null,
+  const dispatch = useDispatch<AppDispatch>();
+  const { isEducator, dashboardData } = useSelector(
+    (state: RootState) => state.educator,
   );
 
   const currency = import.meta.env.VITE_CURRENCY;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
   const columnStyles = {
@@ -27,34 +25,20 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const token = await getToken();
-        const { data } = await axios.get(
-          `${backendUrl}/api/educator/dashboard`,
-          { headers: { Authorization: `Bearer ${token}` } },
-        );
-
-        setDashboardData(data.dashboardData);
-      } catch (error: unknown) {
-        let msg = "Something went wrong";
-
-        if (axios.isAxiosError(error)) {
-          msg = error.response?.data?.message || error.message || msg;
-        } else if (error instanceof Error) {
-          msg = error.message;
-        }
-
-        toast.error(msg);
+    const loadData = async () => {
+      if (!isEducator) {
+        toast.error("Access denied. This dashboard is for educators only.");
+        return;
       }
+
+      const token = await getToken();
+      if (!token) return;
+
+      dispatch(fetchDashboardData({ token }));
     };
 
-    if (!isEducator) {
-      toast.error("Access denied. This dashboard is for educators only.");
-    }
-
-    fetchDashboardData();
-  }, [backendUrl, getToken, isEducator]);
+    loadData();
+  }, [getToken, isEducator, dispatch]);
 
   return dashboardData ? (
     <div className="min-h-screen flex flex-col items-center p-4 pt-8 md:p-8 bg-gray-50">

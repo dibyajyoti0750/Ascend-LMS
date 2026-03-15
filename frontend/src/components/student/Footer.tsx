@@ -3,6 +3,7 @@ import { assets } from "../../assets/assets";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { LoaderCircle } from "lucide-react";
+import { api } from "../../api/axios";
 
 interface FormData {
   name: string;
@@ -27,8 +28,6 @@ export default function Footer() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const isFormValid =
     formData.name.trim() && formData.email.trim() && formData.message.trim();
@@ -60,10 +59,7 @@ export default function Footer() {
     };
 
     try {
-      const { data } = await axios.post(
-        `${backendUrl}/api/contact/send-email`,
-        cleanedData,
-      );
+      const { data } = await api.post("/api/contact/send-email", cleanedData);
 
       toast.success(data.message);
       setFormData({ name: "", email: "", message: "" });

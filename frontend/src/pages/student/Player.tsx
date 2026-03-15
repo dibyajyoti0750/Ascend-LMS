@@ -13,6 +13,7 @@ import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import { assets } from "../../assets/assets";
+import { api } from "../../api/axios";
 
 interface PlayerData extends Lecture {
   chapter: number;
@@ -38,7 +39,6 @@ export default function Player() {
   const [progressData, setProgressData] = useState<CourseProgress | null>(null);
   const [initialRating, setInitialRating] = useState<number>(0);
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
   useEffect(() => {
@@ -70,10 +70,9 @@ export default function Player() {
         return;
       }
 
-      const { data } = await axios.get(
-        `${backendUrl}/api/user/course-progress/${courseId}`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const { data } = await api.get(`/api/user/course-progress/${courseId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setProgressData(data.progressData);
     } catch (error: unknown) {
@@ -87,7 +86,7 @@ export default function Player() {
 
       toast.error(msg);
     }
-  }, [backendUrl, getToken, courseId]);
+  }, [getToken, courseId]);
 
   const markLectureAsComplete = async (lectureId: string) => {
     try {
@@ -97,8 +96,8 @@ export default function Player() {
         return;
       }
 
-      const { data } = await axios.post(
-        `${backendUrl}/api/user/update-course-progress`,
+      const { data } = await api.post(
+        "/api/user/update-course-progress",
         { courseId, lectureId },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -126,8 +125,8 @@ export default function Player() {
         return;
       }
 
-      const { data } = await axios.post(
-        `${backendUrl}/api/user/add-rating`,
+      const { data } = await api.post(
+        "/api/user/add-rating",
         { courseId, rating },
         { headers: { Authorization: `Bearer ${token}` } },
       );

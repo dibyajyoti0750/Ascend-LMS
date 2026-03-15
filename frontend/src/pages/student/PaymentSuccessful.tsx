@@ -4,6 +4,7 @@ import { CheckCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../../api/axios";
 
 interface Receipt {
   provider: "razorpay" | "stripe";
@@ -22,17 +23,15 @@ export default function PaymentSuccessful() {
   const { purchaseId } = useParams();
   const { getToken } = useAuth();
   const navigate = useNavigate();
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchReceipt = async () => {
       try {
         const token = await getToken();
 
-        const { data } = await axios.get(
-          `${backendUrl}/api/purchase/${purchaseId}`,
-          { headers: { Authorization: `Bearer ${token}` } },
-        );
+        const { data } = await api.get(`/api/purchase/${purchaseId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setReceipt(data.receipt);
         toast.success("Payment successful");
@@ -50,7 +49,7 @@ export default function PaymentSuccessful() {
     };
 
     if (purchaseId) fetchReceipt();
-  }, [purchaseId, backendUrl, getToken]);
+  }, [purchaseId, getToken]);
 
   useEffect(() => {
     if (!receipt) return;

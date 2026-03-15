@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { Course, CourseState } from "./course.types";
 import axios from "axios";
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { api } from "../../api/axios";
 
 const initialState: CourseState = {
   courseData: null,
@@ -18,7 +17,7 @@ export const fetchAllCourses = createAsyncThunk<Course[]>(
   "courses/fetchAllCourses",
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/course/all");
+      const { data } = await api.get("/api/course/all");
 
       return data.courses;
     } catch (error: unknown) {
@@ -41,7 +40,7 @@ export const fetchCourseById = createAsyncThunk<
   { rejectValue: string }
 >("course/fetchCourseById", async (id, { rejectWithValue }) => {
   try {
-    const { data } = await axios.get(`${backendUrl}/api/course/${id}`);
+    const { data } = await api.get(`/api/course/${id}`);
 
     return data.courseData;
   } catch (error: unknown) {

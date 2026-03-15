@@ -2,8 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { User } from "../educator/data.types";
 import axios from "axios";
 import type { Course } from "../courses/course.types";
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+import { api } from "../../api/axios";
 
 interface UserData {
   userData: User | null;
@@ -23,7 +22,7 @@ export const fetchUserData = createAsyncThunk<User, string>(
   "user/fetchUserData",
   async (token, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(backendUrl + "/api/user/data", {
+      const { data } = await api.get("/api/user/data", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -46,12 +45,9 @@ export const fetchUserEnrolledCourses = createAsyncThunk<Course[], string>(
   "user/fetchUserEnrolledCourses",
   async (token, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        backendUrl + "/api/user/enrolled-courses",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const { data } = await api.get("/api/user/enrolled-courses", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       return data.enrolledCourses;
     } catch (error: unknown) {

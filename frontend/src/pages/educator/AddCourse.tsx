@@ -6,6 +6,7 @@ import { ChevronDown, LoaderCircle, X } from "lucide-react";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { api } from "../../api/axios";
 
 interface LectureDetails {
   lectureTitle: string;
@@ -54,7 +55,6 @@ export default function AddCourse() {
   });
 
   const currency = import.meta.env.VITE_CURRENCY;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
   const addChapter = (title: string) => {
@@ -173,11 +173,9 @@ export default function AddCourse() {
         return;
       }
 
-      const { data } = await axios.post(
-        `${backendUrl}/api/educator/add-course`,
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const { data } = await api.post("/api/educator/add-course", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       if (data.success) {
         toast.success(data.message);

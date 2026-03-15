@@ -11,6 +11,7 @@ import { assets } from "../../assets/assets";
 import DeleteCourseModal from "../../components/educator/DeleteCourseModal";
 import type { EditCourse } from "../../features/educator/data.types";
 import EditCourseModal from "../../components/educator/EditCourseModal";
+import { api } from "../../api/axios";
 
 export default function MyCourses() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
@@ -23,7 +24,6 @@ export default function MyCourses() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const currency = import.meta.env.VITE_CURRENCY;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function MyCourses() {
           return;
         }
 
-        const { data } = await axios.get(`${backendUrl}/api/educator/courses`, {
+        const { data } = await api.get("/api/educator/courses", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -56,7 +56,7 @@ export default function MyCourses() {
     if (isEducator) {
       fetchEducatorCourses();
     }
-  }, [isEducator, backendUrl, getToken]);
+  }, [isEducator, getToken]);
 
   // Sync with updated course data
   const handleCourseUpdate = (updatedCourse: Course) => {
@@ -87,10 +87,9 @@ export default function MyCourses() {
         return;
       }
 
-      const { data } = await axios.delete(
-        `${backendUrl}/api/educator/course/${courseId}`,
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
+      const { data } = await api.delete(`/api/educator/course/${courseId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       toast.success(data.message);
     } catch (error: unknown) {

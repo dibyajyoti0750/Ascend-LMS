@@ -33,6 +33,7 @@ import type { AppDispatch, RootState } from "../../app/store";
 import Loading from "../../components/student/Loading";
 import { fetchCourseById } from "../../features/courses/courseSlice";
 import PaymentModal from "./PaymentModal";
+import { api } from "../../api/axios";
 
 type PaymentMethod = "stripe" | "razorpay";
 
@@ -58,7 +59,6 @@ export default function CourseDetails() {
   const navigate = useNavigate();
 
   const currency = import.meta.env.VITE_CURRENCY;
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   // Countdown
   const fiveDaysLater = useMemo(() => {
@@ -107,8 +107,8 @@ export default function CourseDetails() {
       if (!token) return toast.error("Unauthorized");
 
       if (method === "stripe") {
-        const { data } = await axios.post(
-          `${backendUrl}/api/user/purchase-stripe`,
+        const { data } = await api.post(
+          "/api/user/purchase-stripe",
           { courseId: courseData?._id, agreedToRefundPolicy },
           { headers: { Authorization: `Bearer ${token}` } },
         );
@@ -118,8 +118,8 @@ export default function CourseDetails() {
           window.location.replace(session_url); // open stripe checkout page
         }
       } else if (method === "razorpay") {
-        const purchaseResponse = await axios.post(
-          `${backendUrl}/api/user/purchase-rzp`,
+        const purchaseResponse = await api.post(
+          "/api/user/purchase-rzp",
           { courseId: courseData?._id, agreedToRefundPolicy },
           { headers: { Authorization: `Bearer ${token}` } },
         );
@@ -133,8 +133,8 @@ export default function CourseDetails() {
           order_id: purchaseData.orderId,
 
           handler: async (razorpayResponse: RazorpayResponse) => {
-            const verificationResponse = await axios.post(
-              `${backendUrl}/api/user/verify-rzp`,
+            const verificationResponse = await api.post(
+              "/api/user/verify-rzp",
               {
                 ...razorpayResponse,
                 purchaseId: purchaseData.purchaseId,

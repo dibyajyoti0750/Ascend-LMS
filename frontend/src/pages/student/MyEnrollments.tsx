@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { api } from "../../api/axios";
 
 interface CourseProgress {
   totalLectures: number;
@@ -21,7 +22,6 @@ export default function MyEnrollments() {
   const [progressArray, setProgressArray] = useState<CourseProgress[]>([]);
   const navigate = useNavigate();
   const { getToken } = useAuth();
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     if (!enrolledCourses.length) return;
@@ -34,14 +34,11 @@ export default function MyEnrollments() {
           return;
         }
 
-        const { data } = await axios.get(
-          `${backendUrl}/api/user/course-progress`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const { data } = await api.get("/api/user/course-progress", {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         const progressMap = data.progressMap;
 
@@ -69,7 +66,7 @@ export default function MyEnrollments() {
     };
 
     getCourseProgress();
-  }, [enrolledCourses, backendUrl, getToken]);
+  }, [enrolledCourses, getToken]);
 
   return (
     <>

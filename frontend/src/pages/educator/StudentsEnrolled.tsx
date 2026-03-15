@@ -7,6 +7,7 @@ import type { RootState } from "../../app/store";
 import { useAuth } from "@clerk/clerk-react";
 import { useSelector } from "react-redux";
 import { assets } from "../../assets/assets";
+import { api } from "../../api/axios";
 
 export default function StudentsEnrolled() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
@@ -14,17 +15,15 @@ export default function StudentsEnrolled() {
     StudentEnrolled[] | null
   >(null);
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const { getToken } = useAuth();
 
   useEffect(() => {
     const fetchEnrolledStudents = async () => {
       try {
         const token = await getToken();
-        const { data } = await axios.get(
-          `${backendUrl}/api/educator/enrolled-students`,
-          { headers: { Authorization: `Bearer ${token}` } },
-        );
+        const { data } = await api.get("/api/educator/enrolled-students", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setEnrolledStudents(data.enrolledStudents.reverse());
       } catch (error: unknown) {
@@ -43,7 +42,7 @@ export default function StudentsEnrolled() {
     if (isEducator) {
       fetchEnrolledStudents();
     }
-  }, [backendUrl, getToken, isEducator]);
+  }, [getToken, isEducator]);
 
   return enrolledStudents ? (
     <div className="min-h-screen flex flex-col items-center p-4 pt-8 md:p-8 bg-gray-50">
