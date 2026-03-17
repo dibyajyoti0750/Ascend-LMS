@@ -3,7 +3,7 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { DashboardData } from "./data.types";
+import type { DashboardData, StudentEnrolled } from "./data.types";
 import axios from "axios";
 import { api } from "../../api/axios";
 import type { Course } from "../courses/course.types";
@@ -14,6 +14,8 @@ interface EducatorState {
   dashboardDataLoading: boolean;
   educatorCourses: Course[];
   educatorCoursesLoading: boolean;
+  enrolledStudents: StudentEnrolled[];
+  enrolledStudentsLoading: boolean;
 }
 
 const initialState: EducatorState = {
@@ -22,6 +24,8 @@ const initialState: EducatorState = {
   educatorCourses: [],
   dashboardDataLoading: false,
   educatorCoursesLoading: false,
+  enrolledStudents: [],
+  enrolledStudentsLoading: false,
 };
 
 export const fetchDashboardData = createAsyncThunk<
@@ -72,6 +76,30 @@ export const fetchEducatorCourses = createAsyncThunk<
   }
 });
 
+export const fetchEnrolledStudents = createAsyncThunk<
+  StudentEnrolled[],
+  string,
+  { rejectValue: string }
+>("educator/fetchEnrolledStudents", async (token, { rejectWithValue }) => {
+  try {
+    const { data } = await api.get("/api/educator/enrolled-students", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return [...data.enrolledStudents].reverse();
+  } catch (error: unknown) {
+    let msg = "Something went wrong";
+
+    if (axios.isAxiosError(error)) {
+      msg = error.response?.data?.message || error.message || msg;
+    } else if (error instanceof Error) {
+      msg = error.message;
+    }
+
+    return rejectWithValue(msg);
+  }
+});
+
 const educatorSlice = createSlice({
   name: "educator",
   initialState,
@@ -92,6 +120,7 @@ const educatorSlice = createSlice({
       .addCase(fetchDashboardData.rejected, (state) => {
         state.dashboardDataLoading = false;
       })
+
       .addCase(fetchEducatorCourses.pending, (state) => {
         state.educatorCoursesLoading = true;
       })
@@ -101,6 +130,17 @@ const educatorSlice = createSlice({
       })
       .addCase(fetchEducatorCourses.rejected, (state) => {
         state.educatorCoursesLoading = false;
+      })
+
+      .addCase(fetchEnrolledStudents.pending, (state) => {
+        state.enrolledStudentsLoading = true;
+      })
+      .addCase(fetchEnrolledStudents.fulfilled, (state, action) => {
+        state.enrolledStudentsLoading = false;
+        state.enrolledStudents = action.payload;
+      })
+      .addCase(fetchEnrolledStudents.rejected, (state) => {
+        state.enrolledStudentsLoading = false;
       });
   },
 });

@@ -15,7 +15,7 @@ import { fetchEducatorCourses } from "../../features/educator/educatorSlice";
 
 export default function MyCourses() {
   const dispatch = useDispatch<AppDispatch>();
-  const { isEducator, educatorCourses } = useSelector(
+  const { isEducator, educatorCourses, educatorCoursesLoading } = useSelector(
     (state: RootState) => state.educator,
   );
   const [deletingCourse, setDeletingCourse] = useState<null | {
@@ -79,7 +79,9 @@ export default function MyCourses() {
     }
   };
 
-  return educatorCourses ? (
+  if (educatorCoursesLoading) return <Loading />;
+
+  return (
     <div className="min-h-screen flex flex-col items-center p-4 pt-8 md:p-8 bg-gray-50">
       {/* Page Header */}
       <div className="mb-6 w-full max-w-5xl">
@@ -205,7 +207,5 @@ export default function MyCourses() {
         />
       )}
     </div>
-  ) : (
-    <Loading />
   );
 }

@@ -1,50 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Loading from "../../components/student/Loading";
-import type { StudentEnrolled } from "../../features/educator/data.types";
-import axios from "axios";
-import toast from "react-hot-toast";
-import type { RootState } from "../../app/store";
+import type { AppDispatch, RootState } from "../../app/store";
 import { useAuth } from "@clerk/clerk-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { assets } from "../../assets/assets";
-import { api } from "../../api/axios";
+import { fetchEnrolledStudents } from "../../features/educator/educatorSlice";
+import toast from "react-hot-toast";
 
 export default function StudentsEnrolled() {
-  const { isEducator } = useSelector((state: RootState) => state.educator);
-  const [enrolledStudents, setEnrolledStudents] = useState<
-    StudentEnrolled[] | null
-  >(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { isEducator, enrolledStudents, enrolledStudentsLoading } = useSelector(
+    (state: RootState) => state.educator,
+  );
 
   const { getToken } = useAuth();
 
   useEffect(() => {
-    const fetchEnrolledStudents = async () => {
-      try {
-        const token = await getToken();
-        const { data } = await api.get("/api/educator/enrolled-students", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+    const loadData = async () => {
+      if (!isEducator) return;
 
-        setEnrolledStudents(data.enrolledStudents.reverse());
-      } catch (error: unknown) {
-        let msg = "Something went wrong";
+      const token = await getToken();
+      if (!token) return;
 
-        if (axios.isAxiosError(error)) {
-          msg = error.response?.data?.message || error.message || msg;
-        } else if (error instanceof Error) {
-          msg = error.message;
-        }
+      const result = await dispatch(fetchEnrolledStudents(token));
 
-        toast.error(msg);
+      if (fetchEnrolledStudents.rejected.match(result)) {
+        toast.error(result.payload as string);
       }
     };
 
-    if (isEducator) {
-      fetchEnrolledStudents();
-    }
-  }, [getToken, isEducator]);
+    loadData();
+  }, [dispatch, getToken, isEducator]);
 
-  return enrolledStudents ? (
+  if (enrolledStudentsLoading) return <Loading />;
+
+  return (
     <div className="min-h-screen flex flex-col items-center p-4 pt-8 md:p-8 bg-gray-50">
       {/* Page Header */}
       <div className="mb-6 w-full max-w-5xl">
@@ -142,7 +132,5 @@ export default function StudentsEnrolled() {
         </table>
       </div>
     </div>
-  ) : (
-    <Loading />
   );
 }
