@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import type { Course } from "../../features/courses/course.types";
 import Loading from "../../components/student/Loading";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../app/store";
 import { useAuth } from "@clerk/clerk-react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,10 +11,13 @@ import DeleteCourseModal from "../../components/educator/DeleteCourseModal";
 import type { EditCourse } from "../../features/educator/data.types";
 import EditCourseModal from "../../components/educator/EditCourseModal";
 import { api } from "../../api/axios";
+import { fetchEducatorCourses } from "../../features/educator/educatorSlice";
 
 export default function MyCourses() {
-  const { isEducator } = useSelector((state: RootState) => state.educator);
-  const [courses, setCourses] = useState<Course[] | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { isEducator, educatorCourses } = useSelector(
+    (state: RootState) => state.educator,
+  );
   const [deletingCourse, setDeletingCourse] = useState<null | {
     id: string;
     title: string;
@@ -27,62 +29,30 @@ export default function MyCourses() {
   const { getToken } = useAuth();
 
   useEffect(() => {
-    const fetchEducatorCourses = async () => {
-      try {
-        const token = await getToken();
-        if (!token) {
-          toast.error("Unauthorized");
-          return;
-        }
+    const loadData = async () => {
+      if (!isEducator) return;
 
-        const { data } = await api.get("/api/educator/courses", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+      const token = await getToken();
+      if (!token) return;
 
-        setCourses(data.courses);
-      } catch (error: unknown) {
-        let msg = "Something went wrong";
+      const result = await dispatch(fetchEducatorCourses(token));
 
-        if (axios.isAxiosError(error)) {
-          msg = error.response?.data?.message || error.message || msg;
-        } else if (error instanceof Error) {
-          msg = error.message;
-        }
-
-        toast.error(msg);
+      if (fetchEducatorCourses.rejected.match(result)) {
+        toast.error(result.payload as string);
       }
     };
 
-    if (isEducator) {
-      fetchEducatorCourses();
-    }
-  }, [isEducator, getToken]);
-
-  // Sync with updated course data
-  const handleCourseUpdate = (updatedCourse: Course) => {
-    setCourses(
-      (prev) =>
-        prev?.map((course) =>
-          course._id === updatedCourse._id ? updatedCourse : course,
-        ) || null,
-    );
-  };
+    loadData();
+  }, [dispatch, getToken, isEducator]);
 
   // Delete course
   const handleDelete = async (courseId: string) => {
     if (isDeleting) return; // prevent double clicks
     setIsDeleting(true);
-    const previousCourses = courses;
-
-    setCourses((prev) => {
-      if (!prev) return prev;
-      return prev.filter((course) => course._id !== courseId);
-    });
 
     try {
       const token = await getToken();
       if (!token) {
-        setCourses(previousCourses); // rollback
         toast.error("Unauthorized");
         return;
       }
@@ -92,9 +62,8 @@ export default function MyCourses() {
       });
 
       toast.success(data.message);
+      dispatch(fetchEducatorCourses(token));
     } catch (error: unknown) {
-      setCourses(previousCourses); // rollback
-
       let msg = "Something went wrong";
 
       if (axios.isAxiosError(error)) {
@@ -110,7 +79,7 @@ export default function MyCourses() {
     }
   };
 
-  return courses ? (
+  return educatorCourses ? (
     <div className="min-h-screen flex flex-col items-center p-4 pt-8 md:p-8 bg-gray-50">
       {/* Page Header */}
       <div className="mb-6 w-full max-w-5xl">
@@ -134,7 +103,7 @@ export default function MyCourses() {
           </thead>
 
           <tbody className="text-sm text-gray-700">
-            {!courses.length ? (
+            {!educatorCourses.length ? (
               <tr>
                 <td colSpan={5} className="py-16 text-center">
                   <div className="flex flex-col items-center justify-center gap-3">
@@ -151,7 +120,7 @@ export default function MyCourses() {
                 </td>
               </tr>
             ) : (
-              courses.map((course, index) => (
+              educatorCourses.map((course, index) => (
                 <tr
                   key={index}
                   className="border-b border-gray-100 hover:bg-gray-50 transition duration-150"
@@ -233,7 +202,6 @@ export default function MyCourses() {
         <EditCourseModal
           course={editingCourse}
           onClose={() => setEditingCourse(null)}
-          onCourseUpdated={handleCourseUpdate}
         />
       )}
     </div>

@@ -11,20 +11,18 @@ import Quill from "quill";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import type { Course } from "../../features/courses/course.types";
 import { api } from "../../api/axios";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../app/store";
+import { fetchEducatorCourses } from "../../features/educator/educatorSlice";
 
 interface Props {
   course: EditCourse;
   onClose: () => void;
-  onCourseUpdated: (updatedCourse: Course) => void;
 }
 
-export default function EditCourseModal({
-  course,
-  onClose,
-  onCourseUpdated,
-}: Props) {
+export default function EditCourseModal({ course, onClose }: Props) {
+  const dispatch = useDispatch<AppDispatch>();
   const { getToken } = useAuth();
 
   const descriptionQuillRef = useRef<Quill | null>(null);
@@ -130,7 +128,7 @@ export default function EditCourseModal({
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
-      onCourseUpdated(data.updatedCourse);
+      dispatch(fetchEducatorCourses(token));
       onClose();
       toast.success(data.message);
     } catch (error: unknown) {
@@ -363,9 +361,12 @@ export default function EditCourseModal({
             }`}
           >
             {isSubmitting ? (
-              <LoaderCircle className="animate-spin" />
+              <span className="flex items-center gap-2">
+                <LoaderCircle className="animate-spin w-4 h-4" />
+                Save Changes
+              </span>
             ) : (
-              "Save Changes"
+              <span>Save Changes</span>
             )}
           </button>
         </div>

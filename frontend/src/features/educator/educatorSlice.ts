@@ -6,41 +6,71 @@ import {
 import type { DashboardData } from "./data.types";
 import axios from "axios";
 import { api } from "../../api/axios";
+import type { Course } from "../courses/course.types";
 
 interface EducatorState {
   isEducator: boolean;
   dashboardData: DashboardData | null;
-  loading: boolean;
+  dashboardDataLoading: boolean;
+  educatorCourses: Course[];
+  educatorCoursesLoading: boolean;
 }
 
 const initialState: EducatorState = {
   isEducator: false,
   dashboardData: null,
-  loading: false,
+  educatorCourses: [],
+  dashboardDataLoading: false,
+  educatorCoursesLoading: false,
 };
 
-export const fetchDashboardData = createAsyncThunk(
-  "educator/fetchDashboardData",
-  async ({ token }: { token: string }, { rejectWithValue }) => {
-    try {
-      const { data } = await api.get("/api/educator/dashboard", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+export const fetchDashboardData = createAsyncThunk<
+  DashboardData,
+  string,
+  { rejectValue: string }
+>("educator/fetchDashboardData", async (token, { rejectWithValue }) => {
+  try {
+    const { data } = await api.get("/api/educator/dashboard", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      return data.dashboardData;
-    } catch (error: unknown) {
-      let msg = "Something went wrong";
+    return data.dashboardData;
+  } catch (error: unknown) {
+    let msg = "Something went wrong";
 
-      if (axios.isAxiosError(error)) {
-        msg = error.response?.data?.message || error.message || msg;
-      } else if (error instanceof Error) {
-        msg = error.message;
-      }
-
-      return rejectWithValue(msg);
+    if (axios.isAxiosError(error)) {
+      msg = error.response?.data?.message || error.message || msg;
+    } else if (error instanceof Error) {
+      msg = error.message;
     }
-  },
-);
+
+    return rejectWithValue(msg);
+  }
+});
+
+export const fetchEducatorCourses = createAsyncThunk<
+  Course[],
+  string,
+  { rejectValue: string }
+>("educator/fetchEducatorCourses", async (token, { rejectWithValue }) => {
+  try {
+    const { data } = await api.get("/api/educator/courses", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return data.courses;
+  } catch (error: unknown) {
+    let msg = "Something went wrong";
+
+    if (axios.isAxiosError(error)) {
+      msg = error.response?.data?.message || error.message || msg;
+    } else if (error instanceof Error) {
+      msg = error.message;
+    }
+
+    return rejectWithValue(msg);
+  }
+});
 
 const educatorSlice = createSlice({
   name: "educator",
@@ -53,14 +83,24 @@ const educatorSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchDashboardData.pending, (state) => {
-        state.loading = true;
+        state.dashboardDataLoading = true;
       })
       .addCase(fetchDashboardData.fulfilled, (state, action) => {
-        state.loading = false;
+        state.dashboardDataLoading = false;
         state.dashboardData = action.payload;
       })
       .addCase(fetchDashboardData.rejected, (state) => {
-        state.loading = false;
+        state.dashboardDataLoading = false;
+      })
+      .addCase(fetchEducatorCourses.pending, (state) => {
+        state.educatorCoursesLoading = true;
+      })
+      .addCase(fetchEducatorCourses.fulfilled, (state, action) => {
+        state.educatorCoursesLoading = false;
+        state.educatorCourses = action.payload;
+      })
+      .addCase(fetchEducatorCourses.rejected, (state) => {
+        state.educatorCoursesLoading = false;
       });
   },
 });

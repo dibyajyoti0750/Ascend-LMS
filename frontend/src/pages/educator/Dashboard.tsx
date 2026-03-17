@@ -34,7 +34,7 @@ export default function Dashboard() {
       const token = await getToken();
       if (!token) return;
 
-      dispatch(fetchDashboardData({ token }));
+      dispatch(fetchDashboardData(token));
     };
 
     loadData();
