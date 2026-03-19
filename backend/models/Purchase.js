@@ -14,17 +14,9 @@ const purchaseSchema = new mongoose.Schema(
       required: true,
     },
 
-    usdAmount: {
+    amount: {
       type: Number,
       required: true,
-    },
-
-    inrAmount: {
-      type: Number,
-    },
-
-    exchangeRate: {
-      type: Number,
     },
 
     paymentGateway: {

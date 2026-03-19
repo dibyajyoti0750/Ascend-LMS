@@ -1,4 +1,5 @@
 import Purchase from "../models/Purchase.js";
+import ExpressError from "../utils/expressError.js";
 
 export const getPurchaseReceipt = async (req, res) => {
   const { purchaseId } = req.params;
@@ -14,7 +15,7 @@ export const getPurchaseReceipt = async (req, res) => {
   }
 
   // SECURITY CHECK
-  if (purchase.userId.toString() !== userId) {
+  if (purchase.userId !== userId) {
     throw new ExpressError(403, "Unauthorized access");
   }
 
@@ -28,7 +29,7 @@ export const getPurchaseReceipt = async (req, res) => {
     provider: purchase.paymentGateway,
     paymentId: purchase.paymentId,
     orderId: purchase.orderId,
-    amount: isRazorpay ? purchase.inrAmount : purchase.usdAmount,
+    amount: purchase.amount,
     currency: isRazorpay ? "INR" : "USD",
     status: purchase.status,
     paidAt: purchase.paidAt,

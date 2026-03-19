@@ -114,7 +114,8 @@ export default function MyEnrollments() {
                         </p>
                         <p className="text-[10px] md:text-base truncate">
                           (
-                          {progressArray[i]
+                          {progressArray[i] &&
+                          progressArray[i].totalLectures > 0
                             ? (
                                 (progressArray[i].lectureCompleted * 100) /
                                 progressArray[i].totalLectures

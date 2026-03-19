@@ -1,7 +1,6 @@
 import crypto from "crypto";
 import Razorpay from "razorpay";
 import Stripe from "stripe";
-import axios from "axios";
 import Course from "../models/Course.js";
 import Purchase from "../models/Purchase.js";
 import User from "../models/User.js";
@@ -37,14 +36,6 @@ export const userEnrolledCourses = async (req, res) => {
     .json({ success: true, enrolledCourses: userData.enrolledCourses });
 };
 
-// Fetch exchange rate
-const getUsdToInrRate = async () => {
-  const { data } = await axios.get(
-    "https://api.exchangerate-api.com/v4/latest/USD",
-  );
-  return data.rates.INR;
-};
-
 // Purchase course Razorpay
 export const purchaseCourseRZP = async (req, res) => {
   const { courseId, agreedToRefundPolicy } = req.body;
@@ -64,34 +55,25 @@ export const purchaseCourseRZP = async (req, res) => {
   const existingPurchase = await Purchase.findOne({
     userId,
     courseId,
-    status: "completed",
+    status: { $in: ["pending", "completed"] },
   });
 
   if (existingPurchase) {
     throw new ExpressError(400, "Course already purchased");
   }
 
-  const usdAmount =
+  const amount =
     courseData.coursePrice -
     (courseData.discount * courseData.coursePrice) / 100;
-
-  const rate = await getUsdToInrRate();
-  const inrAmount = usdAmount * rate;
-  // optional safety buffer
-  const finalInrAmount = Math.ceil(inrAmount * 1.02);
 
   // create a record in our database first
   const newPurchase = new Purchase({
     courseId,
     userId,
-    usdAmount,
-    inrAmount: finalInrAmount,
-    exchangeRate: rate,
+    amount,
     paymentGateway: "razorpay",
-
-    agreedToRefundPolicy: true,
+    agreedToRefundPolicy,
     refundPolicyAcceptedAt: new Date(),
-
     status: "pending",
   });
 
@@ -104,7 +86,7 @@ export const purchaseCourseRZP = async (req, res) => {
   });
 
   const options = {
-    amount: Math.round(finalInrAmount * 100), // paisa
+    amount: Math.round(amount * 100), // paisa
     currency: "INR",
     receipt: `receipt_${newPurchase._id}`,
     notes: {
@@ -211,7 +193,7 @@ export const purchaseCourseStripe = async (req, res) => {
   const existingPurchase = await Purchase.findOne({
     userId,
     courseId,
-    status: "completed",
+    status: { $in: ["pending", "completed"] },
   });
 
   if (existingPurchase) {
@@ -226,12 +208,10 @@ export const purchaseCourseStripe = async (req, res) => {
   const newPurchase = await Purchase.create({
     courseId: courseData._id,
     userId,
-    usdAmount: finalAmount,
+    amount: finalAmount,
     paymentGateway: "stripe",
-
-    agreedToRefundPolicy: true,
+    agreedToRefundPolicy,
     refundPolicyAcceptedAt: new Date(),
-
     status: "pending",
   });
 
@@ -244,7 +224,7 @@ export const purchaseCourseStripe = async (req, res) => {
     line_items: [
       {
         price_data: {
-          currency: "usd",
+          currency: "inr",
           product_data: {
             name: courseData.courseTitle,
           },
