@@ -13,6 +13,7 @@ export default function Dashboard() {
   const { isEducator, dashboardData, dashboardDataLoading } = useSelector(
     (state: RootState) => state.educator,
   );
+  console.log(dashboardData);
 
   const currency = import.meta.env.VITE_CURRENCY;
   const { getToken } = useAuth();

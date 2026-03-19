@@ -17,6 +17,7 @@ import {
   fetchUserEnrolledCourses,
 } from "./features/user/userSlice";
 import { setIsEducator } from "./features/educator/educatorSlice";
+import Maintenance from "./pages/student/Maintenance";
 
 const Home = lazy(() => import("./pages/student/Home"));
 const CourseList = lazy(() => import("./pages/student/CourseList"));
@@ -111,6 +112,8 @@ export default function App() {
             path="/payment-success/:purchaseId"
             element={<PaymentSuccessful />}
           />
+
+          <Route path="/maintenance" element={<Maintenance />} />
 
           <Route path="/educator" element={<Educator />}>
             <Route index element={<Dashboard />} />
