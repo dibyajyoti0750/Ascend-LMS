@@ -7,6 +7,9 @@ import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { api } from "../../api/axios";
+import { useDispatch } from "react-redux";
+import { fetchAllCourses } from "../../features/courses/courseSlice";
+import type { AppDispatch } from "../../app/store";
 
 interface LectureDetails {
   lectureTitle: string;
@@ -29,6 +32,7 @@ interface Chapter {
 }
 
 export default function AddCourse() {
+  const dispatch = useDispatch<AppDispatch>();
   const descriptionQuillRef = useRef<Quill | null>(null);
   const requirementsQuillRef = useRef<Quill | null>(null);
 
@@ -189,6 +193,8 @@ export default function AddCourse() {
           descriptionQuillRef.current.root.innerHTML = "";
           requirementsQuillRef.current.root.innerHTML = "";
         }
+
+        dispatch(fetchAllCourses());
       }
     } catch (error: unknown) {
       let msg = "Something went wrong";

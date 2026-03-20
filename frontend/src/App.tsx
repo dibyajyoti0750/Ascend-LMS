@@ -84,13 +84,13 @@ export default function App() {
   }, [dispatch, user]);
 
   // remove after adding demon courses
-  const { allCourses } = useSelector((state: RootState) => state.courses);
-  if (!allCourses.length)
-    return (
-      <div className="h-screen flex justify-center items-center font-bold">
-        🚧 Website is under maintenance
-      </div>
-    );
+  // const { allCourses } = useSelector((state: RootState) => state.courses);
+  // if (!allCourses.length)
+  //   return (
+  //     <div className="h-screen flex justify-center items-center font-bold">
+  //       🚧 Website is under maintenance
+  //     </div>
+  //   );
 
   return (
     <Suspense fallback={<Loading />}>

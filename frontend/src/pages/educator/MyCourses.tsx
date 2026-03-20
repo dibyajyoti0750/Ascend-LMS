@@ -12,6 +12,7 @@ import type { EditCourse } from "../../features/educator/data.types";
 import EditCourseModal from "../../components/educator/EditCourseModal";
 import { api } from "../../api/axios";
 import { fetchEducatorCourses } from "../../features/educator/educatorSlice";
+import { fetchAllCourses } from "../../features/courses/courseSlice";
 
 export default function MyCourses() {
   const dispatch = useDispatch<AppDispatch>();
@@ -63,6 +64,7 @@ export default function MyCourses() {
 
       toast.success(data.message);
       dispatch(fetchEducatorCourses(token));
+      dispatch(fetchAllCourses());
     } catch (error: unknown) {
       let msg = "Something went wrong";
 
