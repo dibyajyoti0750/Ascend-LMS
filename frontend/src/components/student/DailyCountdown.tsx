@@ -28,7 +28,8 @@ export default function DailyCountdown() {
         <Countdown date={tomorrow} renderer={renderer} />
         <p className="flex items-center gap-2">
           <span className="hidden md:block">
-            Limited-Time Launch Offer - Enroll Today & Save 40%
+            Limited-Time Launch Offer - Enroll Today & Save{" "}
+            {latestCourse?.discount}%
           </span>
           <span className="md:hidden">Limited-Time Launch Offer</span>
         </p>
@@ -40,7 +41,7 @@ export default function DailyCountdown() {
           </p>
           <p className="text-base line-through opacity-70">
             {currency}
-            {latestCourse.coursePrice}
+            {latestCourse?.coursePrice}
           </p>
         </div>
       </div>
