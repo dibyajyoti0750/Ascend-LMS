@@ -75,7 +75,7 @@ export default function Navbar() {
               alt="Logo"
               className="w-6 md:w-10 rounded-lg"
             />
-            <p className="text-xs md:text-xl font-bold">
+            <p className="text-sm md:text-xl font-bold">
               ASCEND<span className="font-light">.COM</span>
             </p>
           </Link>

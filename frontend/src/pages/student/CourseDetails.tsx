@@ -1,7 +1,7 @@
 import YouTube from "react-youtube";
 import Countdown from "react-countdown";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
@@ -48,6 +48,7 @@ export default function CourseDetails() {
     0: true,
   });
 
+  const playerRef = useRef<HTMLDivElement | null>(null);
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
@@ -223,8 +224,8 @@ export default function CourseDetails() {
           </div>
 
           {/* Course Content Section */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Course content</h2>
+          <div className="space-y-4 px-4 sm:px-0">
+            <h2 className="text-xl sm:text-2xl font-bold">Course content</h2>
 
             <div className="border border-slate-200 rounded-lg overflow-hidden bg-white">
               {courseData.courseContent.map((chapter, index) => (
@@ -234,21 +235,21 @@ export default function CourseDetails() {
                 >
                   <div
                     onClick={() => toggleSection(index)}
-                    className="flex items-center justify-between px-5 py-4 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 sm:px-5 py-3 sm:py-4 bg-slate-50 hover:bg-slate-100 cursor-pointer transition-colors"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-start sm:items-center gap-3">
                       <ChevronDown
                         size={20}
                         className={`text-slate-400 transition-transform duration-300 shrink-0 ${
                           openSections[index] ? "rotate-180" : ""
                         }`}
                       />
-                      <p className="font-bold text-slate-800">
+                      <p className="font-bold text-slate-800 text-sm sm:text-base">
                         {chapter.chapterTitle}
                       </p>
                     </div>
 
-                    <p className="text-sm text-slate-800 font-medium">
+                    <p className="text-xs sm:text-sm text-slate-600 sm:text-slate-800 font-medium">
                       {chapter.chapterContent.length} lectures •{" "}
                       {calculateChapterTime(chapter)}
                     </p>
@@ -256,16 +257,16 @@ export default function CourseDetails() {
 
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      openSections[index] ? "max-h-250" : "max-h-0"
+                      openSections[index] ? "max-h-150" : "max-h-0"
                     }`}
                   >
-                    <ul className="bg-white px-5 py-2 divide-y divide-slate-100">
+                    <ul className="bg-white px-4 sm:px-5 py-2 divide-y divide-slate-100">
                       {chapter.chapterContent.map((lecture, i) => (
                         <li
                           key={i}
-                          className="flex items-center justify-between py-3 group"
+                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 group"
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-start sm:items-center gap-3">
                             {!lecture.isPreviewFree ? (
                               <Lock
                                 size={18}
@@ -283,24 +284,30 @@ export default function CourseDetails() {
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
                             {lecture.isPreviewFree && (
                               <button
                                 title="Play lecture"
-                                onClick={() =>
+                                onClick={() => {
                                   setPlayerData({
                                     videoId: lecture.lectureUrl
                                       .split("/")
                                       .pop(),
-                                  })
-                                }
+                                  });
+
+                                  playerRef.current?.scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "start",
+                                  });
+                                }}
                                 className="flex items-center gap-1.5 text-xs font-semibold text-[#6F00FF] hover:text-purple-800 underline underline-offset-4 cursor-pointer"
                               >
                                 <CirclePlay size={18} />
                                 Preview
                               </button>
                             )}
-                            <span className="text-xs text-slate-600">
+
+                            <span className="text-xs text-slate-600 whitespace-nowrap">
                               {humanizeDuration(
                                 lecture.lectureDuration * 60 * 1000,
                                 { units: ["h", "m"] },
@@ -349,11 +356,16 @@ export default function CourseDetails() {
         {/* right column */}
         <div className="w-full md:w-95 lg:w-105 shrink-0 z-10 md:sticky md:top-10 shadow-2xl border border-slate-200 overflow-hidden bg-white rounded-xl">
           {/* Media Section */}
-          <div className="relative aspect-video bg-slate-100 overflow-hidden">
+          <div
+            ref={playerRef}
+            className="relative aspect-video bg-slate-100 overflow-hidden"
+          >
             {playerData ? (
               <YouTube
                 videoId={playerData.videoId}
-                opts={{ playerVars: { autoplay: 1 } }}
+                opts={{
+                  playerVars: { autoplay: 1, rel: 0, modestbranding: 1 },
+                }}
                 iframeClassName="w-full h-full aspect-video"
               />
             ) : (

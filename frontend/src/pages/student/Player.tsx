@@ -276,7 +276,9 @@ export default function Player() {
           {playerData ? (
             <div>
               <YouTube
-                opts={{ playerVars: { autoplay: 1 } }}
+                opts={{
+                  playerVars: { autoplay: 1, rel: 0, modestbranding: 1 },
+                }}
                 videoId={playerData.lectureUrl.split("/").pop()}
                 iframeClassName="w-full h-full aspect-video"
               />

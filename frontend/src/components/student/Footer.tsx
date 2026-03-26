@@ -94,9 +94,9 @@ export default function Footer() {
         <div className="flex flex-col md:items-start items-center w-full">
           <h2 className="font-semibold text-white mb-5">Company</h2>
 
-          <ul className="flex md:flex-col w-full justify-between text-sm text-white/80 md:space-y-2">
+          <ul className="flex flex-wrap md:flex-col w-full justify-center md:justify-start gap-x-6 gap-y-2 text-sm text-white/80">
             {footerLinks.map((el, i) => (
-              <li key={i} className="hover:text-white hover:underline w-fit">
+              <li key={i} className="hover:text-white hover:underline">
                 <a href={el.link}>{el.title}</a>
               </li>
             ))}
