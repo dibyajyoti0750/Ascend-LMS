@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import SearchBar from "../../components/student/SearchBar";
 import { useMemo } from "react";
 import { X } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -41,8 +40,6 @@ export default function CourseList() {
               / <span>Course List</span>
             </p>
           </div>
-
-          <SearchBar data={input} />
         </div>
 
         {input && (

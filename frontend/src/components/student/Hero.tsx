@@ -1,35 +1,51 @@
 import YouTube from "react-youtube";
 import { Typewriter } from "react-simple-typewriter";
-import SearchBar from "./SearchBar";
+import { assets } from "../../assets/assets";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col items-center justify-center w-full pt-16 px-8 md:px-0 space-y-10 text-center bg-linear-to-b from-purple-100/80">
-      <h1 className="text-4xl md:text-5xl font-black text-gray-800 max-w-2xl mx-auto text-center">
-        Master Valuable Skills &{" "}
-        <span className="text-[#6F00FF]">
-          <Typewriter
-            words={["Build Real Results"]}
-            loop={true}
-            typeSpeed={60}
-            deleteSpeed={60}
-            delaySpeed={20000}
-          />
-        </span>
-      </h1>
+    <div className="w-full flex flex-col items-center bg-linear-to-b from-purple-100/80 py-10">
+      {/* HERO IMAGE CONTAINER */}
+      <div className="relative w-full max-w-7xl">
+        <img
+          src={assets.hero}
+          alt="hero"
+          className="w-full h-auto rounded-xl"
+        />
 
-      <h2 className="font-medium text-gray-800 max-w-xl mx-auto px-6 text-center leading-relaxed">
-        Structured online video courses in business, content creation, and
-        self-improvement designed to help you build real-world skills and
-        achieve practical results
-      </h2>
+        {/* OVERLAY CARD */}
+        <div className="absolute top-10 left-10 max-w-lg bg-white text-left rounded-xl p-6">
+          <h1 className="text-xl font-bold text-gray-800">
+            Master Valuable Skills &{" "}
+            <span className="text-[#6F00FF]">
+              <Typewriter
+                words={["Build Real Results"]}
+                loop={true}
+                typeSpeed={60}
+                deleteSpeed={60}
+                delaySpeed={20000}
+              />
+            </span>
+          </h1>
 
-      <SearchBar />
+          <p className="mt-2 text-sm text-gray-800 leading-relaxed">
+            Structured online video courses designed to help you build
+            real-world skills and achieve practical results.
+          </p>
 
-      <div
-        onContextMenu={(e) => e.preventDefault()}
-        className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300 my-4"
-      >
+          <div className="flex gap-3 mt-4">
+            <button className="bg-[#6F00FF] text-white font-semibold py-2.5 px-5 rounded-md">
+              Get started
+            </button>
+            <button className="border border-[#6F00FF] text-[#6F00FF] font-semibold py-2.5 px-5 rounded-md">
+              Learn AI
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* VIDEO SECTION */}
+      <div className="w-full max-w-4xl mt-10 rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300">
         <YouTube
           videoId="geVXbpZmD2Y"
           opts={{

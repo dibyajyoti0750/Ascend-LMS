@@ -20,23 +20,21 @@ export default function SearchBar({ data }: InputData) {
   return (
     <form
       onSubmit={searchHandler}
-      className="max-w-xl w-full h-12 md:h-14 flex items-center bg-white border border-gray-300 rounded-full focus-within:border-sky-500 focus-within:shadow transition-all duration-300"
+      className="flex items-center w-full max-w-xl mx-auto bg-white rounded-full shadow-sm px-1.5 h-10 md:h-12"
     >
-      <Search className="w-10 mx-3 text-gray-500" />
-
       <input
         onChange={(e) => setInput(e.target.value)}
         value={input}
         type="text"
-        placeholder="Search"
-        className="h-full w-full outline-none text-lg text-gray-600"
+        placeholder="Search..."
+        className="flex-1 h-full px-3 md:px-4 text-sm md:text-base text-gray-700 outline-none bg-transparent"
       />
 
       <button
         type="submit"
-        className="bg-[#6F00FF] hover:bg-purple-800 transition-colors duration-200 rounded-full text-white text-lg font-medium px-4 md:px-8.5 py-1.5 md:py-2.5 mx-1 cursor-pointer"
+        className="flex items-center justify-center bg-[#6F00FF] hover:bg-purple-800 transition-colors duration-200 rounded-full text-white h-8 w-8 md:h-10 md:w-10"
       >
-        Search
+        <Search className="w-4 h-4 md:w-5 md:h-5" />
       </button>
     </form>
   );

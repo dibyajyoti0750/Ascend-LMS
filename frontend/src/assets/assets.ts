@@ -25,6 +25,7 @@ import check from "./check.png";
 import play from "./play.png";
 import founder from "./founder.png";
 import about from "./about.png";
+import hero from "./hero.jpg";
 
 export const assets = {
   logo,
@@ -51,6 +52,7 @@ export const assets = {
   play,
   founder,
   about,
+  hero,
 };
 
 export const dummyTestimonial = [

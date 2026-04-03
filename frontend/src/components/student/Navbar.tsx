@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
 import DailyCountdown from "./DailyCountdown";
 import { useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const { isEducator } = useSelector((state: RootState) => state.educator);
@@ -15,6 +16,7 @@ export default function Navbar() {
 
   const { openSignIn } = useClerk();
   const { user } = useUser();
+
   const navigate = useNavigate();
 
   const latestCourse = allCourses.at(-1);
@@ -67,7 +69,7 @@ export default function Navbar() {
       </div>
 
       <div className="relative bg-[#131628] text-white shadow">
-        <div className="flex items-center justify-between px-4 md:px-14 py-3 md:py-4">
+        <div className="flex items-center justify-between gap-6 px-4 md:px-8 py-3 md:py-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
             <img
@@ -79,6 +81,10 @@ export default function Navbar() {
               ASCEND<span className="font-light">.COM</span>
             </p>
           </Link>
+
+          <div className="hidden md:block flex-1">
+            <SearchBar />
+          </div>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-5 font-medium">
@@ -127,21 +133,30 @@ export default function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden py-2 outline-none"
           >
-            <Menu size={22} />
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* Mobile Dropdown */}
+        {/* Overlay */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          onClick={() => setIsOpen(false)}
+          className={`fixed inset-0 bg-black/60 z-40 transition-opacity duration-300 ${
+            isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          } md:hidden`}
+        />
+        {/* Drawer */}
+        <div
+          className={`fixed top-0 right-0 h-full w-[75%] max-w-xs bg-[#131628] z-50 transform transition-transform duration-300 md:hidden ${
+            isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="p-4 flex flex-col gap-3 text-xs bg-[#131628]">
+          <div className="p-4 flex flex-col gap-4 text-sm">
+            <SearchBar />
+
             <Link
               to={`/course/${latestCourse?._id}`}
               onClick={() => setIsOpen(false)}
-              className="relative rounded-md py-2 text-sm font-bold bg-[#6F00FF] text-center"
+              className="relative rounded-md py-2 mt-2 text-center font-bold bg-[#6F00FF]"
             >
               Just Launched
               <span className="absolute -top-2 right-3 bg-red-500 text-[10px] px-2 py-0.5 rounded-full">
@@ -155,7 +170,7 @@ export default function Navbar() {
                   navigate("/educator");
                   setIsOpen(false);
                 }}
-                className="text-left py-2 px-2 hover:bg-white/10 rounded transition"
+                className="text-center py-1.5 hover:bg-white/10 rounded"
               >
                 Educator Dashboard
               </button>
@@ -165,15 +180,16 @@ export default function Navbar() {
               <Link
                 to="/my-enrollments"
                 onClick={() => setIsOpen(false)}
-                className="py-2 px-2 hover:bg-white/10 rounded transition"
+                className="text-center py-1.5 hover:bg-white/10 rounded"
               >
                 My Enrollments
               </Link>
             )}
 
             {user ? (
-              <div className="pt-2">
+              <div className="flex items-center justify-center gap-2 py-1.5">
                 <UserButton />
+                <p className="truncate">{user.firstName}</p>
               </div>
             ) : (
               <button
@@ -181,7 +197,7 @@ export default function Navbar() {
                   openSignIn();
                   setIsOpen(false);
                 }}
-                className="rounded-md py-2 text-sm font-bold bg-[#6F00FF] text-white active:scale-95 cursor-pointer"
+                className="rounded-md py-2 font-bold bg-[#6F00FF]"
               >
                 Sign In
               </button>
