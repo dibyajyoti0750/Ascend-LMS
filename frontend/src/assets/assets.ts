@@ -26,6 +26,17 @@ import play from "./play.png";
 import founder from "./founder.png";
 import about from "./about.png";
 import hero from "./hero.jpg";
+import c1 from "./generative-ai.webp";
+import c2 from "./certifications.webp";
+import c3 from "./data-science.webp";
+import c4 from "./chat-gpt.webp";
+import c5 from "./prompt-engineering.webp";
+import c6 from "./microsoft-excel.webp";
+import c7 from "./llms.webp";
+import c8 from "./machine-learning.webp";
+import c9 from "./ai-agents.webp";
+
+export const carouselAssets = [c1, c2, c3, c4, c5, c6, c7, c8, c9];
 
 export const assets = {
   logo,

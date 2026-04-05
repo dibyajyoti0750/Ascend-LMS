@@ -1,6 +1,5 @@
-import YouTube from "react-youtube";
 import { Typewriter } from "react-simple-typewriter";
-import { assets } from "../../assets/assets";
+import { assets, carouselAssets } from "../../assets/assets";
 
 export default function Hero() {
   return (
@@ -28,7 +27,7 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="mt-2 text-sm text-gray-800 leading-relaxed">
+          <p className="mt-2 text-sm text-gray-700 leading-relaxed">
             Structured online video courses designed to help you build
             real-world skills and achieve practical results.
           </p>
@@ -44,21 +43,31 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* VIDEO SECTION */}
-      <div className="w-full max-w-4xl mt-10 rounded-2xl overflow-hidden shadow-2xl border-8 border-purple-300">
-        <YouTube
-          videoId="geVXbpZmD2Y"
-          opts={{
-            playerVars: {
-              rel: 0,
-              mute: 1,
-              autoplay: 0,
-              controls: 1,
-              modestbranding: 1,
-            },
-          }}
-          iframeClassName="w-full aspect-video"
-        />
+      {/* CAROUSEL SECTION */}
+      <div className="w-full max-w-7xl px-6 pt-14 flex items-center gap-10">
+        {/* LEFT TEXT */}
+        <div className="md:w-1/3 text-left">
+          <h1 className="text-2xl text-gray-800 leading-snug">
+            Learn <i>essential</i> career and <b>life</b> skills
+          </h1>
+          <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+            Ascend helps you build in-demand skills fast and advance your career
+            in a changing job market
+          </p>
+        </div>
+
+        {/* RIGHT CAROUSEL */}
+        <div className="md:w-2/3 overflow-x-auto">
+          <div className="flex gap-6 min-w-max pb-2">
+            {carouselAssets.map((item, i) => (
+              <img
+                key={i}
+                src={item}
+                className="h-80 w-72 shrink-0 object-cover rounded-xl"
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
