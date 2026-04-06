@@ -36,7 +36,17 @@ import c7 from "./llms.webp";
 import c8 from "./machine-learning.webp";
 import c9 from "./ai-agents.webp";
 
-export const carouselAssets = [c1, c2, c3, c4, c5, c6, c7, c8, c9];
+export const carouselAssets = [
+  { title: "Generative AI", image: c1 },
+  { title: "IT Certifications", image: c2 },
+  { title: "Data Science", image: c3 },
+  { title: "Chat GPT", image: c4 },
+  { title: "Prompt Engineering", image: c5 },
+  { title: "Microsoft Excel", image: c6 },
+  { title: "LLMs", image: c7 },
+  { title: "Machine Learning", image: c8 },
+  { title: "AI Agents", image: c9 },
+];
 
 export const assets = {
   logo,

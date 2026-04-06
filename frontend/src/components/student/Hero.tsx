@@ -60,11 +60,16 @@ export default function Hero() {
         <div className="md:w-2/3 overflow-x-auto">
           <div className="flex gap-6 min-w-max pb-2">
             {carouselAssets.map((item, i) => (
-              <img
-                key={i}
-                src={item}
-                className="h-80 w-72 shrink-0 object-cover rounded-xl"
-              />
+              <div key={i} className="relative">
+                <img
+                  src={item.image}
+                  className="h-80 w-72 shrink-0 object-cover rounded-xl"
+                />
+
+                <div className="absolute bottom-4 left-4 w-[70%] bg-white/30 text-white text-left font-medium backdrop-blur-sm rounded-md p-4 z-10">
+                  {item.title}
+                </div>
+              </div>
             ))}
           </div>
         </div>
