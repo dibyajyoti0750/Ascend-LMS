@@ -1,4 +1,5 @@
 import { Typewriter } from "react-simple-typewriter";
+import { Link } from "react-router-dom";
 import { assets, carouselAssets } from "../../assets/assets";
 
 export default function Hero() {
@@ -13,19 +14,19 @@ export default function Hero() {
         />
 
         {/* OVERLAY CARD */}
-        <div className="absolute top-10 left-10 max-w-lg bg-white text-left rounded-xl p-6">
-          <h1 className="text-xl font-bold text-gray-800">
+        <div className="absolute top-16 left-16 max-w-lg bg-white text-left rounded p-6">
+          <h1 className="text-3xl font-bold text-gray-800">
             Master Valuable Skills &{" "}
-            <span className="text-[#6F00FF]">
-              <Typewriter
-                words={["Build Real Results"]}
-                loop={true}
-                typeSpeed={60}
-                deleteSpeed={60}
-                delaySpeed={20000}
-              />
-            </span>
           </h1>
+          <span className="text-3xl font-bold text-[#6F00FF]">
+            <Typewriter
+              words={["Build Real Results"]}
+              loop={true}
+              typeSpeed={60}
+              deleteSpeed={60}
+              delaySpeed={20000}
+            />
+          </span>
 
           <p className="mt-2 text-sm text-gray-700 leading-relaxed">
             Structured online video courses designed to help you build
@@ -33,9 +34,12 @@ export default function Hero() {
           </p>
 
           <div className="flex gap-3 mt-4">
-            <button className="bg-[#6F00FF] text-white font-semibold py-2.5 px-5 rounded-md">
+            <Link
+              to={"/course-list"}
+              className="bg-[#6F00FF] text-white font-semibold py-2.5 px-5 rounded-md"
+            >
               Get started
-            </button>
+            </Link>
             <button className="border border-[#6F00FF] text-[#6F00FF] font-semibold py-2.5 px-5 rounded-md">
               Learn AI
             </button>

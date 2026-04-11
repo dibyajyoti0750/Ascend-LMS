@@ -25,7 +25,7 @@ import check from "./check.png";
 import play from "./play.png";
 import founder from "./founder.png";
 import about from "./about.png";
-import hero from "./hero.jpg";
+import hero from "./hero.png";
 import c1 from "./generative-ai.webp";
 import c2 from "./certifications.webp";
 import c3 from "./data-science.webp";
