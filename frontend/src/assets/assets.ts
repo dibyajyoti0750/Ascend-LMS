@@ -25,7 +25,8 @@ import check from "./check.png";
 import play from "./play.png";
 import founder from "./founder.png";
 import about from "./about.png";
-import hero from "./hero.png";
+import hero1 from "./hero1.png";
+import hero2 from "./hero2.jpg";
 import c1 from "./generative-ai.webp";
 import c2 from "./certifications.webp";
 import c3 from "./data-science.webp";
@@ -73,7 +74,8 @@ export const assets = {
   play,
   founder,
   about,
-  hero,
+  hero1,
+  hero2,
 };
 
 export const dummyTestimonial = [

@@ -6,19 +6,28 @@ export default function Hero() {
   return (
     <div className="w-full flex flex-col items-center bg-linear-to-b from-purple-100/80 py-10">
       {/* HERO IMAGE CONTAINER */}
-      <div className="relative w-full max-w-7xl">
+      <div className="md:relative w-full max-w-7xl overflow-hidden">
+        {/* Small screens */}
         <img
-          src={assets.hero}
+          src={assets.hero2}
           alt="hero"
-          className="w-full h-auto rounded-xl"
+          className="w-full h-auto md:hidden"
+        />
+
+        {/* Medium and above */}
+        <img
+          src={assets.hero1}
+          alt="hero"
+          className="hidden md:block w-full h-auto rounded-xl"
         />
 
         {/* OVERLAY CARD */}
-        <div className="absolute top-16 left-16 max-w-lg bg-white text-left rounded p-6">
-          <h1 className="text-3xl font-bold text-gray-800">
+        <div className="md:absolute md:top-[19%] md:left-[5%] max-w-lg bg-white text-left rounded p-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
             Master Valuable Skills &{" "}
           </h1>
-          <span className="text-3xl font-bold text-[#6F00FF]">
+
+          <span className="text-2xl md:text-3xl font-bold text-[#6F00FF]">
             <Typewriter
               words={["Build Real Results"]}
               loop={true}
@@ -28,19 +37,19 @@ export default function Hero() {
             />
           </span>
 
-          <p className="mt-2 text-sm text-gray-700 leading-relaxed">
+          <p className="mt-2 text-xs md:text-sm text-gray-700 leading-relaxed">
             Structured online video courses designed to help you build
             real-world skills and achieve practical results.
           </p>
 
-          <div className="flex gap-3 mt-4">
+          <div className="flex flex-col md:flex-row gap-3 mt-4">
             <Link
               to={"/course-list"}
-              className="bg-[#6F00FF] text-white font-semibold py-2.5 px-5 rounded-md"
+              className="bg-[#6F00FF] text-center text-white font-semibold py-3 px-5 rounded-md"
             >
               Get started
             </Link>
-            <button className="border border-[#6F00FF] text-[#6F00FF] font-semibold py-2.5 px-5 rounded-md">
+            <button className="border border-[#6F00FF] text-center text-[#6F00FF] font-semibold py-3 px-5 rounded-md">
               Learn AI
             </button>
           </div>
