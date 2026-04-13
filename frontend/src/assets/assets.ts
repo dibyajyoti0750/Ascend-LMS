@@ -27,26 +27,26 @@ import founder from "./founder.png";
 import about from "./about.png";
 import hero1 from "./hero1.png";
 import hero2 from "./hero2.jpg";
-import c1 from "./generative-ai.webp";
-import c2 from "./certifications.webp";
-import c3 from "./data-science.webp";
-import c4 from "./chat-gpt.webp";
-import c5 from "./prompt-engineering.webp";
-import c6 from "./microsoft-excel.webp";
-import c7 from "./llms.webp";
-import c8 from "./machine-learning.webp";
-import c9 from "./ai-agents.webp";
+import c1 from "./c1.png";
+import c2 from "./c2.png";
+import c3 from "./c3.png";
+import c4 from "./c4.png";
+import c5 from "./c5.png";
+import c6 from "./c6.png";
+import c7 from "./c7.png";
+import c8 from "./c8.png";
+import c9 from "./c9.png";
 
 export const carouselAssets = [
-  { title: "Generative AI", image: c1 },
-  { title: "IT Certifications", image: c2 },
-  { title: "Data Science", image: c3 },
-  { title: "Chat GPT", image: c4 },
-  { title: "Prompt Engineering", image: c5 },
-  { title: "Microsoft Excel", image: c6 },
-  { title: "LLMs", image: c7 },
-  { title: "Machine Learning", image: c8 },
-  { title: "AI Agents", image: c9 },
+  { title: "Fitness", image: c1 },
+  { title: "Editing", image: c9 },
+  { title: "Sales", image: c2 },
+  { title: "Digital Marketing", image: c3 },
+  { title: "Storytelling", image: c4 },
+  { title: "Sound design", image: c5 },
+  { title: "Color grading", image: c6 },
+  { title: "Thumbnail design", image: c7 },
+  { title: "Communication", image: c8 },
 ];
 
 export const assets = {
