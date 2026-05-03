@@ -57,29 +57,30 @@ export default function Hero() {
       </div>
 
       {/* CAROUSEL SECTION */}
-      <div className="w-full max-w-7xl px-6 pt-14 flex items-center gap-10">
+      <div className="w-full max-w-7xl px-4 sm:px-6 pt-10 sm:pt-14 flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-10">
         {/* LEFT TEXT */}
-        <div className="md:w-1/3 text-left">
-          <h1 className="text-2xl text-gray-800 leading-snug">
+        <div className="w-full md:w-1/3 text-left">
+          <h1 className="text-xl sm:text-2xl md:text-3xl text-gray-800 leading-snug">
             Learn <i>essential</i> career and <b>life</b> skills
           </h1>
-          <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 mt-3 leading-relaxed">
             Ascend helps you build in-demand skills fast and advance your career
             in a changing job market
           </p>
         </div>
 
         {/* RIGHT CAROUSEL */}
-        <div className="md:w-2/3 overflow-x-auto">
-          <div className="flex gap-6 min-w-max pb-2">
+        <div className="w-full md:w-2/3 overflow-x-auto scrollbar-hide">
+          <div className="flex gap-4 sm:gap-6 min-w-max pb-2">
             {carouselAssets.map((item, i) => (
-              <div key={i} className="relative">
+              <div key={i} className="relative shrink-0 w-56 sm:w-64 md:w-72">
                 <img
                   src={item.image}
-                  className="h-80 w-72 shrink-0 object-cover rounded-xl"
+                  className="h-64 sm:h-72 md:h-80 w-full object-cover rounded-xl"
+                  alt={item.title}
                 />
 
-                <div className="absolute bottom-4 left-4 w-[70%] bg-white/30 text-white text-left font-medium backdrop-blur-sm rounded-md p-4 z-10">
+                <div className="absolute bottom-4 left-4 w-[75%] bg-white/30 text-white text-sm sm:text-base text-left font-medium backdrop-blur-sm rounded-md p-3 sm:p-4 z-10">
                   {item.title}
                 </div>
               </div>
