@@ -23,14 +23,12 @@ export const getPurchaseReceipt = async (req, res) => {
     throw new ExpressError(400, "Payment not completed");
   }
 
-  const isRazorpay = purchase.paymentGateway === "razorpay";
-
   const receipt = {
     provider: purchase.paymentGateway,
     paymentId: purchase.paymentId,
     orderId: purchase.orderId,
     amount: purchase.amount,
-    currency: isRazorpay ? "INR" : "USD",
+    currency: "INR",
     status: purchase.status,
     paidAt: purchase.paidAt,
     courseTitle: purchase.courseId.courseTitle,
