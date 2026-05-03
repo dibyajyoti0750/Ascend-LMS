@@ -22,6 +22,7 @@ await connectCloudinary();
 // import Purchase from "./models/Purchase.js";
 // import User from "./models/User.js";
 
+// await Course.updateMany({}, { $set: { courseRatings: [] } });
 // await Course.updateMany({}, { $set: { enrolledStudents: [] } });
 // await Purchase.deleteMany({});
 // await User.updateOne(

@@ -9,9 +9,7 @@ export default function TestimonialsSection() {
     <section className="pb-20 px-6 md:px-8 max-w-6xl mx-auto">
       {/* Header */}
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-3xl font-bold text-purple-900">
-          [Demo Testimonials]
-        </h2>
+        <h2 className="text-3xl font-bold text-purple-900">Testimonials</h2>
         <p className="mt-4 text-gray-500 leading-relaxed">
           Real words from learners who once felt confused, unsure, and stuck.
           They trusted the process, stayed consistent, and made progress step by
